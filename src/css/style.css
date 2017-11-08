@@ -1,0 +1,121 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+
+    overflow: hidden;
+
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    padding: 8px;
+
+    text-align: center;
+
+    background-color: #fff;
+}
+
+.container {
+    display: flex;
+
+    width: 1200px;
+    margin: 0;
+    padding: 10px 0 0 0;
+
+    justify-content: space-around;
+    flex: 1;
+}
+
+#game {
+    flex: 1 0 800px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1 0 400px;
+}
+
+label {
+    font-weight: bold;
+
+    padding: 20px;
+
+    user-select: none;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: #fff;
+    background-color: gray;
+    text-shadow: 1px 1px 10px #434343;
+}
+
+textarea {
+    font-family: "Source Code Pro";
+    font-size: 0.85em;
+
+    height: calc(
+        600px - (40px + 26.667px) - 43.47px
+    ); /* Game hight - (label-margin + label-size )- button  */
+    padding: 10px;
+
+    resize: none;
+
+    border: none;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    outline: none;
+}
+
+button {
+    font-size: 1em;
+
+    padding: 10px;
+
+    user-select: none;
+    text-transform: uppercase;
+
+    border: none;
+    outline: none;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #25b454;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+
+    color: inherit;
+}
+
+footer {
+    display: flex;
+
+    width: 100%;
+    padding: 10px;
+
+    background-color: #e3e3e3;
+
+    justify-content: space-between;
+}
