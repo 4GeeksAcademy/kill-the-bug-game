@@ -1,14 +1,14 @@
-{ "height":7,
+{ "height":10,
  "layers":[
         {
-         "data":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAAAA=",
+         "data":"YwAAAGMAAABjAAAAYwAAAGMAAABjAAAAYwAAAGMAAABjAAAAYwAAAGMAAABjAAAAmQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmQAAABQAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAIEAAABoAAAAmQAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACZAAAAmAAAAGgAAABoAAAAaAAAAGkAAAAAAAAAAAAAAIEAAABoAAAAaAAAAGgAAAAVAAAAmQAAAAAAAAAAAAAAAAAAAAAAAACRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACZAAAAmAAAAGgAAABoAAAAaAAAAGgAAABoAAAAaAAAAGgAAABpAAAAAAAAAAAAAACZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIUAAACZAAAAaAAAAGgAAABoAAAAaAAAAGgAAABoAAAAaAAAAGgAAABoAAAAaAAAAGgAAAAVAAAA",
          "encoding":"base64",
-         "height":7,
-         "name":"Tile Layer 1",
+         "height":10,
+         "name":"Capa de Patrones 1",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":8,
+         "width":12,
          "x":0,
          "y":0
         }],
@@ -16,24 +16,23 @@
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.3",
- "tileheight":128,
+ "tileheight":70,
  "tilesets":[
         {
-         "columns":2,
+         "columns":12,
          "firstgid":1,
-         "image":"..\/tiles\/tiles2.png",
-         "imageheight":1088,
-         "imagewidth":257,
+         "image":"..\/tiles\/spritesheet.png",
+         "imageheight":936,
+         "imagewidth":914,
          "margin":0,
-         "name":"tiles2",
-         "spacing":0,
-         "tilecount":16,
-         "tileheight":128,
-         "tilewidth":128,
-         "transparentcolor":"#ff00ff"
+         "name":"spritesheet",
+         "spacing":2,
+         "tilecount":156,
+         "tileheight":70,
+         "tilewidth":70
         }],
- "tilewidth":128,
+ "tilewidth":70,
  "type":"map",
  "version":1,
- "width":8
+ "width":12
 }

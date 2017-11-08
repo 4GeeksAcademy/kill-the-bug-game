@@ -10,7 +10,8 @@
 	<!-- Phaser CDN -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser-ce/2.9.1/phaser.min.js"></script>
 	<!-- FontAwesome -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="
+	 crossorigin="anonymous" />
 	<!-- My Styles -->
 	<link rel="stylesheet" type="text/css" href="css/main-style.css">
 </head>
@@ -25,39 +26,54 @@
 		<div class="action-selection">
 			<div class="action">
 				<span class="action__order"></span>
-				<button class="action__button" data-action="right"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go right</button>
+				<button class="action__button" data-action="right">
+					<i class="fa fa-arrow-right" aria-hidden="true"></i> Go right</button>
 				<span class="action__counter"></span>
 			</div>
 			<div class="action">
 				<span class="action__order"></span>
-				<button class="action__button" data-action="left"><i class="fa fa-arrow-left" aria-hidden="true"></i> Go left</button>
+				<button class="action__button" data-action="left">
+					<i class="fa fa-arrow-left" aria-hidden="true"></i> Go left</button>
 				<span class="action__counter"></span>
 			</div>
 			<div class="action">
 				<span class="action__order"></span>
-				<button class="action__button" data-action="jump"><i class="fa fa-arrow-up" aria-hidden="true"></i> Jump</button>
+				<button class="action__button" data-action="jump-right">
+					<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump right</button>
 				<span class="action__counter"></span>
 			</div>
 			<div class="action">
 				<span class="action__order"></span>
-				<button class="action__button" data-action="slide">Slide</button>
+				<button class="action__button" data-action="jump-left">
+					<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump left</button>
 				<span class="action__counter"></span>
 			</div>
 			<div class="action">
 				<span class="action__order"></span>
-				<button class="action__button" data-action="climb">Climb lader</button>
+				<!-- <button class="action__button" data-action="slide">Slide</button> -->
 				<span class="action__counter"></span>
+			</div>
+			<div class="action">
+				<span class="action__order"></span>
+				<!-- <button class="action__button" data-action="climb">Climb lader</button> -->
+				<span class="action__counter"></span>
+			</div>
+			<div class="action">
+				<button class="action__button" data-action="run">Run</button>
 			</div>
 		</div>
 
 	</main>
-	
+
 	<!-- Footer -->
 	<footer>
-		<p class="company">© Copyright - <a href="//4geeksacademy.co" target="_blank">4Geeks Academy LLC</a> 2017</p>
-		<p class="coder">Coded by <a href="//manten-dev.me" target="_blank">Manten Dev</a>, a 4Geeks Academy Student </p>
+		<p class="company">© Copyright -
+			<a href="//4geeksacademy.co" target="_blank">4Geeks Academy LLC</a> 2017</p>
+		<p class="coder">Coded by
+			<a href="//manten-dev.me" target="_blank">Manten Dev</a>, a 4Geeks Academy Student </p>
 	</footer>
 	<!-- Bundled Scripts -->
 	<script type="text/javascript" src="./main-bundle.js"></script>
 </body>
+
 </html>

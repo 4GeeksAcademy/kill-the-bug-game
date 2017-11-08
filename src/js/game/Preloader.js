@@ -23,10 +23,10 @@ export const Preloader = {
 			}
 		);
 		// Game dimensions
-		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		// game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.scale.PageAlignHorizontally = true;
 		game.scale.PageAlignVertically = true;
-		game.stage.backgroundColor = "#000000";
+		game.stage.backgroundColor = "#424242";
 		// LOAD ALL ASSETS OF THE GAME
 		// Data
 		game.load.json("gameData", "config/game.json");
@@ -37,7 +37,7 @@ export const Preloader = {
 			null,
 			Phaser.Tilemap.TILED_JSON
 		);
-		game.load.image("tiles", "assets/tiles/tiles2.png");
+		game.load.image("tiles", "assets/tiles/spritesheet.png");
 		// Character
 		game.load.atlasJSONArray(
 			"boy",
