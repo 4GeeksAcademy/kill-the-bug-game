@@ -23,7 +23,7 @@ export const Preloader = {
 			}
 		);
 		// Game dimensions
-		// game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.scale.PageAlignHorizontally = true;
 		game.scale.PageAlignVertically = true;
 		game.stage.backgroundColor = "#424242";
@@ -39,12 +39,12 @@ export const Preloader = {
 		);
 		game.load.image("tiles", "assets/tiles/spritesheet.png");
 		// Character
-		game.load.atlasJSONArray(
-			"boy",
-			"/assets/players/boy/boy.png",
-			"/assets/players/boy/boy.json"
+		game.load.spritesheet(
+			"character",
+			"assets/players/adventurer_spritesheet.png",
+			80,
+			110
 		);
-		// game.load.atlasJSONArray('girl', '/assets/players/girl/player.png', '/assets/players/girl/player.json');
 	},
 	loadUpdate: () => {
 		text = "Loading " + game.load.progress;

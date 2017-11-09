@@ -10,7 +10,7 @@ import { MainMenu } from "./MainMenu";
 import { LevelOne } from "./LevelOne";
 
 // Phaser start
-export const game = new Phaser.Game(1024, 660, Phaser.AUTO, "game");
+export const game = new Phaser.Game(840, 700, Phaser.AUTO, "game");
 game.state.add("Boot", Boot);
 game.state.add("Preloader", Preloader);
 game.state.add("MainMenu", MainMenu);

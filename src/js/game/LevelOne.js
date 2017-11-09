@@ -3,8 +3,6 @@ let gameData, layer, player, character;
 // Movement vars
 const horizontal_speed = 150;
 const vertical_speed = -280;
-// GROUND
-const ground_tile_height = 70;
 
 export const LevelOne = {
 	create: () => {
@@ -20,45 +18,17 @@ export const LevelOne = {
 		layer.resizeWorld();
 
 		// PLAYER
-		player = game.add.sprite(70 / 2, 598.4, character, `idle/000.png`);
-		// Animations
-		player.animations.add(
-			"idle",
-			Phaser.Animation.generateFrameNames("idle/", 0, 10, ".png", 3),
-			13,
-			true,
-			false
-		);
-		player.animations.add(
-			"dead",
-			Phaser.Animation.generateFrameNames("dead/", 0, 10, ".png", 3),
-			13,
-			false,
-			false
-		);
-		player.animations.add(
-			"jump",
-			Phaser.Animation.generateFrameNames("jump/", 0, 10, ".png", 3),
-			8,
-			true,
-			false
-		);
-		player.animations.add(
-			"run",
-			Phaser.Animation.generateFrameNames("run/", 0, 10, ".png", 3),
-			13,
-			true,
-			false
-		);
-		player.animations.add(
-			"slide",
-			Phaser.Animation.generateFrameNames("slide/", 0, 10, ".png", 3),
-			13,
-			false,
-			false
-		);
+		player = game.add.sprite(70 / 2, 598.4, "character");
+		player.frame = 23;
+		player.animations.add("walk", [9, 10], 8, true);
+		player.animations.add("jump", [1], 4);
+		player.animations.add("dead", [4], 4);
+		player.animations.add("slide", [19], 4);
+		player.animations.add("climb", [5, 6], 3, true);
+		game.add.existing(player);
+
 		// Player scales and center anchor
-		player.scale.setTo(0.13);
+		player.scale.setTo(0.6);
 		player.anchor.setTo(0.5);
 		// Gravity and Physics
 		game.physics.arcade.enable(player);
@@ -92,17 +62,17 @@ export const LevelOne = {
 			} else if (action == "climb") {
 				button.addEventListener("click", function() {
 					// if (true) {
-					player.animations.play("jump");
+					player.animations.play("climb");
 					game.physics.arcade.gravity.y = 0;
 					player.yDest = player.y - 70 * 1;
 					player.body.velocity.y = vertical_speed * 0.2;
 					// }
 					setTimeout(function() {
-						player.scale.setTo(0.13);
+						player.scale.setTo(0.6);
 						player.body.velocity.x = horizontal_speed;
 						player.xDest = player.x + 70;
 						game.physics.arcade.gravity.y = 500;
-					}, 2400);
+					}, 2500);
 				});
 			}
 		});
@@ -113,15 +83,17 @@ export const LevelOne = {
 		// Animation play conditions
 		// Idle if x velocity is 0 and on floor
 		if (player.body.velocity.x == 0 && player.body.blocked.down) {
-			player.animations.play("idle");
+			player.frame = 23;
 		} else if (player.body.velocity.x != 0 && player.body.blocked.down) {
 			// Run if x velocity is NOT 0 and on floor
-			player.animations.play("run");
+			player.animations.play("walk");
 		} else if (
 			// Jump if y velocity is NOT 0 and not floor
+			// And if there is no gravity
 			player.body.velocity.y != 0 &&
 			player.body.velocity.x == 0 &&
-			!player.body.blocked.down
+			!player.body.blocked.down &&
+			game.physics.arcade.gravity.y > 0
 		) {
 			player.animations.play("jump");
 		}
@@ -134,7 +106,7 @@ export const LevelOne = {
 				player.body.velocity.x = 0;
 				player.x = Math.floor(player.xDest);
 			} else if (currentPosX < destinationX) {
-				player.scale.setTo(0.13);
+				player.scale.setTo(0.6);
 				player.body.velocity.x = horizontal_speed;
 				// Check if right side is blocked
 				// If so, return to last position
@@ -148,7 +120,7 @@ export const LevelOne = {
 				}
 			} else if (currentPosX > destinationX) {
 				player.body.velocity.x = -horizontal_speed;
-				player.scale.setTo(-0.13, 0.13);
+				player.scale.setTo(-0.6, 0.6);
 				// Check if left side is blocked
 				// If so, return to last position
 				if (
