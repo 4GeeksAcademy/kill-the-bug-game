@@ -30,6 +30,16 @@ export const Preloader = {
 		// LOAD ALL ASSETS OF THE GAME
 		// Data
 		game.load.json("gameData", "config/game.json");
+		// Not game related images
+		game.load.image("4geeks_logo", "assets/img/4geeks_logo.png");
+		game.load.image("manten_logo", "assets/img/manten_logo.png");
+		// UI Sprites
+		game.load.spritesheet(
+			"start_button",
+			"assets/ui/green_spritesheet.png",
+			190,
+			49
+		);
 		// Tilesets
 		game.load.tilemap(
 			"level_1",
@@ -46,11 +56,11 @@ export const Preloader = {
 			110
 		);
 	},
-	loadUpdate: () => {
+	update: () => {
 		text = "Loading " + game.load.progress;
 	},
 	create: () => {
-		// game.state.start("MainMenu");
-		game.state.start("LevelOne");
+		game.state.start("MainMenu");
+		// game.state.start("LevelOne");
 	},
 };

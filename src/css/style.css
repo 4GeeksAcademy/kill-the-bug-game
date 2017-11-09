@@ -46,43 +46,11 @@ header {
   flex: 1 0 800px;
 }
 
-.form {
+.action-selection {
   display: flex;
   flex-direction: column;
 
-  flex: 1 0 400px;
-}
-
-label {
-  font-weight: bold;
-
-  padding: 20px;
-
-  user-select: none;
-  text-align: center;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-
-  color: #fff;
-  background-color: gray;
-  text-shadow: 1px 1px 10px #434343;
-}
-
-textarea {
-  font-family: "Source Code Pro";
-  font-size: 0.85em;
-
-  height: calc(
-    600px - (40px + 26.667px) - 43.47px
-  ); /* Game hight - (label-margin + label-size )- button  */
-  padding: 10px;
-
-  resize: none;
-
-  border: none;
-  border-right: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  outline: none;
+  flex: 1 0 200px;
 }
 
 button {
@@ -96,6 +64,7 @@ button {
 
   border: none;
   outline: none;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.4s;
 }
 
 button:hover {
@@ -104,16 +73,22 @@ button:hover {
   color: white;
 }
 
-button:hover i {
-  color: #f44336;
-}
-
 button[data-action="jump-right"] i {
   transform: rotate(45deg);
 }
 
 button[data-action="jump-left"] i {
   transform: rotate(-45deg);
+}
+
+button:last-child {
+  background: #1976d2;
+  color: #fff;
+  text-align: center;
+}
+
+button:last-child:hover {
+  box-shadow: 0 0 0 23px #2196f3 inset;
 }
 
 a {
