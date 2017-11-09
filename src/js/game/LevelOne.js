@@ -2,7 +2,7 @@ import { game } from "./Game";
 let gameData, layer, player, character;
 // Movement vars
 const horizontal_speed = 150;
-const vertical_speed = -300;
+const vertical_speed = -280;
 // GROUND
 const ground_tile_height = 70;
 
@@ -20,12 +20,8 @@ export const LevelOne = {
 		layer.resizeWorld();
 
 		// PLAYER
-		player = game.add.sprite(
-			70 / 2,
-			game.world.height - ground_tile_height / 2 - 486 * 0.25,
-			character,
-			`idle/000.png`
-		);
+		player = game.add.sprite(70 / 2, 598.4, character, `idle/000.png`);
+		// Animations
 		player.animations.add(
 			"idle",
 			Phaser.Animation.generateFrameNames("idle/", 0, 10, ".png", 3),
@@ -61,6 +57,7 @@ export const LevelOne = {
 			false,
 			false
 		);
+		// Player scales and center anchor
 		player.scale.setTo(0.13);
 		player.anchor.setTo(0.5);
 		// Gravity and Physics
@@ -92,34 +89,76 @@ export const LevelOne = {
 					player.xDest = player.x - 70 * 2;
 					player.body.velocity.y = vertical_speed;
 				});
+			} else if (action == "climb") {
+				button.addEventListener("click", function() {
+					// if (true) {
+					player.animations.play("jump");
+					game.physics.arcade.gravity.y = 0;
+					player.yDest = player.y - 70 * 1;
+					player.body.velocity.y = vertical_speed * 0.2;
+					// }
+					setTimeout(function() {
+						player.scale.setTo(0.13);
+						player.body.velocity.x = horizontal_speed;
+						player.xDest = player.x + 70;
+						game.physics.arcade.gravity.y = 500;
+					}, 2400);
+				});
 			}
 		});
 	},
 	update: () => {
 		// COLLISION
 		game.physics.arcade.collide(player, layer);
-
-		if (player.body.velocity.x == 0) {
+		// Animation play conditions
+		// Idle if x velocity is 0 and on floor
+		if (player.body.velocity.x == 0 && player.body.blocked.down) {
 			player.animations.play("idle");
+		} else if (player.body.velocity.x != 0 && player.body.blocked.down) {
+			// Run if x velocity is NOT 0 and on floor
+			player.animations.play("run");
+		} else if (
+			// Jump if y velocity is NOT 0 and not floor
+			player.body.velocity.y != 0 &&
+			player.body.velocity.x == 0 &&
+			!player.body.blocked.down
+		) {
+			player.animations.play("jump");
 		}
 
 		function movePlayer() {
 			const currentPosX = Math.floor(player.x / 10);
 			const destinationX = Math.floor(player.xDest / 10);
-			// const currentPosY = Math.floor(player.y / 10);
-			// const destinationY = Math.floor(player.yDest / 10);
-
+			// Move player until it reaches point X destination
 			if (currentPosX == destinationX) {
 				player.body.velocity.x = 0;
 				player.x = Math.floor(player.xDest);
 			} else if (currentPosX < destinationX) {
 				player.scale.setTo(0.13);
 				player.body.velocity.x = horizontal_speed;
-				player.animations.play("run");
+				// Check if right side is blocked
+				// If so, return to last position
+				if (
+					player.body.blocked.right &&
+					player.body.blocked.down &&
+					!player.body.blocked.up
+				) {
+					player.x = player.xDest - 70;
+					player.xDest -= 70;
+				}
 			} else if (currentPosX > destinationX) {
 				player.body.velocity.x = -horizontal_speed;
 				player.scale.setTo(-0.13, 0.13);
-				player.animations.play("run");
+				// Check if left side is blocked
+				// If so, return to last position
+				if (
+					player.body.blocked.left &&
+					player.body.blocked.down &&
+					!player.body.blocked.up
+				) {
+					player.x = player.xDest + 70;
+					player.xDest += 70;
+				}
 			}
 		}
 

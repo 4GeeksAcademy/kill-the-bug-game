@@ -87,7 +87,8 @@ textarea {
 
 button {
   font-size: 1em;
-
+  width: 100%;
+  text-align: left;
   padding: 10px;
 
   user-select: none;
@@ -101,6 +102,10 @@ button:hover {
   cursor: pointer;
   background-color: #25b454;
   color: white;
+}
+
+button:hover i {
+  color: #f44336;
 }
 
 button[data-action="jump-right"] i {
