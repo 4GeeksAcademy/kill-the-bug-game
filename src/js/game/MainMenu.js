@@ -2,6 +2,7 @@ import { game } from "./Game";
 
 export const MainMenu = {
 	create: () => {
+		game.stage.backgroundColor = "#424242";
 		let geeksLogo = game.add.image(
 			game.world.width / 4,
 			game.world.height - 100,
@@ -27,7 +28,6 @@ export const MainMenu = {
 			1
 		);
 		button.anchor.set(0.5);
-		console.log(button.texture.width);
 		let text = game.add.text(0, 0, "START", {
 			font: "24px Space Mono",
 			fill: "#FFFFFF",
@@ -40,10 +40,5 @@ export const MainMenu = {
 		function startGame() {
 			game.state.start("LevelOne", Phaser.Plugin.StateTransition.Out.ScaleUp);
 		}
-	},
-	update: () => {
-		// if (game.input.activePointer.isDown) {
-		// 	game.state.start("LevelOne");
-		// }
 	},
 };

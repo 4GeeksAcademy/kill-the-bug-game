@@ -1,6 +1,4 @@
 {
-	"Levels":
-	[
-
-	]
+  "TitleState": "MainMenu",
+  "Levels": ["LevelOne"]
 }

@@ -4,6 +4,7 @@ let text;
 
 export const Preloader = {
 	preload: () => {
+		// Preloader bar
 		game.preloadBar = game.add.sprite(
 			game.world.centerX,
 			game.world.centerY,
@@ -12,33 +13,25 @@ export const Preloader = {
 		game.preloadBar.anchor.setTo(0.5);
 		game.time.advancedTiming = true;
 		game.load.setPreloadSprite(game.preloadBar);
-		text = game.add.text(
-			game.world.width / 2,
-			100,
-			"Loading " + game.load.progress,
-			{
-				font: "24px Space Mono",
-				fill: "#FFFFFF",
-				align: "center",
-			}
-		);
-		// Game dimensions
-		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		game.scale.PageAlignHorizontally = true;
-		game.scale.PageAlignVertically = true;
-		game.stage.backgroundColor = "#424242";
-		// LOAD ALL ASSETS OF THE GAME
 		// Data
 		game.load.json("gameData", "config/game.json");
 		// Not game related images
 		game.load.image("4geeks_logo", "assets/img/4geeks_logo.png");
 		game.load.image("manten_logo", "assets/img/manten_logo.png");
+
+		// GAME ASSETS
 		// UI Sprites
 		game.load.spritesheet(
 			"start_button",
 			"assets/ui/green_spritesheet.png",
 			190,
 			49
+		);
+		game.load.spritesheet(
+			"restart_button",
+			"assets/ui/red_spritesheet.png",
+			190,
+			45
 		);
 		// Tilesets
 		game.load.tilemap(
@@ -55,12 +48,29 @@ export const Preloader = {
 			80,
 			110
 		);
+
+		// Loading text
+		text = game.add.text(0, 0, "Loading " + game.load.progress, {
+			font: "24px Space Mono",
+			fill: "#FFFFFF",
+			align: "center",
+		});
+		text.anchor.setTo(0.5, 0.5);
+		game.preloadBar.addChild(text);
+		game.load.onFileComplete.add(loading, this);
 	},
 	update: () => {
-		text = "Loading " + game.load.progress;
+		// console.log(game.load);
 	},
+	loadUpdate: () => {},
 	create: () => {
-		game.state.start("MainMenu");
-		// game.state.start("LevelOne");
+		// game.state.start("MainMenu");
+		game.state.start("LevelOne");
 	},
 };
+
+function loading(progress, cacheKey, success, totalLoaded, totalFiles) {
+	text.setText(
+		"Loading: " + progress + "% - " + totalLoaded + " out of " + totalFiles
+	);
+}
