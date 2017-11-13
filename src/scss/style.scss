@@ -44,37 +44,76 @@ header {
 .action-list {
   display: flex;
   flex-direction: column;
+  flex: 1 0 200px;
+}
 
+.action-selection {
   flex: 1 0 200px;
 }
 
 .action-list {
+  flex: 3 0 200px;
   padding: 8px;
 
   &__title {
     margin-bottom: 10px;
   }
 
+  & ol {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+  }
+
   &__item {
+    font-size: 16px;
+    flex-basis: 90px;
     padding: 1px;
     padding-bottom: 3px;
     border: none;
     border-radius: 5px;
     color: #fff;
-    width: 80px;
     text-align: center;
     vertical-align: middle;
+    font-family: FontAwesome;
 
     &--run {
-      background-color: #03a9f4;
+      &-left {
+        background-color: #03a9f4;
+        &::before {
+          content: "\f060";
+          transform: rotate(-45deg);
+        }
+      }
+      &-right {
+        background-color: #03a9f4;
+        &::before {
+          content: "\f061";
+          transform: rotate(-45deg);
+        }
+      }
     }
 
     &--jump {
-      background-color: #00bcd4;
+      &-left {
+        background-color: #00bcd4;
+        &::before {
+          content: "\f062";
+        }
+      }
+      &-right {
+        background-color: #00bcd4;
+        &::before {
+          content: "\f062";
+        }
+      }
     }
 
     &--climb {
       background-color: #ff5722;
+      &::before {
+        content: "\f062";
+      }
     }
   }
 }
@@ -102,7 +141,7 @@ button {
     text-align: center;
 
     &:hover {
-      box-shadow: 0 0 0 23px #2196f3 inset;
+      box-shadow: 0 0 0 40px #2196f3 inset;
     }
   }
 
@@ -113,10 +152,6 @@ button {
   &[data-action="jump-left"] i {
     transform: rotate(-45deg);
   }
-}
-
-ol {
-  list-style: none;
 }
 
 a {

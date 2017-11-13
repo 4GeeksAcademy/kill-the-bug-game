@@ -11,6 +11,7 @@ let gameData,
 	playerAlive,
 	character;
 // Movement vars
+let actionsArray = [];
 const horizontal_speed = 150;
 const vertical_speed = -280;
 let lastPosY;
@@ -75,48 +76,20 @@ export const LevelOne = {
 			and sets X destination
 		*/
 		document.querySelectorAll(".action__button").forEach(function(button) {
-			const action = button.dataset.action;
-			if (action == "right") {
-				button.addEventListener("click", function() {
-					lastPosY = Math.floor(player.y / 10);
-					player.xDest = player.x + 70 * 12;
-				});
-			} else if (action == "left") {
-				button.addEventListener("click", function() {
-					lastPosY = Math.floor(player.y / 10);
-					player.xDest = player.x - 70 * 12;
-				});
-			} else if (action == "jump-right") {
-				button.addEventListener("click", function() {
-					lastPosY = Math.floor(player.y / 10);
-					player.yDest = player.y - 70 * 2;
-					player.xDest = player.x + 70 * 2;
-					player.body.velocity.y = vertical_speed;
-				});
-			} else if (action == "jump-left") {
-				button.addEventListener("click", function() {
-					lastPosY = Math.floor(player.y / 10);
-					player.yDest = player.y - 70 * 2;
-					player.xDest = player.x - 70 * 2;
-					player.body.velocity.y = vertical_speed;
-				});
-			} else if (action == "climb") {
-				button.addEventListener("click", function() {
-					if (onLader) {
-						player.animations.play("climb");
-						game.physics.arcade.gravity.y = 0;
-						player.yDest = player.y - 70 * 1;
-						player.body.velocity.y = vertical_speed * 0.2;
-						setTimeout(function() {
-							onLader = false;
-							player.scale.setTo(0.6);
-							player.body.velocity.x = horizontal_speed;
-							player.xDest = player.x + 70;
-							game.physics.arcade.gravity.y = 500;
-						}, 2500);
-					}
-				});
-			}
+			const actionData = button.dataset.action;
+			const actionList = document.querySelector(".action-list ol");
+			button.addEventListener("click", function() {
+				if (
+					["right", "left", "jump-right", "jump-left", "climb"].includes(
+						actionData
+					)
+				) {
+					actionsArray.push(actionData);
+					actionList.innerHTML += `<li class="action-list__item action-list__item--run">${actionData}</li>`;
+				} else {
+					console.log(actionsArray);
+				}
+			});
 		});
 	},
 	update: () => {
@@ -168,8 +141,8 @@ export const LevelOne = {
 	},
 	render: () => {
 		// Uncomment for DEBUG MODE on Player
-		game.debug.spriteInfo(player, 32, 32);
-		game.debug.bodyInfo(player, 32, 120);
+		// game.debug.spriteInfo(player, 32, 32);
+		// game.debug.bodyInfo(player, 32, 120);
 	},
 };
 
@@ -223,4 +196,44 @@ function endLevel() {
 	setTimeout(() => {
 		game.state.start("MainMenu");
 	}, 1000);
+}
+
+function moveRight() {
+	lastPosY = Math.floor(player.y / 10);
+	player.xDest = player.x + 70 * 12;
+}
+
+function moveLeft() {
+	lastPosY = Math.floor(player.y / 10);
+	player.xDest = player.x - 70 * 12;
+}
+
+function jumpRight() {
+	lastPosY = Math.floor(player.y / 10);
+	player.yDest = player.y - 70 * 2;
+	player.xDest = player.x + 70 * 2;
+	player.body.velocity.y = vertical_speed;
+}
+
+function jumpLeft() {
+	lastPosY = Math.floor(player.y / 10);
+	player.yDest = player.y - 70 * 2;
+	player.xDest = player.x - 70 * 2;
+	player.body.velocity.y = vertical_speed;
+}
+
+function climb() {
+	if (onLader) {
+		player.animations.play("climb");
+		game.physics.arcade.gravity.y = 0;
+		player.yDest = player.y - 70 * 1;
+		player.body.velocity.y = vertical_speed * 0.2;
+		setTimeout(function() {
+			onLader = false;
+			player.scale.setTo(0.6);
+			player.body.velocity.x = horizontal_speed;
+			player.xDest = player.x + 70;
+			game.physics.arcade.gravity.y = 500;
+		}, 2500);
+	}
 }

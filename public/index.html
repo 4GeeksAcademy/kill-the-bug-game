@@ -22,59 +22,67 @@
 
 		<!-- Game Canvas -->
 		<div id="game"></div>
-		<!-- Player's Input -->
-		<div class="action-selection">
-			<div class="action">
-				<span class="action__order"></span>
-				<button class="action__button" data-action="right">
-					<i class="fa fa-arrow-right" aria-hidden="true"></i> Go right</button>
-				<span class="action__counter"></span>
+		<!-- Actions related column -->
+		<div class="action-board">
+			<!-- Player's Input Buttons -->
+			<div class="action-selection">
+				<div class="action">
+					<span class="action__order"></span>
+					<button class="action__button" data-action="right">
+						<i class="fa fa-arrow-right" aria-hidden="true"></i> Go right</button>
+					<span class="action__counter"></span>
+				</div>
+				<div class="action">
+					<span class="action__order"></span>
+					<button class="action__button" data-action="left">
+						<i class="fa fa-arrow-left" aria-hidden="true"></i> Go left</button>
+					<span class="action__counter"></span>
+				</div>
+				<div class="action">
+					<span class="action__order"></span>
+					<button class="action__button" data-action="jump-right">
+						<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump right</button>
+					<span class="action__counter"></span>
+				</div>
+				<div class="action">
+					<span class="action__order"></span>
+					<button class="action__button" data-action="jump-left">
+						<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump left</button>
+					<span class="action__counter"></span>
+				</div>
+				<div class="action">
+					<span class="action__order"></span>
+					<button class="action__button" data-action="climb">
+						<i class="fa fa-arrow-up" aria-hidden="true"></i> Lader
+					</button>
+					<span class="action__counter"></span>
+				</div>
+				<div class="action">
+					<button class="action__button" data-action="play">
+						<i class="fa fa-paper-plane" aria-hidden="true"></i> Play
+					</button>
+				</div>
 			</div>
-			<div class="action">
-				<span class="action__order"></span>
-				<button class="action__button" data-action="left">
-					<i class="fa fa-arrow-left" aria-hidden="true"></i> Go left</button>
-				<span class="action__counter"></span>
-			</div>
-			<div class="action">
-				<span class="action__order"></span>
-				<button class="action__button" data-action="jump-right">
-					<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump right</button>
-				<span class="action__counter"></span>
-			</div>
-			<div class="action">
-				<span class="action__order"></span>
-				<button class="action__button" data-action="jump-left">
-					<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump left</button>
-				<span class="action__counter"></span>
-			</div>
-			<div class="action">
-				<span class="action__order"></span>
-				<!-- <button class="action__button" data-action="slide">Slide</button> -->
-				<span class="action__counter"></span>
-			</div>
-			<div class="action">
-				<span class="action__order"></span>
-				<button class="action__button" data-action="climb">
-					<i class="fa fa-arrow-up" aria-hidden="true"></i> Lader
-				</button>
-				<span class="action__counter"></span>
-			</div>
-			<div class="action">
-				<button class="action__button" data-action="run">
-					<i class="fa fa-paper-plane" aria-hidden="true"></i> Run
-				</button>
+			<!-- Player's Action Order List -->
+			<div class="action-list">
+				<h3 class="action-list__title">Action List</h3>
+				<ol>
+					<li class="action-list__item action-list__item--run-right"></li>
+					<li class="action-list__item action-list__item--jump-left"></li>
+					<li class="action-list__item action-list__item--climb"></li>
+				</ol>
 			</div>
 		</div>
-
 	</main>
 
 	<!-- Footer -->
 	<footer>
 		<p class="company">© Copyright -
-			<a href="//4geeksacademy.co" target="_blank">4Geeks Academy LLC</a> 2017</p>
+			<a href="//4geeksacademy.co" target="_blank">4Geeks Academy LLC</a> 2017
+		</p>
 		<p class="coder">Coded by
-			<a href="//manten-dev.me" target="_blank">Manten Dev</a>, a 4Geeks Academy Student </p>
+			<a href="//manten-dev.me" target="_blank">Manten Dev</a>, a 4Geeks Academy Student
+		</p>
 	</footer>
 	<!-- Bundled Scripts -->
 	<script type="text/javascript" src="./main-bundle.js"></script>
