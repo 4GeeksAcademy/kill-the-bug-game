@@ -14,7 +14,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				exclude: /(node_modules)/,
+				exclude: /(node_modules|bower_components)/,
 				use: {
 					loader: "babel-loader",
 					options: {
@@ -27,7 +27,15 @@ module.exports = {
 				exclude: /(node_modules|bower_components)/,
 				use: ExtractTextPlugin.extract({
 					fallback: "style-loader",
-					use: "css-loader",
+					use: [
+						{
+							loader: "css-loader",
+							options: {
+								importLoaders: 1,
+							},
+						},
+						"postcss-loader"
+					],
 				}),
 			}
 		],
