@@ -29,7 +29,7 @@ module.exports = {
 					fallback: "style-loader",
 					use: "css-loader",
 				}),
-			},
+			}
 		],
 	},
 	plugins: [
@@ -48,11 +48,11 @@ module.exports = {
 								bs.reload();
 							}
 						},
-					},
+					}
 				],
 			},
 			{}
-		),
+		)
 	],
 	devServer: {
 		contentBase: path.resolve(__dirname, "public/"),

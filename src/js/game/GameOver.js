@@ -43,7 +43,6 @@ export function gameOver() {
 	menuButton.addChild(menuText);
 
 	function restartGame() {
-		console.log("restart");
 		game.world.removeAll();
 		game.state.start(game.state.current);
 	}
