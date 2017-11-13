@@ -1,5 +1,5 @@
 // Importing Game Styles
-require("../../css/style.css");
+require("../../scss/style.scss");
 // Importing Phaser Plugin
 require("phaser-state-transition/dist/phaser-state-transition.min");
 // Importing Firebases

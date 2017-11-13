@@ -23,7 +23,7 @@ module.exports = {
 				},
 			},
 			{
-				test: /\.css$/,
+				test: /\.scss$/,
 				exclude: /(node_modules|bower_components)/,
 				use: ExtractTextPlugin.extract({
 					fallback: "style-loader",
@@ -34,7 +34,7 @@ module.exports = {
 								importLoaders: 1,
 							},
 						},
-						"postcss-loader"
+						"sass-loader"
 					],
 				}),
 			}
@@ -42,25 +42,22 @@ module.exports = {
 	},
 	plugins: [
 		new ExtractTextPlugin("./css/[name]-style.css"),
-		new BrowserSyncPlugin(
-			{
-				host: "localhost",
-				port: 3000,
-				proxy: "http://localhost:8080/",
-				files: [
-					{
-						match: ["**/*.html"],
-						fn: function(event) {
-							if (event === "change") {
-								const bs = require("browser-sync").get("bs-webpack-plugin");
-								bs.reload();
-							}
-						},
-					}
-				],
-			},
-			{}
-		)
+		new BrowserSyncPlugin({
+			host: "localhost",
+			port: 3000,
+			proxy: "http://localhost:8080/",
+			files: [
+				{
+					match: ["**/*.html"],
+					fn: function(event) {
+						if (event === "change") {
+							const bs = require("browser-sync").get("bs-webpack-plugin");
+							bs.reload();
+						}
+					},
+				}
+			],
+		})
 	],
 	devServer: {
 		contentBase: path.resolve(__dirname, "public/"),

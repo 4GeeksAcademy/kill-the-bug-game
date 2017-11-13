@@ -8,9 +8,7 @@ html,
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 20px;
-
   overflow: hidden;
-
   width: 100vw;
   height: 100vh;
 }
@@ -18,26 +16,21 @@ body {
 body {
   display: flex;
   flex-direction: column;
-
   align-items: center;
 }
 
 header {
   width: 100%;
   padding: 8px;
-
   text-align: center;
-
   background-color: #fff;
 }
 
 .container {
   display: flex;
-
   width: 1200px;
   margin: 0;
   padding: 10px 0 0 0;
-
   justify-content: space-around;
   flex: 1;
 }
@@ -46,11 +39,44 @@ header {
   flex: 1 0 800px;
 }
 
-.action-selection {
+.action-board,
+.action-selection,
+.action-list {
   display: flex;
   flex-direction: column;
 
   flex: 1 0 200px;
+}
+
+.action-list {
+  padding: 8px;
+
+  &__title {
+    margin-bottom: 10px;
+  }
+
+  &__item {
+    padding: 1px;
+    padding-bottom: 3px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    width: 80px;
+    text-align: center;
+    vertical-align: middle;
+
+    &--run {
+      background-color: #03a9f4;
+    }
+
+    &--jump {
+      background-color: #00bcd4;
+    }
+
+    &--climb {
+      background-color: #ff5722;
+    }
+  }
 }
 
 button {
@@ -58,52 +84,50 @@ button {
   width: 100%;
   text-align: left;
   padding: 10px;
-
   user-select: none;
   text-transform: uppercase;
-
   border: none;
   outline: none;
   transition: background-color 0.2s, color 0.2s, box-shadow 0.4s;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #25b454;
+    color: white;
+  }
+
+  &:last-child {
+    background: #1976d2;
+    color: #fff;
+    text-align: center;
+
+    &:hover {
+      box-shadow: 0 0 0 23px #2196f3 inset;
+    }
+  }
+
+  &[data-action="jump-right"] i {
+    transform: rotate(45deg);
+  }
+
+  &[data-action="jump-left"] i {
+    transform: rotate(-45deg);
+  }
 }
 
-button:hover {
-  cursor: pointer;
-  background-color: #25b454;
-  color: white;
-}
-
-button[data-action="jump-right"] i {
-  transform: rotate(45deg);
-}
-
-button[data-action="jump-left"] i {
-  transform: rotate(-45deg);
-}
-
-button:last-child {
-  background: #1976d2;
-  color: #fff;
-  text-align: center;
-}
-
-button:last-child:hover {
-  box-shadow: 0 0 0 23px #2196f3 inset;
+ol {
+  list-style: none;
 }
 
 a {
   text-decoration: none;
-
   color: inherit;
 }
 
 footer {
   display: flex;
-
   width: 100%;
   padding: 10px;
-
   background-color: #e3e3e3;
-
   justify-content: space-between;
 }
