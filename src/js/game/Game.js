@@ -20,3 +20,7 @@ game.state.add("LevelOne", LevelOne);
 
 // Start game
 game.state.start("Boot");
+
+document.querySelectorAll('button').forEach(function (button) {
+	button.setAttribute('disabled', true);
+});

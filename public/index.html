@@ -28,25 +28,25 @@
 			<div class="action-selection">
 				<div class="action">
 					<span class="action__order"></span>
-					<button class="action__button" data-action="right">
+					<button class="action__button" data-action="runRight">
 						<i class="fa fa-arrow-right" aria-hidden="true"></i> Go right</button>
 					<span class="action__counter"></span>
 				</div>
 				<div class="action">
 					<span class="action__order"></span>
-					<button class="action__button" data-action="left">
+					<button class="action__button" data-action="runLeft">
 						<i class="fa fa-arrow-left" aria-hidden="true"></i> Go left</button>
 					<span class="action__counter"></span>
 				</div>
 				<div class="action">
 					<span class="action__order"></span>
-					<button class="action__button" data-action="jump-right">
+					<button class="action__button" data-action="jumpRight">
 						<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump right</button>
 					<span class="action__counter"></span>
 				</div>
 				<div class="action">
 					<span class="action__order"></span>
-					<button class="action__button" data-action="jump-left">
+					<button class="action__button" data-action="jumpLeft">
 						<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump left</button>
 					<span class="action__counter"></span>
 				</div>
@@ -59,17 +59,18 @@
 				</div>
 				<div class="action">
 					<button class="action__button" data-action="play">
-						<i class="fa fa-paper-plane" aria-hidden="true"></i> Play
+						Play
 					</button>
 				</div>
 			</div>
 			<!-- Player's Action Order List -->
 			<div class="action-list">
-				<h3 class="action-list__title">Action List</h3>
+				<div class="action-list__header">
+					<h3 class="action-list__header__title">Action List</h3>
+					<button>Clear</button>
+				</div>
 				<ol>
-					<li class="action-list__item action-list__item--run-right"></li>
-					<li class="action-list__item action-list__item--jump-left"></li>
-					<li class="action-list__item action-list__item--climb"></li>
+					<!-- Action list goes here -->
 				</ol>
 			</div>
 		</div>

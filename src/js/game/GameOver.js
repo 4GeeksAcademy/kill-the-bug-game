@@ -43,11 +43,19 @@ export function gameOver() {
 	menuButton.addChild(menuText);
 
 	function restartGame() {
+		document.querySelector(".action-list ol").innerHTML = "";
+		document.querySelectorAll('button').forEach(function (button) {
+			button.removeAttribute('disabled');
+		});
 		game.world.removeAll();
 		game.state.start(game.state.current);
 	}
 
 	function backToMenu() {
+		document.querySelector(".action-list ol").innerHTML = "";
+		document.querySelectorAll('button').forEach(function (button) {
+			button.removeAttribute('disabled');
+		});
 		game.world.removeAll();
 		game.state.start("MainMenu");
 	}

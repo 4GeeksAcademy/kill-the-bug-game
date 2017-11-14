@@ -1,7 +1,12 @@
 import { game } from "./Game";
 
+
 export const MainMenu = {
 	create: () => {
+
+		document.querySelectorAll('button').forEach(function (button) {
+			button.setAttribute('disabled', true);
+		});
 		game.stage.backgroundColor = "#424242";
 		let geeksLogo = game.add.image(
 			game.world.width / 4,
