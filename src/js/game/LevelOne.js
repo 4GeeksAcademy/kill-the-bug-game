@@ -1,5 +1,6 @@
 import { game } from "./Game";
 import { gameOver } from "./gameOver";
+import { gofull, enableButtons, disableButtons } from "./scripts";
 
 // Global vars
 let gameData,
@@ -34,9 +35,7 @@ document.querySelectorAll(".action__button").forEach(function (button) {
 			actionList.innerHTML += `<li class="action-list__item action-list__item--${actionData}"></li>`;
 		} else {
 			if (actionsArray.length > 0) {
-				document.querySelectorAll('button').forEach(function (button) {
-					button.setAttribute('disabled', true);
-				});
+				disableButtons();
 				play();
 			}
 		}
@@ -47,15 +46,13 @@ document.querySelector('.action-list__header button').addEventListener('click', 
 
 clearActionsList();
 
-
 /* ==================================
 		LEVEL ONE !!!
 ===================================*/
 export const LevelOne = {
 	create: () => {
-		document.querySelectorAll('button').forEach(function (button) {
-			button.removeAttribute('disabled');
-		});
+		// game.input.onDown.add(gofull, game);
+		enableButtons();
 		playerAlive = true;
 
 		// Parse Config Data
@@ -228,9 +225,7 @@ function endLevel() {
 	setTimeout(() => {
 		clearInterval(playEndCheck);
 		clearActionsList();
-		document.querySelectorAll('button').forEach(function (button) {
-			button.removeAttribute('disabled');
-		});
+		disableButtons();
 		game.state.start("MainMenu");
 	}, 1000);
 }
@@ -281,7 +276,6 @@ function play() {
 		if (!playerIsMoving && !levelCompleted && actionsArray.length == 0) {
 			playerAlive = false;
 			clearInterval(playEndCheck);
-			actionsArray = [];
 			clearActionsList();
 		} else if (!playerIsMoving && levelCompleted) {
 			endLevel();

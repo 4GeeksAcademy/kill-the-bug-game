@@ -62,10 +62,9 @@ export const Preloader = {
 	update: () => {
 		// console.log(game.load);
 	},
-	loadUpdate: () => {},
+	loadUpdate: () => { },
 	create: () => {
-		// game.state.start("MainMenu");
-		game.state.start("LevelOne");
+		game.state.start("MainMenu");
 	},
 };
 

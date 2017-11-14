@@ -1,12 +1,11 @@
 import { game } from "./Game";
+import { gofull, disableButtons } from "./scripts";
 
 
 export const MainMenu = {
 	create: () => {
-
-		document.querySelectorAll('button').forEach(function (button) {
-			button.setAttribute('disabled', true);
-		});
+		// game.input.onDown.add(gofull, game);
+		disableButtons();
 		game.stage.backgroundColor = "#424242";
 		let geeksLogo = game.add.image(
 			game.world.width / 4,
