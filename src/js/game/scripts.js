@@ -20,3 +20,11 @@ export function disableButtons() {
 		button.setAttribute('disabled', true);
 	});
 }
+
+export function hideActionBoard() {
+	document.querySelector('.action-board').style.visibility = 'hidden';
+}
+
+export function showActionBoard() {
+	document.querySelector('.action-board').style.visibility = 'visible';
+}

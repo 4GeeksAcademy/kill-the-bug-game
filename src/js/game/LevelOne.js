@@ -1,6 +1,6 @@
 import { game } from "./Game";
 import { gameOver } from "./gameOver";
-import { enableButtons, disableButtons } from "./scripts";
+import { showActionBoard, disableButtons } from "./scripts";
 import { character } from './PlayerSelect';
 
 // Global vars
@@ -51,8 +51,7 @@ clearActionsList();
 ===================================*/
 export const LevelOne = {
 	create: () => {
-		// game.input.onDown.add(gofull, game);
-		enableButtons();
+		showActionBoard();
 		playerAlive = true;
 
 		// Parse Config Data

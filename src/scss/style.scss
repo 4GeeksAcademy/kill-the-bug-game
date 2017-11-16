@@ -51,6 +51,12 @@ header {
   flex: 1 0 300px;
 }
 
+.action-board {
+  visibility: hidden;
+  background-color: #e3f4fa;
+  height: 700px;
+}
+
 .action-selection {
   flex: 1 0 200px;
 }

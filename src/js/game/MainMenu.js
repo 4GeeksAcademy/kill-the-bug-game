@@ -1,10 +1,11 @@
 import { game } from "./Game";
-import { gofull } from "./scripts";
+import { hideActionBoard } from "./scripts";
 
 
 export const MainMenu = {
 	create: () => {
-		// game.input.onDown.add(gofull, game);
+		hideActionBoard();
+
 		game.stage.backgroundColor = "#424242";
 		let geeksLogo = game.add.image(
 			game.world.width / 4,
