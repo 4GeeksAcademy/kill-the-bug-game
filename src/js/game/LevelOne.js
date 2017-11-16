@@ -1,6 +1,7 @@
 import { game } from "./Game";
 import { gameOver } from "./gameOver";
-import { gofull, enableButtons, disableButtons } from "./scripts";
+import { enableButtons, disableButtons } from "./scripts";
+import { character } from './PlayerSelect';
 
 // Global vars
 let gameData,
@@ -11,8 +12,7 @@ let gameData,
 	player,
 	playerAlive,
 	playerIsMoving,
-	playEndCheck,
-	character;
+	playEndCheck;
 let levelCompleted = false;
 // Movement vars
 let actionsArray = [];
@@ -57,7 +57,6 @@ export const LevelOne = {
 
 		// Parse Config Data
 		gameData = game.cache.getJSON("gameData");
-		character = "boy";
 		// Background
 		game.stage.backgroundColor = "#5D4037";
 		let map = game.add.tilemap("level_1");
@@ -90,7 +89,7 @@ export const LevelOne = {
 		);
 
 		// PLAYER
-		player = game.add.sprite(70 / 2, 598.4, "character");
+		player = game.add.sprite(70 / 2, 598.4, character);
 		player.frame = 23;
 		player.animations.add("walk", [9, 10], 8, true);
 		player.animations.add("jump", [1], 4);

@@ -17,61 +17,107 @@
 </head>
 
 <body>
+	<!-- Player Creation - CSS Modal -->
+	<div class="modal-wrapper" id="popup">
+		<div class="popup-container">
+			<form action="post" class="player-register">
+				<label for="name">Name</label>
+				<input class="player-register__username" type="text" name="name" placeholder="How do you wish to be called?">
+				<label for="">Characters</label>
+				<div class="characters">
+					<label>
+						<input type="radio" name="characters" value="adventurer" checked />
+						<img src="./assets/players/adventurer.png">
+					</label>
+					<label>
+						<input type="radio" name="characters" value="boy" />
+						<img src="./assets/players/boy.png">
+					</label>
+					<label>
+						<input type="radio" name="characters" value="girl" />
+						<img src="./assets/players/girl.png">
+					</label>
+					<label>
+						<input type="radio" name="characters" value="soldier" />
+						<img src="./assets/players/soldier.png">
+					</label>
+					<label>
+						<input type="radio" name="characters" value="zombie" />
+						<img src="./assets/players/zombie.png">
+					</label>
+				</div>
+				<button type="submit">Create</button>
+			</form>
+			<a class="popup-close" href="#">X</a>
+		</div>
+	</div>
+
 	<!-- Container -->
 	<main class="container">
-
-		<!-- Game Canvas -->
-		<div id="game"></div>
-		<!-- Actions related column -->
-		<div class="action-board">
-			<!-- Player's Input Buttons -->
-			<div class="action-selection">
-				<div class="action">
-					<span class="action__order"></span>
-					<button class="action__button" data-action="runRight">
-						<i class="fa fa-arrow-right" aria-hidden="true"></i> Go right</button>
-					<span class="action__counter"></span>
-				</div>
-				<div class="action">
-					<span class="action__order"></span>
-					<button class="action__button" data-action="runLeft">
-						<i class="fa fa-arrow-left" aria-hidden="true"></i> Go left</button>
-					<span class="action__counter"></span>
-				</div>
-				<div class="action">
-					<span class="action__order"></span>
-					<button class="action__button" data-action="jumpRight">
-						<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump right</button>
-					<span class="action__counter"></span>
-				</div>
-				<div class="action">
-					<span class="action__order"></span>
-					<button class="action__button" data-action="jumpLeft">
-						<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump left</button>
-					<span class="action__counter"></span>
-				</div>
-				<div class="action">
-					<span class="action__order"></span>
-					<button class="action__button" data-action="climb">
-						<i class="fa fa-arrow-up" aria-hidden="true"></i> Lader
-					</button>
-					<span class="action__counter"></span>
-				</div>
-				<div class="action">
-					<button class="action__button" data-action="play">
-						Play
-					</button>
+		<div id="game-dashboard">
+			<!-- Game Canvas -->
+			<div id="game">
+				<div class="player-select">
+					<div class="player-select__header">
+						<h1>Player Select</h1>
+						<a href="#popup" class="popup-link">Register</a>
+					</div>
+					<ul class="player-select__list">
+						<!-- Players go here -->
+					</ul>
 				</div>
 			</div>
-			<!-- Player's Action Order List -->
-			<div class="action-list">
-				<div class="action-list__header">
-					<h3 class="action-list__header__title">Action List</h3>
-					<button>Clear</button>
+			<!-- Actions related column -->
+			<div class="action-board">
+				<!-- Player's Input Buttons -->
+				<div class="action-selection">
+					<div class="action">
+						<span class="action__order"></span>
+						<button class="action__button" data-action="runRight">
+							<i class="fa fa-arrow-right" aria-hidden="true"></i> Go right</button>
+						<span class="action__counter"></span>
+					</div>
+					<div class="action">
+						<span class="action__order"></span>
+						<button class="action__button" data-action="runLeft">
+							<i class="fa fa-arrow-left" aria-hidden="true"></i> Go left</button>
+						<span class="action__counter"></span>
+					</div>
+					<div class="action">
+						<span class="action__order"></span>
+						<button class="action__button" data-action="jumpRight">
+							<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump right</button>
+						<span class="action__counter"></span>
+					</div>
+					<div class="action">
+						<span class="action__order"></span>
+						<button class="action__button" data-action="jumpLeft">
+							<i class="fa fa-arrow-up" aria-hidden="true"></i> Jump left</button>
+						<span class="action__counter"></span>
+					</div>
+					<div class="action">
+						<span class="action__order"></span>
+						<button class="action__button" data-action="climb">
+							<i class="fa fa-arrow-up" aria-hidden="true"></i> Lader
+						</button>
+						<span class="action__counter"></span>
+					</div>
+					<div class="action">
+						<button class="action__button" data-action="play">
+							Play
+						</button>
+					</div>
 				</div>
-				<ol>
-					<!-- Action list goes here -->
-				</ol>
+				<!-- Player's Action Order List -->
+				<div class="action-list">
+					<div class="action-list__header">
+						<h3 class="action-list__header__title">Action List</h3>
+						<button>Clear</button>
+					</div>
+					<ol>
+						<!-- Action list goes here -->
+					</ol>
+				</div>
 			</div>
 		</div>
 	</main>

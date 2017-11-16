@@ -4,6 +4,7 @@
   padding: 0;
 }
 
+
 html,
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -26,7 +27,8 @@ header {
   background-color: #fff;
 }
 
-.container {
+.container,
+#game-dashboard {
   display: flex;
   width: 1200px;
   margin: 0;
@@ -36,7 +38,9 @@ header {
 }
 
 #game {
-  flex: 1 0 800px;
+  position: relative;
+  flex: 1 0 840;
+  overflow-x: hidden;
 }
 
 .action-board,
@@ -49,6 +53,99 @@ header {
 
 .action-selection {
   flex: 1 0 200px;
+}
+
+.player-select {
+  display: none;
+  position: absolute;
+  width: 100%;
+  margin-top: 50px;
+  color: #FFF;
+  transition: visibility 3s;
+  overflow: hidden;
+
+  &__header {
+    padding: 0 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    h1 {
+      flex: 1;
+      margin-bottom: 10px;
+    }
+    .popup-link {
+      font-size: 1em;
+      text-align: center;
+      opacity: 1;
+      background-color: #ff5722;
+      color: white;
+      width: 100px;
+      height: 40px;
+      padding: 5px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+      &:hover {
+        box-shadow: 0 0 5px 1px #434343 inset;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    width: 102%;
+    height: 585px;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: #e3e3e3;
+    padding: 10px;
+
+    &__item {
+      position: relative;
+      padding: 0 5px 5px 5px;
+      border: 1px solid #eee;
+      background-color: #F2f2f2;
+      color: #434343;
+      align-self: center;
+      list-style: none;
+      width: 80%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      transition: all 0.1s ease-in;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: -5px 0 2px -2px #1976d2 inset;
+        color: #2196f3;
+        width: 81%;
+      }
+
+      .item__play-data {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+      }
+
+      .item__username {
+        flex: 1;
+        align-self: center;
+        text-align: center;
+      }
+
+      .item__character {
+        flex: 1;
+        padding-left: 30px;
+        img {
+          width: 70px;
+        }
+      }
+    }
+  }
 }
 
 button {
@@ -190,4 +287,104 @@ footer {
   padding: 10px;
   background-color: #e3e3e3;
   justify-content: space-between;
+}
+
+#popup {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  margin-top: -100vh;
+
+  &:target {
+    visibility:visible;
+    opacity: 1;
+    background-color: rgba(0,0,0,0.8);
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:0;
+    z-index: 999;
+    transition:all 1s;
+  }
+}
+
+.popup-container {
+  position: relative;
+  margin:7% auto;
+  padding:30px 50px;
+  background-color: #fafafa;
+  color:#333;
+  border-radius: 3px;
+  width:50%;
+  height: 380px;
+
+  .popup-close {
+    position: absolute;
+    top:3px;
+    right:3px;
+    background-color: #333;
+    padding:7px 10px;
+    font-size: 20px;
+    text-decoration: none;
+    line-height: 1;
+    color:#fff;
+    border-radius: 50%;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+
+  input[type="text"] {
+    padding: 8px;
+    border: 1px solid #eee;
+    margin: 10px 0 30px 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: #636363;
+    font-weight: bold;
+
+    &:focus {
+      border-color: #1976d2;
+    }
+  }
+
+  .characters {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    label > input{
+      visibility: hidden;
+      position: absolute;
+
+      &:checked + img{
+        padding-bottom: 3px;
+        border-bottom: 2px solid #1976d2;
+      }
+    }
+    label > input + img{
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+  }
+
+  button[type="submit"] {
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    margin-top: 20px;
+    border: 1px solid #eee;
+    color: #FFF;
+    padding: 8px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    background-color: #1976d2;
+
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0 0 0 40px #2196f3 inset;
+    }
+  }
 }

@@ -7,28 +7,33 @@ var fbConfig = {
 };
 firebase.initializeApp(fbConfig);
 
-function writePlayerData(name) {
+export function writePlayerData(name, character, level = 0) {
 	firebase
 		.database()
 		.ref("players/")
 		.push({
 			username: name,
 			created_at: Date.now(),
-			character: "boy",
-			current_level: 1,
+			character: character,
+			current_level: level,
 		});
 }
 
-const playersRef = firebase.database().ref("players/");
-let playersArr = [];
 
-playersRef.once("value", snapshot => {
-	// Add every item in an array
-	snapshot.forEach(childSnapshot => {
-		playersArr.push(childSnapshot.val());
+export function getPlayers() {
+	const playersRef = firebase.database().ref("players/");
+	let playersArr = [];
+
+	playersRef.once("value", snapshot => {
+		// Add every item in an array
+		snapshot.forEach(childSnapshot => {
+			playersArr.push(childSnapshot.val());
+		});
+		// Sort array by created_at
+		playersArr.sort((first, second) => {
+			return first.created_at + second.created_at;
+		});
 	});
-	// Sort array by created_at
-	playersArr.sort((first, second) => {
-		first.created_at > second.created_at ? 1 : -1;
-	});
-});
+	return playersArr;
+}
+

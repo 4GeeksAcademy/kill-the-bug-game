@@ -1,15 +1,13 @@
 import { game } from "./Game";
-// import { playersArr } from "../lib/firebase";
+import { getPlayers } from '../lib/firebase';
+
+export let playersArr = getPlayers();
 let text;
 
 export const Preloader = {
 	preload: () => {
 		// Preloader bar
-		game.preloadBar = game.add.sprite(
-			game.world.centerX,
-			game.world.centerY,
-			"preloadBar"
-		);
+		game.preloadBar = game.add.sprite(game.world.centerX, game.world.centerY, "preloadBar");
 		game.preloadBar.anchor.setTo(0.5);
 		game.time.advancedTiming = true;
 		game.load.setPreloadSprite(game.preloadBar);
@@ -22,32 +20,35 @@ export const Preloader = {
 		// GAME ASSETS
 		// UI Sprites
 		game.load.spritesheet(
-			"start_button",
-			"assets/ui/green_spritesheet.png",
-			190,
-			49
+			"start_button", "assets/ui/green_spritesheet.png",
+			190, 49
 		);
 		game.load.spritesheet(
-			"restart_button",
-			"assets/ui/red_spritesheet.png",
-			190,
-			45
+			"restart_button", "assets/ui/red_spritesheet.png",
+			190, 45
 		);
 		// Tilesets
 		game.load.tilemap(
-			"level_1",
-			"assets/maps/level_1_tilemap.json",
-			null,
-			Phaser.Tilemap.TILED_JSON
+			"level_1", "assets/maps/level_1_tilemap.json",
+			null, Phaser.Tilemap.TILED_JSON
 		);
 		game.load.image("tiles", "assets/tiles/spritesheet.png");
 		// Character
 		game.load.spritesheet(
-			"character",
-			"assets/players/adventurer_spritesheet.png",
-			80,
-			110
-		);
+			"adventurer", "assets/players/adventurer_spritesheet.png",
+			80, 110);
+		game.load.spritesheet(
+			"boy", "assets/players/boy_spritesheet.png",
+			80, 110);
+		game.load.spritesheet(
+			"girl", "assets/players/girl_spritesheet.png",
+			80, 110);
+		game.load.spritesheet(
+			"soldier", "assets/players/soldier_spritesheet.png",
+			80, 110);
+		game.load.spritesheet(
+			"zombie", "assets/players/zombie_spritesheet.png",
+			80, 110);
 
 		// Loading text
 		text = game.add.text(0, 0, "Loading " + game.load.progress, {
@@ -68,8 +69,8 @@ export const Preloader = {
 	},
 };
 
-function loading(progress, cacheKey, success, totalLoaded, totalFiles) {
+function loading(progress) {
 	text.setText(
-		"Loading: " + progress + "% - " + totalLoaded + " out of " + totalFiles
+		"Loading... " + progress + "%"
 	);
 }
