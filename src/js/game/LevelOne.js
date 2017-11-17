@@ -1,6 +1,6 @@
 import { game } from "./Game";
 import { gameOver } from "./gameOver";
-import { showActionBoard, disableButtons } from "./scripts";
+import { showActionBoard, disableButtons, enableButtons } from "./scripts";
 import { character } from './PlayerSelect';
 
 // Global vars
@@ -44,14 +44,14 @@ document.querySelectorAll(".action__button").forEach(function (button) {
 
 document.querySelector('.action-list__header button').addEventListener('click', clearActionsList);
 
-clearActionsList();
-
 /* ==================================
 		LEVEL ONE !!!
 ===================================*/
 export const LevelOne = {
 	create: () => {
 		showActionBoard();
+		clearActionsList();
+		enableButtons();
 		playerAlive = true;
 
 		// Parse Config Data
@@ -128,6 +128,10 @@ export const LevelOne = {
 			onLader = true;
 		} else {
 			onLader = false;
+		}
+
+		if (player.body.blocked.down) {
+			lastPosY = Math.floor(player.y / 10);
 		}
 
 		/*
