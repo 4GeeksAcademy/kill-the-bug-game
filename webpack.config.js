@@ -37,6 +37,21 @@ module.exports = {
 						"sass-loader"
 					],
 				}),
+			},
+			{
+				test: /\.css$/,
+				loader: "style-loader!css-loader",
+			},
+			{
+				test: /\.(png|jpg|gif)$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							outputPath: 'img/',
+						},
+					}
+				],
 			}
 		],
 	},
@@ -49,7 +64,7 @@ module.exports = {
 			files: [
 				{
 					match: ["**/*.html"],
-					fn: function(event) {
+					fn: function (event) {
 						if (event === "change") {
 							const bs = require("browser-sync").get("bs-webpack-plugin");
 							bs.reload();

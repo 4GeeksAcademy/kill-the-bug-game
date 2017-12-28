@@ -2,6 +2,7 @@ import { game } from "./Game";
 import { getPlayers } from '../lib/firebase';
 
 export let playersArr = getPlayers();
+export let config = '';
 let text;
 
 export const Preloader = {
@@ -28,11 +29,15 @@ export const Preloader = {
 			190, 45
 		);
 		// Tilesets
+		game.load.image("tiles", "assets/tiles/spritesheet.png");
 		game.load.tilemap(
 			"level_1", "assets/maps/level_1_tilemap.json",
 			null, Phaser.Tilemap.TILED_JSON
 		);
-		game.load.image("tiles", "assets/tiles/spritesheet.png");
+		game.load.tilemap(
+			"level_2", "assets/maps/level_2_tilemap.json",
+			null, Phaser.Tilemap.TILED_JSON
+		);
 		// Character
 		game.load.spritesheet(
 			"adventurer", "assets/players/adventurer_spritesheet.png",
@@ -49,6 +54,9 @@ export const Preloader = {
 		game.load.spritesheet(
 			"zombie", "assets/players/zombie_spritesheet.png",
 			80, 110);
+		// game.load.spritesheet(
+		// 	"batman", "assets/players/batman_spritesheet.png",
+		// 	143, 192);
 
 		// Loading text
 		text = game.add.text(0, 0, "Loading " + game.load.progress, {
@@ -65,6 +73,7 @@ export const Preloader = {
 	},
 	loadUpdate: () => { },
 	create: () => {
+		config = game.cache.getJSON('gameData');
 		game.state.start("MainMenu");
 	},
 };

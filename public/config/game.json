@@ -1,4 +1,15 @@
 {
-  "TitleState": "MainMenu",
-  "Levels": ["LevelOne"]
+  "title": "Rigoberto: Not a Superman Game",
+  "levels": {
+    "LevelOne": {
+      "name": "Cave #1",
+      "map": "cave_map",
+      "thumbnailFormat": "png"
+    },
+    "LevelTwo": {
+      "name": "Cave #2",
+      "map": "cave_map_2",
+      "thumbnailFormat": "png"
+    }
+  }
 }

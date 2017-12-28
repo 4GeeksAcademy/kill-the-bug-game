@@ -6,7 +6,7 @@ export const Boot = {
 		game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.scale.PageAlignHorizontally = true;
 		game.scale.PageAlignVertically = true;
-		game.stage.backgroundColor = "#424242";
+		game.stage.backgroundColor = "#2980b9";
 	},
 	preload: () => {
 		game.load.image("preloadBar", "assets/tiles/preloadBar.png");

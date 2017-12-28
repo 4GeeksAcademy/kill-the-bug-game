@@ -23,12 +23,13 @@ let levelCompleted = false;
 const horizontal_speed = 150;
 const vertical_speed = -280;
 let lastPosY = '';
+
 let actionsArray = [];
 
 /* ==================================
 		LEVEL ONE !!!
 ===================================*/
-export const LevelOne = {
+export const LevelTwo = {
 	create: () => {
 		// Remove event listeners from action buttons
 		// ----------------------------------------------------------------
@@ -57,39 +58,28 @@ export const LevelOne = {
 		});
 		// ----------------------------------------------------------------
 
-		document.querySelector('.action-list__header button').addEventListener('click', clearActionsList);
-
 		showActionBoard();
 		clearActionsList();
 		enableButtons();
 		playerAlive = true;
 
-		// World
+		// Background
 		//----------------------------------------------------------
 		game.stage.backgroundColor = "#5D4037";
-		let map = game.add.tilemap("level_1");
+		let map = game.add.tilemap("level_2");
 		map.addTilesetImage("spritesheet", "tiles"); // (name in JSON, name in preloader)
 		worldLayer = map.createLayer("World Map Layer");
 		endGameLayer = map.createLayer("Exit Layer");
 		laderLayer = map.createLayer("Lader Layer");
+
 		map.setCollision(
-			[104, 153, 133, 105, 152, 81, 129, 145],
+			[102, 104, 126, 101, 149, 18, 153, 133, 105, 152, 81, 129, 145],
 			true,
 			"World Map Layer"
 		);
 		map.setCollision(65, false, "Exit Layer");
 		map.setCollision([20, 32], false, "Lader Layer");
 		worldLayer.resizeWorld();
-		//----------------------------------------------------------
-
-		// Check collision for end game
-		//----------------------------------------------------------
-		map.setTileIndexCallback(
-			65,
-			() => { levelCompleted = true; player.frame = 7; },
-			game,
-			endGameLayer
-		);
 		//----------------------------------------------------------
 
 		// Check lader overlap
@@ -107,21 +97,35 @@ export const LevelOne = {
 		map.setTileIndexCallback(
 			20,
 			() => {
-				// setTimeout(function () {
-				onLader = false;
-				player.scale.setTo(0.6);
-				player.body.velocity.x = horizontal_speed;
-				player.xDest = player.xDest + 10;
-				game.physics.arcade.gravity.y = 500;
-				// }, 1300);
+				setTimeout(function () {
+					onLader = false;
+					player.scale.setTo(0, -0.6);
+					player.body.velocity.x = -horizontal_speed - 30;
+					player.xDest = player.x;
+					game.physics.arcade.gravity.y = 500;
+				}, 1300);
 			},
 			game,
 			laderLayer
 		);
+		//----------------------------------------------------------
+
+		// Check collision for end game
+		//----------------------------------------------------------
+		map.setTileIndexCallback(
+			65,
+			() => {
+				levelCompleted = true;
+				player.frame = 7;
+			},
+			game,
+			endGameLayer
+		);
+		//----------------------------------------------------------
 
 		// PLAYER
 		//----------------------------------------------------------
-		player = game.add.sprite(70 / 2, 598.4, character);
+		player = game.add.sprite(70 * 2 - 70 / 2, 177, character);
 		player.frame = 23;
 		player.animations.add("walk", [9, 10], 8, true);
 		player.animations.add("jump", [1], 4);
@@ -132,48 +136,84 @@ export const LevelOne = {
 		lastPosY = Math.floor(player.y / 10);
 		//----------------------------------------------------------
 
+		// Lava Layer used to cover the player
+		//----------------------------------------------------------
+		map.createLayer("Lava Layer");
+		//----------------------------------------------------------
+
 		// Player scales and center anchor
+		//----------------------------------------------------------
 		player.scale.setTo(0.6);
 		player.anchor.setTo(0.5);
+		//----------------------------------------------------------
 
 		// Gravity and Physics
+		//----------------------------------------------------------
 		game.physics.arcade.enable(player);
 		game.physics.arcade.gravity.y = 500;
 		player.body.collideWorldBounds = true;
+		//----------------------------------------------------------
 
 		// Camera
+		//----------------------------------------------------------
 		game.camera.follow(player);
+		//----------------------------------------------------------
 	},
 	update: () => {
+		console.log(player.xDest);
 		// COLLISION
+		//----------------------------------------------------------
 		game.physics.arcade.collide(player, worldLayer);
 		game.physics.arcade.collide(player, endGameLayer);
+		//----------------------------------------------------------
+
 		// player dies if falls 3 floors
-		if (Math.abs(lastPosY - Math.floor(player.y / 10)) >= 21) {
+		//----------------------------------------------------------
+		heightDiff = Math.abs(lastPosY - Math.floor(player.y / 10));
+		if (Math.abs(lastPosY < Math.floor(player.y / 10)) && heightDiff >= 21) {
 			playerAlive = false;
 		}
+		//----------------------------------------------------------
+
 		// Continue game if player is not dead
+		//----------------------------------------------------------
 		if (!playerAlive) {
 			player.animations.play("dead");
 			clearInterval(playEndCheck);
 			gameOver();
 		}
+		//----------------------------------------------------------
+
+		// If level completed, don't move
+		//----------------------------------------------------------
+		if (levelCompleted) {
+			player.body.velocity.setTo(0);
+		}
+		//----------------------------------------------------------
+
+
 		// If player is on Lader, climb action is possible
+		//----------------------------------------------------------
 		if (game.physics.arcade.collide(player, laderLayer)) {
 			onLader = true;
 		} else {
 			onLader = false;
 		}
+		//----------------------------------------------------------
 
+		// Update current height when on floor
+		//----------------------------------------------------------
 		if (player.body.blocked.down) {
 			lastPosY = Math.floor(player.y / 10);
 		}
+		//----------------------------------------------------------
 
 		/*
 			Animation play conditions
 			if player is alive
-		*/
-		if (playerAlive) {
+    */
+		//----------------------------------------------------------
+		if (playerAlive || !levelCompleted) {
 			if (player.body.velocity.x == 0 && player.body.blocked.down) {
 				// Idle if x velocity is 0 and on floor
 				player.frame = 23;
@@ -192,14 +232,18 @@ export const LevelOne = {
 				*/
 				player.animations.play("jump");
 			}
+			//----------------------------------------------------------
+
 			// Constatly check for movement
+			//----------------------------------------------------------
 			movePlayer();
+			//----------------------------------------------------------
 		}
 	},
 	render: () => {
 		// Uncomment to show DEBUG MODE on Player
-		// game.debug.spriteInfo(player, 32, 32);
-		// game.debug.bodyInfo(player, 32, 120);
+		game.debug.spriteInfo(player, 32, 32);
+		game.debug.bodyInfo(player, 32, 120);
 	},
 };
 
@@ -207,6 +251,7 @@ export const LevelOne = {
 	Check player current position and destination
 	and move it accordingly
 */
+//----------------------------------------------------------
 function movePlayer() {
 	game.physics.arcade.collide(player, laderLayer);
 	const currentPosX = Math.floor(player.x / 10);
@@ -257,14 +302,17 @@ function movePlayer() {
 		}
 	}
 }
+//----------------------------------------------------------
 
+// Movements
+//----------------------------------------------------------
 function endLevel() {
 	setTimeout(() => {
 		game.world.removeAll();
 		clearInterval(playEndCheck);
 		clearActionsList();
-		enableButtons();
-		game.state.start("LevelTwo", Phaser.Plugin.StateTransition.Out.SlideRight);
+		disableButtons();
+		game.state.start("MainMenu");
 	}, 1000);
 }
 
@@ -301,7 +349,10 @@ function climb() {
 		player.body.velocity.y = vertical_speed * 0.2;
 	}
 }
+//----------------------------------------------------------
 
+// Play commands
+//----------------------------------------------------------
 function play() {
 	playEndCheck = setInterval(() => {
 		if (!playerIsMoving && !levelCompleted && actionsArray.length == 0) {
@@ -324,9 +375,13 @@ function play() {
 		}, 500);
 	}
 }
+//----------------------------------------------------------
 
+// Clears command area
+//----------------------------------------------------------
 function clearActionsList() {
 	const actionList = document.querySelector(".action-list ol");
 	actionList.innerHTML = "";
 	actionsArray = [];
 }
+//----------------------------------------------------------

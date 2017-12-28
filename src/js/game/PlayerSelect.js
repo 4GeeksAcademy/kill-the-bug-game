@@ -1,6 +1,7 @@
 import { game } from "./Game";
 import { writePlayerData } from "../lib/firebase";
 import { playersArr } from './Preloader';
+import { chosenMap } from './MapSelect';
 
 export let character = '';
 export let playerUsername = '';
@@ -11,8 +12,7 @@ export const PlayerSelect = {
 		document.querySelector('.player-select').style.display = 'block';
 
 		let playerListDOM = document.querySelector('.player-select__list');
-		playerListDOM.innerHTML = `
-			<li class="player-select__list__item item"">Loading...</li>`;
+		playerListDOM.innerHTML = `<li class="player-select__list__item item"">Loading...</li>`;
 
 		setTimeout(() => {
 			playerListDOM.innerHTML = "";
@@ -35,6 +35,9 @@ export const PlayerSelect = {
 				item.addEventListener('click', function () {
 					character = this.dataset.character;
 					playerUsername = this.dataset.username;
+					document.querySelector('.action-board').style.display = 'flex';
+					document.querySelector('.action-selection').style.display = 'flex';
+					document.querySelector('.action-list').style.display = 'flex';
 					startGame();
 				});
 			});
@@ -45,12 +48,14 @@ export const PlayerSelect = {
 			let username = document.querySelector('.player-register__username').value;
 			let avatar = document.querySelector('input[type="radio"]:checked').value;
 			writePlayerData(username, avatar);
-			window.location.href = "/";
+			character = avatar;
+			playerUsername = username;
+			startGame();
 		});
 	},
 };
 
 function startGame() {
 	document.querySelector('.player-select').style.display = 'none';
-	game.state.start("LevelOne", Phaser.Plugin.StateTransition.Out.ScaleUp);
+	game.state.start(chosenMap, Phaser.Plugin.StateTransition.Out.ScaleUp);
 }

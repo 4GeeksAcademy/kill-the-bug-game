@@ -6,7 +6,7 @@ export const MainMenu = {
 	create: () => {
 		hideActionBoard();
 
-		game.stage.backgroundColor = "#424242";
+		game.stage.backgroundColor = "#2980b9";
 		let geeksLogo = game.add.image(
 			game.world.width / 4,
 			game.world.height - 100,
@@ -23,7 +23,7 @@ export const MainMenu = {
 		mantenLogo.anchor.set(0.5);
 		let button = game.add.button(
 			game.world.width / 2, game.world.height / 2,
-			"start_button", selectPlayer, this,
+			"start_button", selectMap, this,
 			0, 1, 1
 		);
 		button.anchor.set(0.5);
@@ -39,6 +39,6 @@ export const MainMenu = {
 };
 
 
-function selectPlayer() {
-	game.state.start("PlayerSelect", Phaser.Plugin.StateTransition.Out.SlideRight);
+function selectMap() {
+	game.state.start("MapSelect", Phaser.Plugin.StateTransition.Out.SlideRight);
 }
