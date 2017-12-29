@@ -1,7 +1,8 @@
 import { game } from "./Game";
 import { gameOver } from "./gameOver";
 import { showActionBoard, disableButtons, enableButtons } from "./scripts";
-import { character } from './PlayerSelect';
+import { character, moves, playerTimestampId } from './PlayerSelect';
+import { setPlayerPlayed } from '../lib/firebase';
 
 /*
 	Create event listener for each action button.
@@ -13,7 +14,6 @@ let worldLayer = '',
 	endGameLayer = '',
 	laderLayer = '',
 	onLader = '',
-	heightDiff = '',
 	player = '',
 	playerAlive = '',
 	playerIsMoving = '',
@@ -24,12 +24,14 @@ const horizontal_speed = 150;
 const vertical_speed = -280;
 let lastPosY = '';
 let actionsArray = [];
+let button;
 
 /* ==================================
 		LEVEL ONE !!!
 ===================================*/
 export const LevelOne = {
 	create: () => {
+
 		// Remove event listeners from action buttons
 		// ----------------------------------------------------------------
 		let actionArea = document.querySelector('.action-selection');
@@ -80,6 +82,7 @@ export const LevelOne = {
 		map.setCollision(65, false, "Exit Layer");
 		map.setCollision([20, 32], false, "Lader Layer");
 		worldLayer.resizeWorld();
+
 		//----------------------------------------------------------
 
 		// Check collision for end game
@@ -107,13 +110,12 @@ export const LevelOne = {
 		map.setTileIndexCallback(
 			20,
 			() => {
-				// setTimeout(function () {
+				player.y += 1;
 				onLader = false;
 				player.scale.setTo(0.6);
 				player.body.velocity.x = horizontal_speed;
-				player.xDest = player.xDest + 10;
+				player.xDest = player.xDest + 15;
 				game.physics.arcade.gravity.y = 500;
-				// }, 1300);
 			},
 			game,
 			laderLayer
@@ -143,6 +145,28 @@ export const LevelOne = {
 
 		// Camera
 		game.camera.follow(player);
+
+		// ACTIONS - MOVES
+		//----------------------------------------------------------
+		actionsArray = moves.length > 0 ? [...moves] : [];
+		if (actionsArray.length > 0) {
+			button = game.add.button(
+				game.world.width / 2, game.world.height / 2,
+				"start_button", play, this,
+				0, 1, 1
+			);
+			button.anchor.set(0.5);
+			let text = game.add.text(0, 0, "START", {
+				font: "24px Space Mono",
+				fill: "#FFFFFF",
+				align: "center",
+			});
+			text.anchor.set(0.5);
+			button.addChild(text);
+			game.input.activePointer.capture = true;
+			game.world.bringToTop(button);
+		}
+		//----------------------------------------------------------
 	},
 	update: () => {
 		// COLLISION
@@ -156,6 +180,7 @@ export const LevelOne = {
 		if (!playerAlive) {
 			player.animations.play("dead");
 			clearInterval(playEndCheck);
+			setPlayerPlayed(playerTimestampId);
 			gameOver();
 		}
 		// If player is on Lader, climb action is possible
@@ -207,6 +232,7 @@ export const LevelOne = {
 	Check player current position and destination
 	and move it accordingly
 */
+//----------------------------------------------------------
 function movePlayer() {
 	game.physics.arcade.collide(player, laderLayer);
 	const currentPosX = Math.floor(player.x / 10);
@@ -257,14 +283,18 @@ function movePlayer() {
 		}
 	}
 }
+//----------------------------------------------------------
 
+// Movements
+//----------------------------------------------------------
 function endLevel() {
 	setTimeout(() => {
 		game.world.removeAll();
+		setPlayerPlayed(playerTimestampId);
 		clearInterval(playEndCheck);
 		clearActionsList();
 		enableButtons();
-		game.state.start("LevelTwo", Phaser.Plugin.StateTransition.Out.SlideRight);
+		game.state.start("MainMenu", Phaser.Plugin.StateTransition.Out.SlideRight);
 	}, 1000);
 }
 
@@ -301,8 +331,12 @@ function climb() {
 		player.body.velocity.y = vertical_speed * 0.2;
 	}
 }
+//----------------------------------------------------------
 
+// Play commands
+//----------------------------------------------------------
 function play() {
+	button.destroy();
 	playEndCheck = setInterval(() => {
 		if (!playerIsMoving && !levelCompleted && actionsArray.length == 0) {
 			playerAlive = false;
@@ -315,6 +349,7 @@ function play() {
 
 	if (actionsArray.length != 0) {
 		if (!playerIsMoving) {
+			console.log(actionsArray[0]);
 			eval(actionsArray[0] + "()");
 			actionsArray.shift();
 		}
@@ -324,6 +359,7 @@ function play() {
 		}, 500);
 	}
 }
+//----------------------------------------------------------
 
 function clearActionsList() {
 	const actionList = document.querySelector(".action-list ol");

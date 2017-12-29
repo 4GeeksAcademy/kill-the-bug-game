@@ -23,7 +23,7 @@ export const MapSelect = {
 							<img src="assets/maps/${fileName}.${fileFormat}">
 						</a>
 						<figcaption>${mapName}</figcaption>
-						<button data-map="${key}">Select</button>
+						<button data-map="${key}">Play</button>
 					</figure>
 				`;
 			}

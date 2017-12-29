@@ -1,7 +1,6 @@
 import { game } from "./Game";
 import { hideActionBoard } from "./scripts";
 
-
 export const MainMenu = {
 	create: () => {
 		hideActionBoard();

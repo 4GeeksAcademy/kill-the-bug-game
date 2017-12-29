@@ -126,7 +126,7 @@ header {
       justify-content: space-around;
       transition: all 0.1s ease-in;
 
-      &:hover {
+      &:hover:not(.not_found) {
         cursor: pointer;
         box-shadow: -5px 0 2px -2px #1976d2 inset;
         color: #2196f3;

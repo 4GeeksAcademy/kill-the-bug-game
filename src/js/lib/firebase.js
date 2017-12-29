@@ -7,7 +7,7 @@ var fbConfig = {
 };
 firebase.initializeApp(fbConfig);
 
-export function writePlayerData(name, character, level = 0) {
+export function writePlayerData(name, character) {
 	firebase
 		.database()
 		.ref("players/")
@@ -15,10 +15,25 @@ export function writePlayerData(name, character, level = 0) {
 			username: name,
 			created_at: Date.now(),
 			character: character,
-			current_level: level,
+			played: false,
+			moves: [
+				'jumpRight', 'jumpRight',
+				'runRight', 'runLeft',
+				'runRight', 'climb', 'jumpLeft'
+			],
 		});
 }
 
+// LevelOne
+// 'runRight', 'jumpRight', 'jumpLeft',
+// 'runLeft', 'jumpLeft', 'jumpLeft',
+// 'runLeft', 'climb', 'jumpRight',
+// 'jumpRight', 'jumpRight', 'jumpRight', 'runRight'
+
+// LeveñTwo
+// 'jumpRight', 'jumpRight',
+// 'runRight', 'runLeft',
+// 'runRight', 'climb', 'jumpLeft'
 
 export function getPlayers() {
 	const playersRef = firebase.database().ref("players/");
@@ -27,7 +42,11 @@ export function getPlayers() {
 	playersRef.once("value", snapshot => {
 		// Add every item in an array
 		snapshot.forEach(childSnapshot => {
-			playersArr.push(childSnapshot.val());
+			if (childSnapshot.val().played) {
+				childSnapshot.ref.remove();
+			} else {
+				playersArr.push(childSnapshot.val());
+			}
 		});
 		// Sort array by created_at
 		playersArr.sort((first, second) => {
@@ -37,3 +56,13 @@ export function getPlayers() {
 	return playersArr;
 }
 
+export function setPlayerPlayed(id) {
+	const playersRef = firebase.database().ref("players/");
+	playersRef.orderByChild('created_at').equalTo(id).on("value", function (childSnapshot) {
+		childSnapshot.forEach(function (data) {
+			firebase.database().ref('players/' + data.key).update({
+				played: true,
+			});
+		});
+	});
+}

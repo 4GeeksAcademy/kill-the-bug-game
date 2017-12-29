@@ -1,7 +1,5 @@
 import { game } from "./Game";
-import { getPlayers } from '../lib/firebase';
 
-export let playersArr = getPlayers();
 export let config = '';
 let text;
 

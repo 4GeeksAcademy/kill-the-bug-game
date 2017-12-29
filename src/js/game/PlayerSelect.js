@@ -1,56 +1,69 @@
 import { game } from "./Game";
 import { writePlayerData } from "../lib/firebase";
-import { playersArr } from './Preloader';
 import { chosenMap } from './MapSelect';
+import { getPlayers } from '../lib/firebase';
 
+let playersArr = [];
 export let character = '';
-export let playerUsername = '';
+export let playerTimestampId = '';
+export let moves = '';
 
 export const PlayerSelect = {
 	create: () => {
+		playersArr = getPlayers();
+
 		game.stage.backgroundColor = "#03A9F4";
 		document.querySelector('.player-select').style.display = 'block';
 
 		let playerListDOM = document.querySelector('.player-select__list');
-		playerListDOM.innerHTML = `<li class="player-select__list__item item"">Loading...</li>`;
-
+		playerListDOM.innerHTML = `<li class="player-select__list__item item not_found"><h3>Loading...</h3></li>`;
 		setTimeout(() => {
 			playerListDOM.innerHTML = "";
-			playersArr.forEach((player) => {
-				let date = new Date(player.created_at);
-				playerListDOM.innerHTML += `
-				<li class="player-select__list__item item" data-character="${player.character}" data-username="${player.username}">
-					<span class="item__character" >
-						<img src="assets/players/${player.character}.png">
-					</span>
-					<span class="item__username">${player.username}</span>
-					<div class="item__play-data play-data">
-						<span class="play-data__timestamp">${date.toDateString()} - ${date.toLocaleTimeString()}</span>
-						<span class="play-data__level">Level: ${parseInt(player.current_level) + 1}</span>
-					</div >
+			if (playersArr.length > 0) {
+				playersArr.forEach((player) => {
+					let date = new Date(player.created_at);
+					playerListDOM.innerHTML += `
+					<li class="player-select__list__item item" data-character="${player.character}" data-timestamp="${player.created_at}" data-moves="${player.moves}">
+						<span class="item__character" >
+							<img src="assets/players/${player.character}.png">
+						</span>
+						<span class="item__username">${player.username}</span>
+						<div class="item__play-data play-data">
+							<span class="play-data__timestamp">${date.toDateString()}</span>
+							<span class="play-data__timestamp">${date.toLocaleTimeString()}</span>
+						</div >
+					</li > `;
+				});
+			} else {
+				playerListDOM.innerHTML = `
+				<li class="player-select__list__item item not_found">
+					<h2>No players found</h2>
 				</li > `;
-			});
+			}
 
 			document.querySelectorAll('.player-select__list__item').forEach(item => {
 				item.addEventListener('click', function () {
 					character = this.dataset.character;
-					playerUsername = this.dataset.username;
-					document.querySelector('.action-board').style.display = 'flex';
-					document.querySelector('.action-selection').style.display = 'flex';
-					document.querySelector('.action-list').style.display = 'flex';
+					playerTimestampId = parseInt(this.dataset.timestamp);
+					moves = (this.dataset.moves).split(',');
+
+					if (moves.length == 0 || moves[0] === 'undefined') {
+						document.querySelector('.action-board').style.display = 'flex';
+						document.querySelector('.action-selection').style.display = 'flex';
+						document.querySelector('.action-list').style.display = 'flex';
+					}
+
 					startGame();
 				});
 			});
-		}, 1000);
+		}, 2000);
 
 		document.querySelector('button[type="submit"]').addEventListener('click', (e) => {
 			e.preventDefault();
 			let username = document.querySelector('.player-register__username').value;
 			let avatar = document.querySelector('input[type="radio"]:checked').value;
 			writePlayerData(username, avatar);
-			character = avatar;
-			playerUsername = username;
-			startGame();
+			location.replace('/');
 		});
 	},
 };

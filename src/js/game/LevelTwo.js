@@ -1,7 +1,8 @@
 import { game } from "./Game";
 import { gameOver } from "./gameOver";
 import { showActionBoard, disableButtons, enableButtons } from "./scripts";
-import { character } from './PlayerSelect';
+import { character, moves, playerTimestampId } from './PlayerSelect';
+import { setPlayerPlayed } from '../lib/firebase';
 
 /*
 	Create event listener for each action button.
@@ -23,6 +24,7 @@ let levelCompleted = false;
 const horizontal_speed = 150;
 const vertical_speed = -280;
 let lastPosY = '';
+let button;
 
 let actionsArray = [];
 
@@ -31,6 +33,7 @@ let actionsArray = [];
 ===================================*/
 export const LevelTwo = {
 	create: () => {
+		actionsArray = moves.length > 0 ? [...moves] : [];
 		// Remove event listeners from action buttons
 		// ----------------------------------------------------------------
 		let actionArea = document.querySelector('.action-selection');
@@ -97,13 +100,12 @@ export const LevelTwo = {
 		map.setTileIndexCallback(
 			20,
 			() => {
-				setTimeout(function () {
-					onLader = false;
-					player.scale.setTo(0, -0.6);
-					player.body.velocity.x = -horizontal_speed - 30;
-					player.xDest = player.x;
-					game.physics.arcade.gravity.y = 500;
-				}, 1300);
+				player.y += 1;
+				onLader = false;
+				player.scale.setTo(0, -0.6);
+				player.body.velocity.x = -horizontal_speed;
+				player.xDest = player.xDest - 15;
+				game.physics.arcade.gravity.y = 500;
 			},
 			game,
 			laderLayer
@@ -158,9 +160,30 @@ export const LevelTwo = {
 		//----------------------------------------------------------
 		game.camera.follow(player);
 		//----------------------------------------------------------
+
+		// ACTIONS - MOVES
+		//----------------------------------------------------------
+		actionsArray = moves.length > 0 ? [...moves] : [];
+		if (actionsArray.length > 0) {
+			button = game.add.button(
+				game.world.width / 2, game.world.height / 2,
+				"start_button", play, this,
+				0, 1, 1
+			);
+			button.anchor.set(0.5);
+			let text = game.add.text(0, 0, "START", {
+				font: "24px Space Mono",
+				fill: "#FFFFFF",
+				align: "center",
+			});
+			text.anchor.set(0.5);
+			button.addChild(text);
+			game.input.activePointer.capture = true;
+			game.world.bringToTop(button);
+		}
+		//----------------------------------------------------------
 	},
 	update: () => {
-		console.log(player.xDest);
 		// COLLISION
 		//----------------------------------------------------------
 		game.physics.arcade.collide(player, worldLayer);
@@ -242,8 +265,8 @@ export const LevelTwo = {
 	},
 	render: () => {
 		// Uncomment to show DEBUG MODE on Player
-		game.debug.spriteInfo(player, 32, 32);
-		game.debug.bodyInfo(player, 32, 120);
+		// game.debug.spriteInfo(player, 32, 32);
+		// game.debug.bodyInfo(player, 32, 120);
 	},
 };
 
@@ -309,6 +332,7 @@ function movePlayer() {
 function endLevel() {
 	setTimeout(() => {
 		game.world.removeAll();
+		setPlayerPlayed(playerTimestampId);
 		clearInterval(playEndCheck);
 		clearActionsList();
 		disableButtons();
@@ -354,6 +378,7 @@ function climb() {
 // Play commands
 //----------------------------------------------------------
 function play() {
+	button.destroy();
 	playEndCheck = setInterval(() => {
 		if (!playerIsMoving && !levelCompleted && actionsArray.length == 0) {
 			playerAlive = false;
