@@ -49,7 +49,7 @@ export function gameOver() {
 			button.removeAttribute('disabled');
 		});
 		game.world.removeAll();
-		game.state.start('PlayerSelect');
+		game.state.start('PlayerSelect', Phaser.Plugin.StateTransition.Out.SlideRight);
 	}
 
 	function backToMenu() {
@@ -58,6 +58,6 @@ export function gameOver() {
 			button.removeAttribute('disabled');
 		});
 		game.world.removeAll();
-		game.state.start("MainMenu");
+		game.state.start('MainMenu', Phaser.Plugin.StateTransition.Out.ScaleUp);
 	}
 }

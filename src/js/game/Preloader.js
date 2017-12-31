@@ -36,6 +36,10 @@ export const Preloader = {
 			"level_2", "assets/maps/level_2_tilemap.json",
 			null, Phaser.Tilemap.TILED_JSON
 		);
+		// Objects
+		game.load.spritesheet(
+			"box", "assets/tiles/spritesheet.png",
+			70, 70, 155, 0, 2);
 		// Character
 		game.load.spritesheet(
 			"adventurer", "assets/players/adventurer_spritesheet.png",
@@ -65,9 +69,6 @@ export const Preloader = {
 		text.anchor.setTo(0.5, 0.5);
 		game.preloadBar.addChild(text);
 		game.load.onFileComplete.add(loading, this);
-	},
-	update: () => {
-		// console.log(game.load);
 	},
 	loadUpdate: () => { },
 	create: () => {

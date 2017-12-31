@@ -2,6 +2,7 @@ import { game } from "./Game";
 import { writePlayerData } from "../lib/firebase";
 import { chosenMap } from './MapSelect';
 import { getPlayers } from '../lib/firebase';
+import { showActionBoard, hideActionBoard } from "./scripts";
 
 let playersArr = [];
 export let character = '';
@@ -10,7 +11,12 @@ export let moves = '';
 
 export const PlayerSelect = {
 	create: () => {
+		hideActionBoard();
 		playersArr = getPlayers();
+
+		document.querySelector('.reload-player').addEventListener('click', function () {
+			game.state.start("PlayerSelect");
+		});
 
 		game.stage.backgroundColor = "#03A9F4";
 		document.querySelector('.player-select').style.display = 'block';
@@ -46,11 +52,9 @@ export const PlayerSelect = {
 					character = this.dataset.character;
 					playerTimestampId = parseInt(this.dataset.timestamp);
 					moves = (this.dataset.moves).split(',');
-
-					if (moves.length == 0 || moves[0] === 'undefined') {
-						document.querySelector('.action-board').style.display = 'flex';
-						document.querySelector('.action-selection').style.display = 'flex';
-						document.querySelector('.action-list').style.display = 'flex';
+					if (moves.length == 0 || moves[0] == 'undefined') {
+						moves.pop();
+						showActionBoard();
 					}
 
 					startGame();

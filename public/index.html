@@ -70,7 +70,10 @@
 				<div class="player-select">
 					<div class="player-select__header">
 						<h1>Player Select</h1>
-						<a href="#popup" class="popup-link">Register</a>
+						<div>
+							<a href="#" class="popup-link reload-player">Reload</a>
+							<a href="#popup" class="popup-link">Register</a>
+						</div>
 					</div>
 					<ul class="player-select__list">
 						<!-- Players go here -->
@@ -109,6 +112,13 @@
 						<span class="action__order"></span>
 						<button class="action__button" data-action="climb">
 							<i class="fa fa-arrow-up" aria-hidden="true"></i> Climb
+						</button>
+						<span class="action__counter"></span>
+					</div>
+					<div class="action">
+						<span class="action__order"></span>
+						<button class="action__button" data-action="push">
+							<i class="fa fa-hand-paper-o" aria-hidden="true"></i> Push
 						</button>
 						<span class="action__counter"></span>
 					</div>

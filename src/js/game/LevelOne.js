@@ -13,11 +13,14 @@ import { setPlayerPlayed } from '../lib/firebase';
 let worldLayer = '',
 	endGameLayer = '',
 	laderLayer = '',
+	invisibleLayer = '',
+	boxLayer = '',
 	onLader = '',
 	player = '',
 	playerAlive = '',
 	playerIsMoving = '',
-	playEndCheck = '';
+	playEndCheck = '',
+	box = '';
 let levelCompleted = false;
 // Movement vars
 const horizontal_speed = 150;
@@ -25,47 +28,14 @@ const vertical_speed = -280;
 let lastPosY = '';
 let actionsArray = [];
 let button;
+let playerPushing = false;
 
 /* ==================================
 		LEVEL ONE !!!
 ===================================*/
 export const LevelOne = {
 	create: () => {
-
-		// Remove event listeners from action buttons
-		// ----------------------------------------------------------------
-		let actionArea = document.querySelector('.action-selection');
-		let actionAreaClone = actionArea.cloneNode(true);
-		actionArea.parentNode.replaceChild(actionAreaClone, actionArea);
-		// ----------------------------------------------------------------
-
-		// Add event listeners from actions buttons
-		// ----------------------------------------------------------------
-		document.querySelectorAll(".action__button").forEach(function (button) {
-			const actionList = document.querySelector(".action-list ol");
-			const actionData = button.dataset.action;
-
-			button.addEventListener("click", function () {
-				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb"].includes(actionData) && playerAlive) {
-					actionsArray.push(actionData);
-					actionList.innerHTML += `<li class="action-list__item action-list__item--${actionData}"></li>`;
-				} else {
-					if (actionsArray.length > 0) {
-						disableButtons();
-						play();
-					}
-				}
-			});
-		});
-		// ----------------------------------------------------------------
-
-		document.querySelector('.action-list__header button').addEventListener('click', clearActionsList);
-
-		showActionBoard();
-		clearActionsList();
-		enableButtons();
-		playerAlive = true;
-
+		console.log(actionsArray);
 		// World
 		//----------------------------------------------------------
 		game.stage.backgroundColor = "#5D4037";
@@ -74,13 +44,19 @@ export const LevelOne = {
 		worldLayer = map.createLayer("World Map Layer");
 		endGameLayer = map.createLayer("Exit Layer");
 		laderLayer = map.createLayer("Lader Layer");
+		boxLayer = map.createLayer("Box Layer");
+		boxLayer.visible = false;
+		invisibleLayer = map.createLayer("Invisible Layer");
+		invisibleLayer.visible = false;
 		map.setCollision(
-			[104, 153, 133, 105, 152, 81, 129, 145],
+			[104, 153, 133, 105, 152, 81, 129],
 			true,
 			"World Map Layer"
 		);
 		map.setCollision(65, false, "Exit Layer");
+		map.setCollision(145, true, "Box Layer");
 		map.setCollision([20, 32], false, "Lader Layer");
+		map.setCollision([1, 25], true, "Invisible Layer");
 		worldLayer.resizeWorld();
 
 		//----------------------------------------------------------
@@ -89,9 +65,26 @@ export const LevelOne = {
 		//----------------------------------------------------------
 		map.setTileIndexCallback(
 			65,
-			() => { levelCompleted = true; player.frame = 7; },
+			() => {
+				levelCompleted = true;
+				player.frame = 7;
+			},
 			game,
 			endGameLayer
+		);
+		//----------------------------------------------------------
+
+		// Check collision with wall
+		//----------------------------------------------------------
+		map.setTileIndexCallback(
+			1,
+			() => {
+				console.log('wall invisible');
+				box.kill();
+				boxLayer.visible = true;
+			},
+			game,
+			invisibleLayer
 		);
 		//----------------------------------------------------------
 
@@ -130,8 +123,15 @@ export const LevelOne = {
 		player.animations.add("dead", [4], 4);
 		player.animations.add("slide", [19], 4);
 		player.animations.add("climb", [5, 6], 3, true);
+		player.animations.add("push", [12], 3);
 		game.add.existing(player);
 		lastPosY = Math.floor(player.y / 10);
+		//----------------------------------------------------------
+
+		// Box
+		//----------------------------------------------------------
+		box = game.add.sprite(70 * 3, 560, 'box');
+		box.frame = 144;
 		//----------------------------------------------------------
 
 		// Player scales and center anchor
@@ -139,9 +139,11 @@ export const LevelOne = {
 		player.anchor.setTo(0.5);
 
 		// Gravity and Physics
-		game.physics.arcade.enable(player);
+		game.physics.arcade.enable([player, box]);
+		box.body.immovable = true;
 		game.physics.arcade.gravity.y = 500;
 		player.body.collideWorldBounds = true;
+		box.body.collideWorldBounds = true;
 
 		// Camera
 		game.camera.follow(player);
@@ -165,13 +167,51 @@ export const LevelOne = {
 			button.addChild(text);
 			game.input.activePointer.capture = true;
 			game.world.bringToTop(button);
+		} else {
+			showActionBoard();
+			enableButtons();
 		}
 		//----------------------------------------------------------
+
+		// Remove event listeners from action buttons
+		// ----------------------------------------------------------------
+		let actionArea = document.querySelector('.action-selection');
+		let actionAreaClone = actionArea.cloneNode(true);
+		actionArea.parentNode.replaceChild(actionAreaClone, actionArea);
+		// ----------------------------------------------------------------
+
+		// Add event listeners from actions buttons
+		// ----------------------------------------------------------------
+		document.querySelectorAll(".action__button").forEach(function (button) {
+			const actionList = document.querySelector(".action-list ol");
+			const actionData = button.dataset.action;
+
+			button.addEventListener("click", function () {
+				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb", "push"].includes(actionData) && playerAlive) {
+					actionsArray.push(actionData);
+					actionList.innerHTML += `<li class="action-list__item action-list__item--${actionData}"></li>`;
+				} else {
+					if (actionsArray.length > 0) {
+						disableButtons();
+						play();
+					}
+				}
+			});
+		});
+		// ----------------------------------------------------------------
+
+		document.querySelector('.action-list__header button').addEventListener('click', clearActionsList);
+
+		clearActionsList();
+		playerAlive = true;
 	},
 	update: () => {
 		// COLLISION
 		game.physics.arcade.collide(player, worldLayer);
+		game.physics.arcade.collide(player, boxLayer);
 		game.physics.arcade.collide(player, endGameLayer);
+		// game.physics.arcade.collide(box, worldLayer);
+		game.physics.arcade.collide(box, invisibleLayer);
 		// player dies if falls 3 floors
 		if (Math.abs(lastPosY - Math.floor(player.y / 10)) >= 21) {
 			playerAlive = false;
@@ -183,6 +223,7 @@ export const LevelOne = {
 			setPlayerPlayed(playerTimestampId);
 			gameOver();
 		}
+
 		// If player is on Lader, climb action is possible
 		if (game.physics.arcade.collide(player, laderLayer)) {
 			onLader = true;
@@ -204,7 +245,12 @@ export const LevelOne = {
 				player.frame = 23;
 			} else if (player.body.velocity.x != 0 && player.body.blocked.down) {
 				// Run if x velocity is NOT 0 and on floor
-				player.animations.play("walk");
+				if (playerPushing) {
+					player.animations.play("push");
+				} else {
+					player.animations.play("walk");
+				}
+
 			} else if (
 				player.body.velocity.y != 0 &&
 				player.body.velocity.x == 0 &&
@@ -218,13 +264,23 @@ export const LevelOne = {
 				player.animations.play("jump");
 			}
 			// Constatly check for movement
-			movePlayer();
+			// If player collides with box, stop movement
+			if (!playerPushing) {
+				movePlayer();
+			} else {
+				game.physics.arcade.overlap(player, box, () => { player.body.velocity.x = 0; });
+				if (player.body.velocity.x == 0 && player.body.velocity.y == 0) {
+					playerIsMoving = false;
+				}
+			}
 		}
 	},
 	render: () => {
 		// Uncomment to show DEBUG MODE on Player
 		// game.debug.spriteInfo(player, 32, 32);
-		// game.debug.bodyInfo(player, 32, 120);
+		game.debug.bodyInfo(box, 32, 120);
+		// game.debug.spriteBounds(box);
+		// game.debug.spriteBounds(player);
 	},
 };
 
@@ -235,6 +291,9 @@ export const LevelOne = {
 //----------------------------------------------------------
 function movePlayer() {
 	game.physics.arcade.collide(player, laderLayer);
+	game.physics.arcade.collide(box, invisibleLayer);
+	game.physics.arcade.overlap(player, box);
+
 	const currentPosX = Math.floor(player.x / 10);
 	const destinationX = Math.floor(player.xDest / 10);
 	// Set flag to false if player has no velocity
@@ -250,7 +309,7 @@ function movePlayer() {
 		player.scale.setTo(0.6);
 		player.body.velocity.x = horizontal_speed;
 		/*
-			Check if right side is blocked
+			Check if right side is blocked by tile
 			If so, return to last position
 		*/
 		if (
@@ -261,12 +320,17 @@ function movePlayer() {
 			player.x = player.x - 10;
 			player.xDest = player.x;
 		}
+
+		// Check if left side is blocked by Sprite
+		if (player.body.touching.right) {
+			player.xDest = player.x;
+		}
 	} else if (currentPosX > destinationX) {
 		playerIsMoving = true;
 		player.body.velocity.x = -horizontal_speed;
 		player.scale.setTo(-0.6, 0.6);
 		/*
-			Check if left side is blocked
+			Check if left side is blocked by tile
 			If so, return to last position
 		*/
 		if (
@@ -274,10 +338,15 @@ function movePlayer() {
 			player.body.blocked.down &&
 			!player.body.blocked.up
 		) {
-			playerIsMoving = false;
 			player.x = player.x + 10;
 			player.xDest = player.x;
 		}
+
+		// Check if right side is blocked by Sprite
+		if (player.body.touching.left) {
+			player.xDest = player.x;
+		}
+
 		if (player.body.velocity.x < 0) {
 			playerIsMoving = true;
 		}
@@ -299,31 +368,37 @@ function endLevel() {
 }
 
 function runRight() {
+	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
 	player.xDest = player.x + 70 * 12;
+	console.log(playerPushing, player.x, player.xDest);
 }
 
 function runLeft() {
+	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
 	player.xDest = player.x - 70 * 12;
 }
 
 function jumpRight() {
+	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
+	player.body.velocity.y = vertical_speed;
 	player.yDest = player.y - 70 * 2;
 	player.xDest = player.x + 70 * 2;
-	player.body.velocity.y = vertical_speed;
 }
 
 function jumpLeft() {
+	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
+	player.body.velocity.y = vertical_speed;
 	player.yDest = player.y - 70 * 2;
 	player.xDest = player.x - 70 * 2;
-	player.body.velocity.y = vertical_speed;
 }
 
 function climb() {
 	if (onLader) {
+		playerPushing = false;
 		playerIsMoving = true;
 		player.animations.play("climb");
 		game.physics.arcade.gravity.y = 0;
@@ -331,12 +406,35 @@ function climb() {
 		player.body.velocity.y = vertical_speed * 0.2;
 	}
 }
+
+function push() {
+	playerIsMoving = true;
+	player.animations.play("push");
+	if (!box.body.blocked.right) {
+		playerPushing = true;
+		player.x += 1;
+		player.body.velocity.x = horizontal_speed;
+		box.body.velocity.x = horizontal_speed;
+	} else if (!box.body.blocked.left) {
+		playerPushing = true;
+		box.body.immovable = false;
+		player.x -= 1;
+		player.body.velocity.x = horizontal_speed;
+		box.body.velocity.x = horizontal_speed;
+	} else {
+		playerPushing = false;
+	}
+}
 //----------------------------------------------------------
 
 // Play commands
 //----------------------------------------------------------
 function play() {
-	button.destroy();
+	if (button) {
+		button.destroy();
+	}
+
+	disableButtons();
 	playEndCheck = setInterval(() => {
 		if (!playerIsMoving && !levelCompleted && actionsArray.length == 0) {
 			playerAlive = false;

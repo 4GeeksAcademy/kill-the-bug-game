@@ -16,16 +16,12 @@ export function writePlayerData(name, character) {
 			created_at: Date.now(),
 			character: character,
 			played: false,
-			moves: [
-				'jumpRight', 'jumpRight',
-				'runRight', 'runLeft',
-				'runRight', 'climb', 'jumpLeft'
-			],
+			moves: [],
 		});
 }
 
 // LevelOne
-// 'runRight', 'jumpRight', 'jumpLeft',
+// 'runRight', 'push', 'jumpRight', 'jumpLeft',
 // 'runLeft', 'jumpLeft', 'jumpLeft',
 // 'runLeft', 'climb', 'jumpRight',
 // 'jumpRight', 'jumpRight', 'jumpRight', 'runRight'
@@ -45,13 +41,13 @@ export function getPlayers() {
 			if (childSnapshot.val().played) {
 				childSnapshot.ref.remove();
 			} else {
-				playersArr.push(childSnapshot.val());
+				playersArr.unshift(childSnapshot.val());
 			}
 		});
 		// Sort array by created_at
-		playersArr.sort((first, second) => {
-			return first.created_at + second.created_at;
-		});
+		// playersArr.sort((first, second) => {
+		// 	return first.created_at + second.created_at;
+		// });
 	});
 	return playersArr;
 }

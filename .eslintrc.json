@@ -9,11 +9,21 @@
     "sourceType": "module"
   },
   "rules": {
-    "indent": ["error", "tab"],
-    "semi": ["error", "always"],
+    "indent": [
+      "error",
+      "tab"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
     "no-undef": 0,
     "no-unused-vars": 1,
     "no-console": 1,
+    "quotes": [
+      "error",
+      "double"
+    ],
     "comma-dangle": [
       "error",
       {
@@ -21,7 +31,7 @@
         "objects": "always",
         "imports": "never",
         "exports": "never",
-        "functions": "ignore"
+        "functions": "ignore",
       }
     ]
   }
