@@ -1,8 +1,8 @@
 import { game } from "./Game";
 import { gameOver } from "./gameOver";
 import { showActionBoard, disableButtons, enableButtons } from "./scripts";
-import { character, moves, playerTimestampId } from './PlayerSelect';
-import { setPlayerPlayed } from '../lib/firebase';
+import { character, moves, playerTimestampId } from "./PlayerSelect";
+import { setPlayerPlayed } from "../lib/firebase";
 
 /*
 	Create event listener for each action button.
@@ -10,20 +10,20 @@ import { setPlayerPlayed } from '../lib/firebase';
 	and sets X destination
 */
 // Global vars
-let worldLayer = '',
-	endGameLayer = '',
-	laderLayer = '',
-	onLader = '',
-	heightDiff = '',
-	player = '',
-	playerAlive = '',
-	playerIsMoving = '',
-	playEndCheck = '';
+let worldLayer = "",
+	endGameLayer = "",
+	laderLayer = "",
+	onLader = "",
+	heightDiff = "",
+	player = "",
+	playerAlive = "",
+	playerIsMoving = "",
+	playEndCheck = "";
 let levelCompleted = false;
 // Movement vars
 const horizontal_speed = 150;
 const vertical_speed = -280;
-let lastPosY = '';
+let lastPosY = "";
 let button;
 
 let actionsArray = [];
@@ -36,7 +36,7 @@ export const LevelTwo = {
 		actionsArray = moves.length > 0 ? [...moves] : [];
 		// Remove event listeners from action buttons
 		// ----------------------------------------------------------------
-		let actionArea = document.querySelector('.action-selection');
+		let actionArea = document.querySelector(".action-selection");
 		let actionAreaClone = actionArea.cloneNode(true);
 		actionArea.parentNode.replaceChild(actionAreaClone, actionArea);
 		// ----------------------------------------------------------------

@@ -1,8 +1,8 @@
 import { game } from "./Game";
 import { gameOver } from "./gameOver";
 import { showActionBoard, disableButtons, enableButtons } from "./scripts";
-import { character, moves, playerTimestampId } from './PlayerSelect';
-import { setPlayerPlayed } from '../lib/firebase';
+import { character, moves, playerTimestampId } from "./PlayerSelect";
+import { setPlayerPlayed } from "../lib/firebase";
 
 /*
 	Create event listener for each action button.
@@ -10,22 +10,22 @@ import { setPlayerPlayed } from '../lib/firebase';
 	and sets X destination
 */
 // Global vars
-let worldLayer = '',
-	endGameLayer = '',
-	laderLayer = '',
-	invisibleLayer = '',
-	boxLayer = '',
-	onLader = '',
-	player = '',
-	playerAlive = '',
-	playerIsMoving = '',
-	playEndCheck = '',
-	box = '';
+let worldLayer = "",
+	endGameLayer = "",
+	laderLayer = "",
+	invisibleLayer = "",
+	boxLayer = "",
+	onLader = "",
+	player = "",
+	playerAlive = "",
+	playerIsMoving = "",
+	playEndCheck = "",
+	box = "";
 let levelCompleted = false;
 // Movement vars
 const horizontal_speed = 150;
 const vertical_speed = -280;
-let lastPosY = '';
+let lastPosY = "";
 let actionsArray = [];
 let button;
 let playerPushing = false;
@@ -35,7 +35,6 @@ let playerPushing = false;
 ===================================*/
 export const LevelOne = {
 	create: () => {
-		console.log(actionsArray);
 		// World
 		//----------------------------------------------------------
 		game.stage.backgroundColor = "#5D4037";
@@ -79,7 +78,6 @@ export const LevelOne = {
 		map.setTileIndexCallback(
 			1,
 			() => {
-				console.log('wall invisible');
 				box.kill();
 				boxLayer.visible = true;
 			},
@@ -130,7 +128,7 @@ export const LevelOne = {
 
 		// Box
 		//----------------------------------------------------------
-		box = game.add.sprite(70 * 3, 560, 'box');
+		box = game.add.sprite(70 * 3, 560, "box");
 		box.frame = 144;
 		//----------------------------------------------------------
 
@@ -175,7 +173,7 @@ export const LevelOne = {
 
 		// Remove event listeners from action buttons
 		// ----------------------------------------------------------------
-		let actionArea = document.querySelector('.action-selection');
+		let actionArea = document.querySelector(".action-selection");
 		let actionAreaClone = actionArea.cloneNode(true);
 		actionArea.parentNode.replaceChild(actionAreaClone, actionArea);
 		// ----------------------------------------------------------------
@@ -200,7 +198,7 @@ export const LevelOne = {
 		});
 		// ----------------------------------------------------------------
 
-		document.querySelector('.action-list__header button').addEventListener('click', clearActionsList);
+		document.querySelector(".action-list__header button").addEventListener("click", clearActionsList);
 
 		clearActionsList();
 		playerAlive = true;
@@ -278,7 +276,7 @@ export const LevelOne = {
 	render: () => {
 		// Uncomment to show DEBUG MODE on Player
 		// game.debug.spriteInfo(player, 32, 32);
-		game.debug.bodyInfo(box, 32, 120);
+		// game.debug.bodyInfo(box, 32, 120);
 		// game.debug.spriteBounds(box);
 		// game.debug.spriteBounds(player);
 	},
@@ -371,7 +369,6 @@ function runRight() {
 	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
 	player.xDest = player.x + 70 * 12;
-	console.log(playerPushing, player.x, player.xDest);
 }
 
 function runLeft() {

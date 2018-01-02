@@ -1,6 +1,6 @@
 // Importing Lightbox2 plus jQuery
-require('lightbox2/dist/css/lightbox.css');
-require('lightbox2/dist/js/lightbox-plus-jquery');
+require("lightbox2/dist/css/lightbox.css");
+require("lightbox2/dist/js/lightbox-plus-jquery");
 // Importing Game Styles
 require("../../scss/style.scss");
 // Importing Phaser Plugin

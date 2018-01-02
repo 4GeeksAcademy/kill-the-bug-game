@@ -1,28 +1,27 @@
 import { game } from "./Game";
-import { writePlayerData } from "../lib/firebase";
-import { chosenMap } from './MapSelect';
-import { getPlayers } from '../lib/firebase';
+import { writePlayerData, getPlayers } from "../lib/firebase";
+import { chosenMap } from "./MapSelect";
 import { showActionBoard, hideActionBoard } from "./scripts";
 
 let playersArr = [];
-export let character = '';
-export let playerTimestampId = '';
-export let moves = '';
+export let character = "";
+export let playerTimestampId = "";
+export let moves = "";
 
 export const PlayerSelect = {
 	create: () => {
 		hideActionBoard();
 		playersArr = getPlayers();
 
-		document.querySelector('.reload-player').addEventListener('click', function () {
+		document.querySelector(".reload-player").addEventListener("click", function () {
 			game.state.start("PlayerSelect");
 		});
 
 		game.stage.backgroundColor = "#03A9F4";
-		document.querySelector('.player-select').style.display = 'block';
+		document.querySelector(".player-select").style.display = "block";
 
-		let playerListDOM = document.querySelector('.player-select__list');
-		playerListDOM.innerHTML = `<li class="player-select__list__item item not_found"><h3>Loading...</h3></li>`;
+		let playerListDOM = document.querySelector(".player-select__list");
+		playerListDOM.innerHTML = "<li class=\"player-select__list__item item not_found\"><h3>Loading...</h3></li>";
 		setTimeout(() => {
 			playerListDOM.innerHTML = "";
 			if (playersArr.length > 0) {
@@ -47,12 +46,12 @@ export const PlayerSelect = {
 				</li > `;
 			}
 
-			document.querySelectorAll('.player-select__list__item').forEach(item => {
-				item.addEventListener('click', function () {
+			document.querySelectorAll(".player-select__list__item").forEach(item => {
+				item.addEventListener("click", function () {
 					character = this.dataset.character;
 					playerTimestampId = parseInt(this.dataset.timestamp);
-					moves = (this.dataset.moves).split(',');
-					if (moves.length == 0 || moves[0] == 'undefined') {
+					moves = (this.dataset.moves).split(",");
+					if (moves.length == 0 || moves[0] == "undefined") {
 						moves.pop();
 						showActionBoard();
 					}
@@ -62,17 +61,17 @@ export const PlayerSelect = {
 			});
 		}, 2000);
 
-		document.querySelector('button[type="submit"]').addEventListener('click', (e) => {
+		document.querySelector("button[type=\"submit\"]").addEventListener("click", (e) => {
 			e.preventDefault();
-			let username = document.querySelector('.player-register__username').value;
-			let avatar = document.querySelector('input[type="radio"]:checked').value;
+			let username = document.querySelector(".player-register__username").value;
+			let avatar = document.querySelector("input[type=\"radio\"]:checked").value;
 			writePlayerData(username, avatar);
-			location.replace('/');
+			location.replace("/");
 		});
 	},
 };
 
 function startGame() {
-	document.querySelector('.player-select').style.display = 'none';
+	document.querySelector(".player-select").style.display = "none";
 	game.state.start(chosenMap, Phaser.Plugin.StateTransition.Out.ScaleUp);
 }

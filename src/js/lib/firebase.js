@@ -54,9 +54,9 @@ export function getPlayers() {
 
 export function setPlayerPlayed(id) {
 	const playersRef = firebase.database().ref("players/");
-	playersRef.orderByChild('created_at').equalTo(id).on("value", function (childSnapshot) {
+	playersRef.orderByChild("created_at").equalTo(id).on("value", function (childSnapshot) {
 		childSnapshot.forEach(function (data) {
-			firebase.database().ref('players/' + data.key).update({
+			firebase.database().ref("players/" + data.key).update({
 				played: true,
 			});
 		});

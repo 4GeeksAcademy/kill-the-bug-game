@@ -1,6 +1,6 @@
 import { game } from "./Game";
 
-export let config = '';
+export let config = "";
 let text;
 
 export const Preloader = {
@@ -72,7 +72,7 @@ export const Preloader = {
 	},
 	loadUpdate: () => { },
 	create: () => {
-		config = game.cache.getJSON('gameData');
+		config = game.cache.getJSON("gameData");
 		game.state.start("MainMenu");
 	},
 };

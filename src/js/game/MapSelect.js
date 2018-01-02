@@ -1,14 +1,14 @@
 import { game } from "./Game";
 import { config } from "./Preloader";
 
-export let chosenMap = '';
+export let chosenMap = "";
 
 export const MapSelect = {
 	create: () => {
 		game.stage.backgroundColor = "#03A9F4";
-		document.querySelector('.map-select').style.display = 'block';
+		document.querySelector(".map-select").style.display = "block";
 
-		let mapListDOM = document.querySelector('.map-select__list');
+		let mapListDOM = document.querySelector(".map-select__list");
 		mapListDOM.innerHTML = "";
 
 		for (const key in config.levels) {
@@ -29,10 +29,10 @@ export const MapSelect = {
 			}
 		}
 
-		document.querySelectorAll('.map-select__list button').forEach(item => {
-			item.addEventListener('click', function () {
+		document.querySelectorAll(".map-select__list button").forEach(item => {
+			item.addEventListener("click", function () {
 				chosenMap = this.dataset.map;
-				document.querySelector('.map-select').style.display = 'none';
+				document.querySelector(".map-select").style.display = "none";
 				selectPlayer();
 			});
 		});
