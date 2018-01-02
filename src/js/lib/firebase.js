@@ -27,9 +27,9 @@ export function writePlayerData(name, character) {
 // 'jumpRight', 'jumpRight', 'jumpRight', 'runRight'
 
 // LeveñTwo
-// 'jumpRight', 'jumpRight',
-// 'runRight', 'runLeft',
-// 'runRight', 'climb', 'jumpLeft'
+// "jumpRight", "jumpRight",
+// "runRight", "runLeft",
+// "runRight", "climb", "jumpLeft";
 
 export function getPlayers() {
 	const playersRef = firebase.database().ref("players/");

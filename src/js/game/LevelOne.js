@@ -26,9 +26,11 @@ let levelCompleted = false;
 const horizontal_speed = 150;
 const vertical_speed = -280;
 let lastPosY = "";
-let actionsArray = [];
 let button;
-let playerPushing = false;
+let playerPushing = false,
+	canPush = false;
+
+let actionsArray = [];
 
 /* ==================================
 		LEVEL ONE !!!
@@ -48,7 +50,7 @@ export const LevelOne = {
 		invisibleLayer = map.createLayer("Invisible Layer");
 		invisibleLayer.visible = false;
 		map.setCollision(
-			[104, 153, 133, 105, 152, 81, 129],
+			[104, 153, 133, 105, 152, 81, 129, 145],
 			true,
 			"World Map Layer"
 		);
@@ -57,7 +59,6 @@ export const LevelOne = {
 		map.setCollision([20, 32], false, "Lader Layer");
 		map.setCollision([1, 25], true, "Invisible Layer");
 		worldLayer.resizeWorld();
-
 		//----------------------------------------------------------
 
 		// Check collision for end game
@@ -133,18 +134,24 @@ export const LevelOne = {
 		//----------------------------------------------------------
 
 		// Player scales and center anchor
+		//----------------------------------------------------------
 		player.scale.setTo(0.6);
 		player.anchor.setTo(0.5);
+		//----------------------------------------------------------
 
 		// Gravity and Physics
+		//----------------------------------------------------------
 		game.physics.arcade.enable([player, box]);
 		box.body.immovable = true;
 		game.physics.arcade.gravity.y = 500;
 		player.body.collideWorldBounds = true;
 		box.body.collideWorldBounds = true;
+		//----------------------------------------------------------
 
 		// Camera
+		//----------------------------------------------------------
 		game.camera.follow(player);
+		//----------------------------------------------------------
 
 		// ACTIONS - MOVES
 		//----------------------------------------------------------
@@ -205,29 +212,43 @@ export const LevelOne = {
 	},
 	update: () => {
 		// COLLISION
+		//----------------------------------------------------------
+		game.physics.arcade.collide(box, invisibleLayer);
 		game.physics.arcade.collide(player, worldLayer);
 		game.physics.arcade.collide(player, boxLayer);
 		game.physics.arcade.collide(player, endGameLayer);
-		// game.physics.arcade.collide(box, worldLayer);
+		game.physics.arcade.overlap(player, box, () => {
+			player.x += 1; canPush = true;
+			!playerPushing ? player.body.velocity.x = 0 : null;
+		});
 		game.physics.arcade.collide(box, invisibleLayer);
+		//----------------------------------------------------------
+
 		// player dies if falls 3 floors
+		//----------------------------------------------------------
 		if (Math.abs(lastPosY - Math.floor(player.y / 10)) >= 21) {
 			playerAlive = false;
 		}
+		//----------------------------------------------------------
+
 		// Continue game if player is not dead
+		//----------------------------------------------------------
 		if (!playerAlive) {
 			player.animations.play("dead");
 			clearInterval(playEndCheck);
-			setPlayerPlayed(playerTimestampId);
+			// setPlayerPlayed(playerTimestampId);
 			gameOver();
 		}
+		//----------------------------------------------------------
 
 		// If player is on Lader, climb action is possible
+		//----------------------------------------------------------
 		if (game.physics.arcade.collide(player, laderLayer)) {
 			onLader = true;
 		} else {
 			onLader = false;
 		}
+		//----------------------------------------------------------
 
 		if (player.body.blocked.down) {
 			lastPosY = Math.floor(player.y / 10);
@@ -237,6 +258,7 @@ export const LevelOne = {
 			Animation play conditions
 			if player is alive
 		*/
+		//----------------------------------------------------------
 		if (playerAlive) {
 			if (player.body.velocity.x == 0 && player.body.blocked.down) {
 				// Idle if x velocity is 0 and on floor
@@ -266,19 +288,21 @@ export const LevelOne = {
 			if (!playerPushing) {
 				movePlayer();
 			} else {
-				game.physics.arcade.overlap(player, box, () => { player.body.velocity.x = 0; });
 				if (player.body.velocity.x == 0 && player.body.velocity.y == 0) {
 					playerIsMoving = false;
 				}
 			}
 		}
+		//----------------------------------------------------------
 	},
 	render: () => {
 		// Uncomment to show DEBUG MODE on Player
-		// game.debug.spriteInfo(player, 32, 32);
+		game.debug.spriteInfo(player, 32, 32);
+		game.debug.bodyInfo(player, 32, 120);
+		game.debug.spriteBounds(player);
+		// game.debug.spriteInfo(box, 32, 32);
 		// game.debug.bodyInfo(box, 32, 120);
-		// game.debug.spriteBounds(box);
-		// game.debug.spriteBounds(player);
+		game.debug.spriteBounds(box);
 	},
 };
 
@@ -289,8 +313,6 @@ export const LevelOne = {
 //----------------------------------------------------------
 function movePlayer() {
 	game.physics.arcade.collide(player, laderLayer);
-	game.physics.arcade.collide(box, invisibleLayer);
-	game.physics.arcade.overlap(player, box);
 
 	const currentPosX = Math.floor(player.x / 10);
 	const destinationX = Math.floor(player.xDest / 10);
@@ -357,7 +379,7 @@ function movePlayer() {
 function endLevel() {
 	setTimeout(() => {
 		game.world.removeAll();
-		setPlayerPlayed(playerTimestampId);
+		// setPlayerPlayed(playerTimestampId);
 		clearInterval(playEndCheck);
 		clearActionsList();
 		enableButtons();
@@ -366,18 +388,21 @@ function endLevel() {
 }
 
 function runRight() {
+	canPush = false;
 	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
 	player.xDest = player.x + 70 * 12;
 }
 
 function runLeft() {
+	canPush = false;
 	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
 	player.xDest = player.x - 70 * 12;
 }
 
 function jumpRight() {
+	canPush = false;
 	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
 	player.body.velocity.y = vertical_speed;
@@ -386,6 +411,7 @@ function jumpRight() {
 }
 
 function jumpLeft() {
+	canPush = false;
 	playerPushing = false;
 	lastPosY = Math.floor(player.y / 10);
 	player.body.velocity.y = vertical_speed;
@@ -394,6 +420,7 @@ function jumpLeft() {
 }
 
 function climb() {
+	canPush = false;
 	if (onLader) {
 		playerPushing = false;
 		playerIsMoving = true;
@@ -405,21 +432,20 @@ function climb() {
 }
 
 function push() {
-	playerIsMoving = true;
-	player.animations.play("push");
-	if (!box.body.blocked.right) {
-		playerPushing = true;
-		player.x += 1;
-		player.body.velocity.x = horizontal_speed;
-		box.body.velocity.x = horizontal_speed;
-	} else if (!box.body.blocked.left) {
-		playerPushing = true;
-		box.body.immovable = false;
-		player.x -= 1;
-		player.body.velocity.x = horizontal_speed;
-		box.body.velocity.x = horizontal_speed;
-	} else {
-		playerPushing = false;
+	if (canPush) {
+		playerIsMoving = true;
+		player.animations.play("push");
+		if (!box.body.blocked.right) {
+			playerPushing = true;
+			player.body.velocity.x = horizontal_speed;
+			box.body.velocity.x = horizontal_speed;
+		} else if (!box.body.blocked.left) {
+			playerPushing = true;
+			box.body.immovable = false;
+			player.body.velocity.x = horizontal_speed;
+			box.body.velocity.x = horizontal_speed;
+		}
+		canPush = false;
 	}
 }
 //----------------------------------------------------------

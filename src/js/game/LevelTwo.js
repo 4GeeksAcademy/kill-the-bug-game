@@ -33,39 +33,6 @@ let actionsArray = [];
 ===================================*/
 export const LevelTwo = {
 	create: () => {
-		actionsArray = moves.length > 0 ? [...moves] : [];
-		// Remove event listeners from action buttons
-		// ----------------------------------------------------------------
-		let actionArea = document.querySelector(".action-selection");
-		let actionAreaClone = actionArea.cloneNode(true);
-		actionArea.parentNode.replaceChild(actionAreaClone, actionArea);
-		// ----------------------------------------------------------------
-
-		// Add event listeners from actions buttons
-		// ----------------------------------------------------------------
-		document.querySelectorAll(".action__button").forEach(function (button) {
-			const actionList = document.querySelector(".action-list ol");
-			const actionData = button.dataset.action;
-
-			button.addEventListener("click", function () {
-				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb"].includes(actionData) && playerAlive) {
-					actionsArray.push(actionData);
-					actionList.innerHTML += `<li class="action-list__item action-list__item--${actionData}"></li>`;
-				} else {
-					if (actionsArray.length > 0) {
-						disableButtons();
-						play();
-					}
-				}
-			});
-		});
-		// ----------------------------------------------------------------
-
-		showActionBoard();
-		clearActionsList();
-		enableButtons();
-		playerAlive = true;
-
 		// Background
 		//----------------------------------------------------------
 		game.stage.backgroundColor = "#5D4037";
@@ -180,8 +147,42 @@ export const LevelTwo = {
 			button.addChild(text);
 			game.input.activePointer.capture = true;
 			game.world.bringToTop(button);
+		} else {
+			showActionBoard();
+			enableButtons();
 		}
 		//----------------------------------------------------------
+
+		// Remove event listeners from action buttons
+		// ----------------------------------------------------------------
+		let actionArea = document.querySelector(".action-selection");
+		let actionAreaClone = actionArea.cloneNode(true);
+		actionArea.parentNode.replaceChild(actionAreaClone, actionArea);
+		// ----------------------------------------------------------------
+
+		// Add event listeners from actions buttons
+		// ----------------------------------------------------------------
+		document.querySelectorAll(".action__button").forEach(function (button) {
+			const actionList = document.querySelector(".action-list ol");
+			const actionData = button.dataset.action;
+
+			button.addEventListener("click", function () {
+				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb"].includes(actionData) && playerAlive) {
+					actionsArray.push(actionData);
+					actionList.innerHTML += `<li class="action-list__item action-list__item--${actionData}"></li>`;
+				} else {
+					if (actionsArray.length > 0) {
+						disableButtons();
+						play();
+					}
+				}
+			});
+		});
+		// ----------------------------------------------------------------
+
+		document.querySelector(".action-list__header button").addEventListener("click", clearActionsList);
+
+		playerAlive = true;
 	},
 	update: () => {
 		// COLLISION
@@ -201,6 +202,7 @@ export const LevelTwo = {
 		// Continue game if player is not dead
 		//----------------------------------------------------------
 		if (!playerAlive) {
+			// setPlayerPlayed(playerTimestampId);
 			player.animations.play("dead");
 			clearInterval(playEndCheck);
 			gameOver();
@@ -332,7 +334,7 @@ function movePlayer() {
 function endLevel() {
 	setTimeout(() => {
 		game.world.removeAll();
-		setPlayerPlayed(playerTimestampId);
+		// setPlayerPlayed(playerTimestampId);
 		clearInterval(playEndCheck);
 		clearActionsList();
 		disableButtons();
@@ -378,7 +380,10 @@ function climb() {
 // Play commands
 //----------------------------------------------------------
 function play() {
-	button.destroy();
+	if (button) {
+		button.destroy();
+	}
+
 	playEndCheck = setInterval(() => {
 		if (!playerIsMoving && !levelCompleted && actionsArray.length == 0) {
 			playerAlive = false;
