@@ -1,5 +1,5 @@
 import { game } from "./Game";
-import { gameOver } from "./gameOver";
+import { gameOver } from "./GameOver";
 import { showActionBoard, disableButtons, enableButtons } from "./scripts";
 import { character, moves, playerTimestampId } from "./PlayerSelect";
 import { setPlayerPlayed } from "../lib/firebase";
