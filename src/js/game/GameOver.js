@@ -45,19 +45,19 @@ export function gameOver() {
 
 	function restartGame() {
 		document.querySelector(".action-list ol").innerHTML = "";
-		document.querySelectorAll('button').forEach(function (button) {
-			button.removeAttribute('disabled');
+		document.querySelectorAll("button").forEach(function (button) {
+			button.removeAttribute("disabled");
 		});
 		game.world.removeAll();
-		game.state.start('PlayerSelect', Phaser.Plugin.StateTransition.Out.SlideRight);
+		game.state.start("PlayerSelect", Phaser.Plugin.StateTransition.Out.SlideRight);
 	}
 
 	function backToMenu() {
-		document.querySelector(".action-list ol").innerHTML = "";
-		document.querySelectorAll('button').forEach(function (button) {
-			button.removeAttribute('disabled');
-		});
 		game.world.removeAll();
-		game.state.start('MainMenu', Phaser.Plugin.StateTransition.Out.ScaleUp);
+		document.querySelector(".action-list ol").innerHTML = "";
+		document.querySelectorAll("button").forEach(function (button) {
+			button.removeAttribute("disabled");
+		});
+		game.state.start("MainMenu", Phaser.Plugin.StateTransition.Out.ScaleUp);
 	}
 }

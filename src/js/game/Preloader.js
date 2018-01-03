@@ -38,7 +38,7 @@ export const Preloader = {
 		);
 		// Objects
 		game.load.spritesheet(
-			"box", "assets/tiles/spritesheet.png",
+			"objects", "assets/tiles/spritesheet.png",
 			70, 70, 155, 0, 2);
 		// Character
 		game.load.spritesheet(

@@ -16,6 +16,7 @@ let worldLayer = "",
 	invisibleLayer = "",
 	boxLayer = "",
 	onLader = "",
+	heightDiff = "",
 	player = "",
 	playerAlive = "",
 	playerIsMoving = "",
@@ -39,6 +40,7 @@ export const LevelTwo = {
 	create: () => {
 		// World
 		//----------------------------------------------------------
+		levelCompleted = false;
 		game.stage.backgroundColor = "#5D4037";
 		let map = game.add.tilemap("level_2");
 		map.addTilesetImage("spritesheet", "tiles"); // (name in JSON, name in preloader)
@@ -59,32 +61,6 @@ export const LevelTwo = {
 		map.setCollision([20, 32], false, "Lader Layer");
 		map.setCollision([1, 25], true, "Invisible Layer");
 		worldLayer.resizeWorld();
-		//----------------------------------------------------------
-
-		// Check collision for end game
-		//----------------------------------------------------------
-		map.setTileIndexCallback(
-			65,
-			() => {
-				levelCompleted = true;
-				player.frame = 7;
-			},
-			game,
-			endGameLayer
-		);
-		//----------------------------------------------------------
-
-		// Check collision with wall
-		//----------------------------------------------------------
-		map.setTileIndexCallback(
-			1,
-			() => {
-				box.kill();
-				boxLayer.visible = true;
-			},
-			game,
-			invisibleLayer
-		);
 		//----------------------------------------------------------
 
 		// Check lader overlap
@@ -113,6 +89,32 @@ export const LevelTwo = {
 			laderLayer
 		);
 
+		// Check collision for end game
+		//----------------------------------------------------------
+		map.setTileIndexCallback(
+			65,
+			() => {
+				levelCompleted = true;
+				player.frame = 7;
+			},
+			game,
+			endGameLayer
+		);
+		//----------------------------------------------------------
+
+		// Check collision box-wall
+		//----------------------------------------------------------
+		map.setTileIndexCallback(
+			1,
+			() => {
+				box.kill();
+				boxLayer.visible = true;
+			},
+			game,
+			invisibleLayer
+		);
+		//----------------------------------------------------------
+
 		// PLAYER
 		//----------------------------------------------------------
 		player = game.add.sprite(70 / 2, 598.4, character);
@@ -129,7 +131,7 @@ export const LevelTwo = {
 
 		// Box
 		//----------------------------------------------------------
-		box = game.add.sprite(70 * 3, 560, "box");
+		box = game.add.sprite(70 * 3, 560, "objects");
 		box.frame = 144;
 		//----------------------------------------------------------
 
@@ -192,7 +194,7 @@ export const LevelTwo = {
 			const actionData = button.dataset.action;
 
 			button.addEventListener("click", function () {
-				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb", "push"].includes(actionData) && playerAlive) {
+				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb", "open", "push"].includes(actionData) && playerAlive) {
 					actionsArray.push(actionData);
 					actionList.innerHTML += `<li class="action-list__item action-list__item--${actionData}"></li>`;
 				} else {
@@ -207,6 +209,7 @@ export const LevelTwo = {
 
 		document.querySelector(".action-list__header button").addEventListener("click", clearActionsList);
 
+		levelCompleted = false;
 		playerAlive = true;
 	},
 	update: () => {
@@ -216,16 +219,18 @@ export const LevelTwo = {
 		game.physics.arcade.collide(player, worldLayer);
 		game.physics.arcade.collide(player, boxLayer);
 		game.physics.arcade.collide(player, endGameLayer);
+		game.physics.arcade.collide(box, invisibleLayer);
 		game.physics.arcade.overlap(player, box, () => {
-			player.x += 1; canPush = true;
+			player.x += 1;
+			canPush = true;
 			!playerPushing ? player.body.velocity.x = 0 : null;
 		});
-		game.physics.arcade.collide(box, invisibleLayer);
 		//----------------------------------------------------------
 
 		// player dies if falls 3 floors
 		//----------------------------------------------------------
-		if (Math.abs(lastPosY - Math.floor(player.y / 10)) >= 21) {
+		heightDiff = Math.abs(lastPosY - Math.floor(player.y / 10));
+		if (Math.abs(lastPosY < Math.floor(player.y / 10)) && heightDiff >= 21) {
 			playerAlive = false;
 		}
 		//----------------------------------------------------------
@@ -236,7 +241,14 @@ export const LevelTwo = {
 			player.animations.play("dead");
 			clearInterval(playEndCheck);
 			// setPlayerPlayed(playerTimestampId);
-			gameOver();
+			endLevel();
+		}
+		//----------------------------------------------------------
+
+		// If level completed, don't move
+		//----------------------------------------------------------
+		if (levelCompleted) {
+			player.body.velocity.setTo(0);
 		}
 		//----------------------------------------------------------
 
@@ -249,16 +261,19 @@ export const LevelTwo = {
 		}
 		//----------------------------------------------------------
 
+		// Update current height when on floor
+		//----------------------------------------------------------
 		if (player.body.blocked.down) {
 			lastPosY = Math.floor(player.y / 10);
 		}
+		//----------------------------------------------------------
 
 		/*
 			Animation play conditions
 			if player is alive
 		*/
 		//----------------------------------------------------------
-		if (playerAlive) {
+		if (playerAlive || !levelCompleted) {
 			if (player.body.velocity.x == 0 && player.body.blocked.down) {
 				// Idle if x velocity is 0 and on floor
 				player.frame = 23;
@@ -269,7 +284,6 @@ export const LevelTwo = {
 				} else {
 					player.animations.play("walk");
 				}
-
 			} else if (
 				player.body.velocity.y != 0 &&
 				player.body.velocity.x == 0 &&
@@ -283,7 +297,6 @@ export const LevelTwo = {
 				player.animations.play("jump");
 			}
 			// Constatly check for movement
-			// If player collides with box, stop movement
 			if (!playerPushing) {
 				movePlayer();
 			} else {
@@ -340,7 +353,7 @@ function movePlayer() {
 			player.xDest = player.x;
 		}
 
-		// Check if left side is blocked by Sprite
+		// Check if right side is blocked by Sprite
 		if (player.body.touching.right) {
 			player.xDest = player.x;
 		}
@@ -361,7 +374,7 @@ function movePlayer() {
 			player.xDest = player.x;
 		}
 
-		// Check if right side is blocked by Sprite
+		// Check if left side is blocked by Sprite
 		if (player.body.touching.left) {
 			player.xDest = player.x;
 		}
@@ -377,12 +390,11 @@ function movePlayer() {
 //----------------------------------------------------------
 function endLevel() {
 	setTimeout(() => {
-		game.world.removeAll();
 		// setPlayerPlayed(playerTimestampId);
 		clearInterval(playEndCheck);
 		clearActionsList();
 		enableButtons();
-		game.state.start("MainMenu", Phaser.Plugin.StateTransition.Out.SlideRight);
+		gameOver();
 	}, 1000);
 }
 
@@ -480,8 +492,11 @@ function play() {
 }
 //----------------------------------------------------------
 
+// Clears command area
+//----------------------------------------------------------
 function clearActionsList() {
 	const actionList = document.querySelector(".action-list ol");
 	actionList.innerHTML = "";
 	actionsArray = [];
 }
+//----------------------------------------------------------

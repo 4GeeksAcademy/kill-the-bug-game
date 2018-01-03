@@ -61,7 +61,7 @@ header {
 }
 
 .action-selection {
-  flex: 2 0 200px;
+  flex: 3 0 200px;
   width: 300px;
 }
 
@@ -348,6 +348,13 @@ button {
       background-color: rgb(120, 85, 72);
       &::before {
         content: "\f256";
+      }
+    }
+
+    &--open {
+      background-color: rgb(254, 192, 7);
+      &::before {
+        content: "\f084";
       }
     }
   }
