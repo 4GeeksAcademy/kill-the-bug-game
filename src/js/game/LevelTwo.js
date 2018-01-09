@@ -40,6 +40,8 @@ export const LevelTwo = {
 	create: () => {
 		// World
 		//----------------------------------------------------------
+		game.world.width = 840;
+		game.world.height = 700;
 		levelCompleted = false;
 		game.stage.backgroundColor = "#5D4037";
 		let map = game.add.tilemap("level_2");
@@ -160,11 +162,12 @@ export const LevelTwo = {
 		actionsArray = moves.length > 0 ? [...moves] : [];
 		if (actionsArray.length > 0) {
 			button = game.add.button(
-				game.world.width / 2, game.world.height / 2,
+				game.camera.width / 2, game.camera.height / 2,
 				"start_button", play, this,
 				0, 1, 1
 			);
 			button.anchor.set(0.5);
+			button.fixedToCamera = true;
 			let text = game.add.text(0, 0, "START", {
 				font: "24px Space Mono",
 				fill: "#FFFFFF",

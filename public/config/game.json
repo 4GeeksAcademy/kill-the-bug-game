@@ -10,6 +10,11 @@
       "name": "Cave #2",
       "map": "cave_map_2",
       "thumbnailFormat": "png"
+    },
+    "LevelThree": {
+      "name": "Cave #3",
+      "map": "cave_map_3",
+      "thumbnailFormat": "png"
     }
   }
 }

@@ -3,7 +3,6 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 
 module.exports = {
-	watch: true,
 	entry: "./src/js/game/Game.js",
 	devtool: "source-map",
 	output: {
@@ -46,9 +45,9 @@ module.exports = {
 				test: /\.(png|jpg|gif)$/,
 				use: [
 					{
-						loader: 'file-loader',
+						loader: "file-loader",
 						options: {
-							outputPath: 'img/',
+							outputPath: "img/",
 						},
 					}
 				],

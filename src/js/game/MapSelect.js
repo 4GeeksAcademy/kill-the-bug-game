@@ -5,6 +5,8 @@ export let chosenMap = "";
 
 export const MapSelect = {
 	create: () => {
+		game.world.width = 840;
+		game.world.height = 700;
 		game.stage.backgroundColor = "#03A9F4";
 		document.querySelector(".map-select").style.display = "block";
 

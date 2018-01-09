@@ -20,16 +20,35 @@ export function writePlayerData(name, character) {
 		});
 }
 
-// LevelOne
-// 'runRight', 'push', 'jumpRight', 'jumpLeft',
-// 'runLeft', 'jumpLeft', 'jumpLeft',
-// 'runLeft', 'climb', 'jumpRight',
-// 'jumpRight', 'jumpRight', 'jumpRight', 'runRight'
+/* LevelOne
+'runRight', 'push', 'jumpRight', 'jumpLeft',
+'runLeft', 'jumpLeft', 'jumpLeft',
+'runLeft', 'climb', 'jumpRight',
+'jumpRight', 'jumpRight', 'jumpRight', 'runRight'
+*/
 
-// LeveñTwo
-// "jumpRight", "jumpRight",
-// "runRight", "runLeft",
-// "runRight", "climb", "jumpLeft";
+/* LevelTwo
+"jumpRight", "jumpRight",
+"runRight", "runLeft",
+"runRight", "climb", "jumpLeft";
+*/
+
+/* LevelThree
+'runRight', 'climb', 'runRight', 'open',
+'runRight', 'open', 'runRight', 'open',
+'runRight', 'open', 'runRight', 'open',
+'runRight', 'open', 'runRight', 'runLeft',
+'jumpLeft', 'runLeft', 'jumpLeft', 'runLeft',
+'runRight', 'push', 'jumpRight', 'runRight',
+'push', 'jumpRight', 'runRight', 'open',
+'runRight', 'runLeft', 'runRight', 'runLeft',
+'runRight', 'runLeft', 'open', 'runLeft',
+'jumpLeft', 'jumpLeft', 'jumpLeft', 'runLeft',
+'jumpLeft', 'runLeft', 'jumpLeft', 'runLeft',
+'runLeft', 'runRight', 'jumpRight', 'runRight',
+'jumpRight', 'jumpRight', 'runRight', 'jumpRight',
+'jumpRight', 'jumpRight', 'runRight'
+*/
 
 export function getPlayers() {
 	const playersRef = firebase.database().ref("players/");

@@ -10,6 +10,8 @@ export let moves = "";
 
 export const PlayerSelect = {
 	create: () => {
+		game.world.width = 840;
+		game.world.height = 700;
 		hideActionBoard();
 		playersArr = getPlayers();
 

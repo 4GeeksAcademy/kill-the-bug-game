@@ -5,8 +5,8 @@ export function gameOver() {
 
 	// Restart State Button
 	let restartButton = game.add.button(
-		game.world.width / 2,
-		game.world.height / 2 - 60,
+		game.camera.width / 2,
+		game.camera.height / 2 - 60,
 		"restart_button",
 		restartGame,
 		game,
@@ -14,6 +14,7 @@ export function gameOver() {
 	);
 	restartButton.anchor.set(0.5);
 	restartButton.scale.setTo(1.5);
+	restartButton.fixedToCamera = true;
 	// Restart State Button Text
 	let restartText = game.add.text(0, 0, "Next Player", {
 		font: "26px Times New Roman",
@@ -25,14 +26,15 @@ export function gameOver() {
 
 	// Back to Menu Button
 	let menuButton = game.add.button(
-		game.world.width / 2,
-		game.world.height / 2,
+		game.camera.width / 2,
+		game.camera.height / 2,
 		"restart_button",
 		backToMenu,
 		game,
 		0
 	);
 	menuButton.anchor.set(0.5);
+	menuButton.fixedToCamera = true;
 
 	// Back to Menu Button Text
 	let menuText = game.add.text(0, 0, "Back to Menu", {

@@ -5,6 +5,8 @@ let text;
 
 export const Preloader = {
 	preload: () => {
+		game.world.width = 840;
+		game.world.height = 700;
 		// Preloader bar
 		game.preloadBar = game.add.sprite(game.world.centerX, game.world.centerY, "preloadBar");
 		game.preloadBar.anchor.setTo(0.5);
@@ -34,6 +36,10 @@ export const Preloader = {
 		);
 		game.load.tilemap(
 			"level_2", "assets/maps/level_2_tilemap.json",
+			null, Phaser.Tilemap.TILED_JSON
+		);
+		game.load.tilemap(
+			"level_3", "assets/maps/level_3_tilemap.json",
 			null, Phaser.Tilemap.TILED_JSON
 		);
 		// Objects

@@ -16,6 +16,7 @@ import { MapSelect } from "./MapSelect";
 import { PlayerSelect } from "./PlayerSelect";
 import { LevelOne } from "./LevelOne";
 import { LevelTwo } from "./LevelTwo";
+import { LevelThree } from "./LevelThree";
 
 // Phaser start
 export const game = new Phaser.Game(840, 700, Phaser.AUTO, "game");
@@ -26,6 +27,7 @@ game.state.add("MapSelect", MapSelect);
 game.state.add("PlayerSelect", PlayerSelect);
 game.state.add("LevelOne", LevelOne);
 game.state.add("LevelTwo", LevelTwo);
+game.state.add("LevelThree", LevelThree);
 
 // Start game
 game.state.start("Boot");
