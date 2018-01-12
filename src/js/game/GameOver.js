@@ -46,7 +46,7 @@ export function gameOver() {
 	menuButton.addChild(menuText);
 
 	function restartGame() {
-		document.querySelector(".action-list ol").innerHTML = "";
+		document.querySelector(".command-queue ol").innerHTML = "";
 		document.querySelectorAll("button").forEach(function (button) {
 			button.removeAttribute("disabled");
 		});
@@ -56,7 +56,7 @@ export function gameOver() {
 
 	function backToMenu() {
 		game.world.removeAll();
-		document.querySelector(".action-list ol").innerHTML = "";
+		document.querySelector(".command-queue ol").innerHTML = "";
 		document.querySelectorAll("button").forEach(function (button) {
 			button.removeAttribute("disabled");
 		});

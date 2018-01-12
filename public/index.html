@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-	<title>Rodrigo Game</title>
+	<title>Killing The Bugs</title>
 	<!-- Optional Polyfill -->
 	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 	<!-- Phaser CDN -->
@@ -17,6 +17,13 @@
 </head>
 
 <body>
+	<!-- Help - CSS Modal -->
+	<div class="modal-wrapper" id="help">
+		<div class="help-container">
+			<h1>HELP!!!</h1>
+			<a class="help-close" href="#">X</a>
+		</div>
+	</div>
 	<!-- Player Creation - CSS Modal -->
 	<div class="modal-wrapper" id="popup">
 		<div class="popup-container">
@@ -26,24 +33,12 @@
 				<label for="">Characters</label>
 				<div class="characters">
 					<label>
-						<input type="radio" name="characters" value="adventurer" checked />
-						<img src="./assets/players/adventurer.png">
+						<input type="radio" name="characters" value="batman" checked />
+						<img src="./assets/players/batman.png">
 					</label>
 					<label>
-						<input type="radio" name="characters" value="boy" />
-						<img src="./assets/players/boy.png">
-					</label>
-					<label>
-						<input type="radio" name="characters" value="girl" />
-						<img src="./assets/players/girl.png">
-					</label>
-					<label>
-						<input type="radio" name="characters" value="soldier" />
-						<img src="./assets/players/soldier.png">
-					</label>
-					<label>
-						<input type="radio" name="characters" value="zombie" />
-						<img src="./assets/players/zombie.png">
+						<input type="radio" name="characters" value="einstein" />
+						<img src="./assets/players/einstein.png">
 					</label>
 				</div>
 				<button type="submit">Create</button>
@@ -57,6 +52,10 @@
 		<div id="game-dashboard">
 			<!-- Game Canvas -->
 			<div id="game">
+				<!-- Bigger Map -->
+				<div class="HUD">
+					<!-- Buttons and other actions for the game -->
+				</div>
 				<!-- Map Select -->
 				<div class="map-select">
 					<div class="map-select__header">
@@ -71,8 +70,8 @@
 					<div class="player-select__header">
 						<h1>Player Select</h1>
 						<div>
-							<a href="#" class="popup-link reload-player">Reload</a>
-							<a href="#popup" class="popup-link">Register</a>
+							<a href="#" class="popup-link reload-player">Reload List</a>
+							<a href="#popup" class="popup-link">New Player</a>
 						</div>
 					</div>
 					<ul class="player-select__list">
@@ -129,21 +128,21 @@
 						</button>
 						<span class="action__counter"></span>
 					</div>
+					<!-- Player's Action Order List -->
+					<div class="command-queue">
+						<div class="command-queue__header">
+							<h3 class="command-queue__header__title">Command Queue</h3>
+							<button id="clear">Clear</button>
+						</div>
+						<ol class="queue">
+							<!-- Command Queue goes here -->
+						</ol>
+					</div>
 					<div class="action">
 						<button class="action__button" data-action="play">
-							Play
+							Run
 						</button>
 					</div>
-				</div>
-				<!-- Player's Action Order List -->
-				<div class="action-list">
-					<div class="action-list__header">
-						<h3 class="action-list__header__title">Action List</h3>
-						<button>Clear</button>
-					</div>
-					<ol>
-						<!-- Action list goes here -->
-					</ol>
 				</div>
 			</div>
 		</div>

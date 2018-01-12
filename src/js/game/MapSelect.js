@@ -21,9 +21,7 @@ export const MapSelect = {
 
 				mapListDOM.innerHTML += `
 					<figure>
-						<a href="assets/maps/${fileName}.${fileFormat}" data-lightbox="${fileName}" data-title="${mapName}">
-							<img src="assets/maps/${fileName}.${fileFormat}">
-						</a>
+						<img src="assets/maps/${fileName}.${fileFormat}">
 						<figcaption>${mapName}</figcaption>
 						<button data-map="${key}">Play</button>
 					</figure>

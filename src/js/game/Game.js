@@ -5,8 +5,8 @@ require("lightbox2/dist/js/lightbox-plus-jquery");
 require("../../scss/style.scss");
 // Importing Phaser Plugin
 require("phaser-state-transition/dist/phaser-state-transition.min");
-// Importing Firebases
-require("../lib/firebase");
+// Importing Api Data
+require("../lib/Api");
 
 // Importing Game States
 import { Boot } from "./Boot";

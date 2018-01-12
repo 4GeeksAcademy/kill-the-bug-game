@@ -48,23 +48,11 @@ export const Preloader = {
 			70, 70, 155, 0, 2);
 		// Character
 		game.load.spritesheet(
-			"adventurer", "assets/players/adventurer_spritesheet.png",
+			"einstein", "assets/players/einstein_spritesheet.png",
 			80, 110);
 		game.load.spritesheet(
-			"boy", "assets/players/boy_spritesheet.png",
+			"batman", "assets/players/batman_spritesheet.png",
 			80, 110);
-		game.load.spritesheet(
-			"girl", "assets/players/girl_spritesheet.png",
-			80, 110);
-		game.load.spritesheet(
-			"soldier", "assets/players/soldier_spritesheet.png",
-			80, 110);
-		game.load.spritesheet(
-			"zombie", "assets/players/zombie_spritesheet.png",
-			80, 110);
-		// game.load.spritesheet(
-		// 	"batman", "assets/players/batman_spritesheet.png",
-		// 	143, 192);
 
 		// Loading text
 		text = game.add.text(0, 0, "Loading " + game.load.progress, {

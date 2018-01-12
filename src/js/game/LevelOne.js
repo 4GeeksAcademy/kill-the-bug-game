@@ -1,8 +1,9 @@
 import { game } from "./Game";
 import { gameOver } from "./GameOver";
 import { showActionBoard, disableButtons, enableButtons } from "./scripts";
-import { character, moves, playerTimestampId } from "./PlayerSelect";
-import { setPlayerPlayed } from "../lib/firebase";
+import { character, moves, playerId } from "./PlayerSelect";
+import { deleteAttempt } from "../lib/Api";
+import swal from "sweetalert";
 
 /*
 	Create event listener for each action button.
@@ -10,7 +11,9 @@ import { setPlayerPlayed } from "../lib/firebase";
 	and sets X destination
 */
 // Global vars
-let worldLayer = "",
+let currentAction = -1,
+	HUD = "",
+	worldLayer = "",
 	endGameLayer = "",
 	laderLayer = "",
 	onLader = "",
@@ -36,6 +39,18 @@ let actionsArray = [];
 ===================================*/
 export const LevelOne = {
 	create: () => {
+		HUD = document.querySelector(".HUD");
+		HUD.style.opacity = 1;
+		HUD.innerHTML = `
+		<a class="show-map" href="assets/maps/cave_map.png" data-lightbox="cave_map" data-title="Cave #1">
+			<i class="fa fa-map" aria-hidden="true"></i>
+			Show Map
+		</a>
+		<a class="show-help" href="#help">
+			<i class="fa fa-question" aria-hidden="true"></i>
+			Help
+		</a>`;
+		currentAction = -1;
 		// World
 		//----------------------------------------------------------
 		game.world.width = 840;
@@ -143,7 +158,7 @@ export const LevelOne = {
 
 		// ACTIONS - MOVES
 		//----------------------------------------------------------
-		actionsArray = moves.length > 0 ? [...moves] : [];
+		actionsArray = moves.length > 0 && moves[0] != "" ? [...moves] : [];
 		if (actionsArray.length > 0) {
 			button = game.add.button(
 				game.camera.width / 2, game.camera.height / 2,
@@ -177,24 +192,29 @@ export const LevelOne = {
 		// Add event listeners from actions buttons
 		// ----------------------------------------------------------------
 		document.querySelectorAll(".action__button").forEach(function (button) {
-			const actionList = document.querySelector(".action-list ol");
+			const actionList = document.querySelector(".command-queue ol");
 			const actionData = button.dataset.action;
 
 			button.addEventListener("click", function () {
 				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb", "open", "push"].includes(actionData) && playerAlive) {
 					actionsArray.push(actionData);
-					actionList.innerHTML += `<li class="action-list__item action-list__item--${actionData}"></li>`;
+					actionList.innerHTML += `<li class="command-queue__item command-queue__item--${actionData}"></li>`;
 				} else {
 					if (actionsArray.length > 0) {
 						disableButtons();
 						play();
+					} else {
+						swal({
+							text: "Please, select actions first.",
+							icon: "warning",
+						});
 					}
 				}
 			});
 		});
 		// ----------------------------------------------------------------
 
-		document.querySelector(".action-list__header button").addEventListener("click", clearActionsList);
+		document.querySelector(".command-queue__header button").addEventListener("click", clearActionsList);
 
 		levelCompleted = false;
 		playerAlive = true;
@@ -223,7 +243,6 @@ export const LevelOne = {
 		// Continue game if player is not dead
 		//----------------------------------------------------------
 		if (!playerAlive) {
-			// setPlayerPlayed(playerTimestampId);
 			player.animations.play("dead");
 			clearInterval(playEndCheck);
 			endLevel();
@@ -363,13 +382,11 @@ function movePlayer() {
 // Movements
 //----------------------------------------------------------
 function endLevel() {
-	setTimeout(() => {
-		// setPlayerPlayed(playerTimestampId);
-		clearInterval(playEndCheck);
+	Promise.resolve(deleteAttempt(playerId)).then(() => {
 		clearActionsList();
 		enableButtons();
 		gameOver();
-	}, 1000);
+	});
 }
 
 function runRight() {
@@ -428,6 +445,8 @@ function open() {
 // Play commands
 //----------------------------------------------------------
 function play() {
+	HUD.style.opacity = 0;
+
 	if (button) {
 		button.destroy();
 	}
@@ -438,15 +457,22 @@ function play() {
 			clearInterval(playEndCheck);
 			clearActionsList();
 		} else if (!playerIsMoving && levelCompleted) {
+			clearInterval(playEndCheck);
 			endLevel();
 		}
 	}, 1000);
 
 	if (actionsArray.length != 0) {
+		let htmlQueue = document.querySelector(".queue");
 		if (!playerIsMoving) {
+			currentAction <= htmlQueue.children.length ? currentAction++ : 0;
+			var previousAction = currentAction - 1 < 0 ? 0 : currentAction - 1;
+			htmlQueue.children[currentAction].classList.contains("glow") ? null : htmlQueue.children[currentAction].classList.add("glow");
+			console.log("========================");
 			console.log(actionsArray[0]);
 			eval(actionsArray[0] + "()");
 			actionsArray.shift();
+			currentAction - 1 >= 0 ? htmlQueue.children[previousAction].classList.remove("glow") : null;
 		}
 		setTimeout(() => {
 			clearInterval(playEndCheck);
@@ -459,8 +485,8 @@ function play() {
 // Clears command area
 //----------------------------------------------------------
 function clearActionsList() {
-	const actionList = document.querySelector(".action-list ol");
-	actionList.innerHTML = "";
-	actionsArray = [];
+	const actionList = document.querySelector(".command-queue ol");
+	// actionList.innerHTML = "";
+	// actionsArray = [];
 }
 //----------------------------------------------------------
