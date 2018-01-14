@@ -12,8 +12,7 @@ export const Preloader = {
 		game.preloadBar.anchor.setTo(0.5);
 		game.time.advancedTiming = true;
 		game.load.setPreloadSprite(game.preloadBar);
-		// Data
-		game.load.json("gameData", "config/game.json");
+
 		// Not game related images
 		game.load.image("4geeks_logo", "assets/img/4geeks_logo.png");
 		game.load.image("manten_logo", "assets/img/manten_logo.png");
@@ -47,11 +46,9 @@ export const Preloader = {
 			"objects", "assets/tiles/spritesheet.png",
 			70, 70, 155, 0, 2);
 		// Character
+		game.load.atlasJSONHash("batman", "assets/players/batman/batman_sprite.png", "assets/players/batman/batman.json");
 		game.load.spritesheet(
 			"einstein", "assets/players/einstein_spritesheet.png",
-			80, 110);
-		game.load.spritesheet(
-			"batman", "assets/players/batman_spritesheet.png",
 			80, 110);
 
 		// Loading text
@@ -66,7 +63,6 @@ export const Preloader = {
 	},
 	loadUpdate: () => { },
 	create: () => {
-		config = game.cache.getJSON("gameData");
 		game.state.start("MainMenu");
 	},
 };

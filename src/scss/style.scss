@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 
@@ -109,12 +110,17 @@ header {
     justify-content: space-around;
 
     h1 {
-      flex: 1;
+      flex: 2;
       margin-bottom: 10px;
     }
     div {
+      flex: 3;
       height: 100%;
       padding-top: 5px;
+      margin-left: 40px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
     }
 
     .popup-link {
@@ -161,6 +167,10 @@ header {
       justify-content: space-around;
       transition: all 0.1s ease-in;
 
+      .not_found {
+        height: 100%;
+      }
+
       &:hover:not(.not_found) {
         cursor: pointer;
         box-shadow: -5px 0 2px -2px #1976d2 inset;
@@ -199,7 +209,6 @@ header {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 0 17px 0 0;
 }
 
 figure {
@@ -213,13 +222,16 @@ figure {
   }
 
   figcaption {
-    top: 5px;
+    bottom: 5px;
     width: 100%;
     text-align: center;
     position: absolute;
-    color: #1976d2;
+    color: #eee;
     font-weight: bold;
     text-transform: uppercase;
+    background-color: #434343;
+    opacity: 0.8;
+    font-weight: bold;
   }
 
   button {
@@ -469,18 +481,19 @@ form {
     flex-direction: row;
     justify-content: space-around;
 
-    label > input{
+    label > input {
       visibility: hidden;
       position: absolute;
 
-      &:checked + img{
+      &:checked + img {
         padding-bottom: 3px;
         border-bottom: 2px solid #1976d2;
       }
     }
-    label > input + img{
+    label > input + img {
       cursor: pointer;
       border: 2px solid transparent;
+      height: 100px;
     }
   }
 
@@ -504,4 +517,11 @@ form {
 
 .glow {
   box-shadow: 0 1px 5px purple;
+}
+
+.loading {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  padding-top: 30px;
 }

@@ -25,9 +25,9 @@ game.state.add("Preloader", Preloader);
 game.state.add("MainMenu", MainMenu);
 game.state.add("MapSelect", MapSelect);
 game.state.add("PlayerSelect", PlayerSelect);
-game.state.add("LevelOne", LevelOne);
-game.state.add("LevelTwo", LevelTwo);
-game.state.add("LevelThree", LevelThree);
+game.state.add("Map 1", LevelOne);
+game.state.add("Map 2", LevelTwo);
+game.state.add("Map 3", LevelThree);
 
 // Start game
 game.state.start("Boot");

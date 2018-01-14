@@ -1,54 +1,61 @@
 /* LevelOne
-'runRight', 'push', 'jumpRight', 'jumpLeft',
-'runLeft', 'jumpLeft', 'jumpLeft',
-'runLeft', 'climb', 'jumpRight',
-'jumpRight', 'jumpRight', 'jumpRight', 'runRight'
+"jumpRight", "jumpRight",
+"runRight", "runLeft", "runRight",
+"open", "runRight", "climb", "jumpLeft"
 */
 
 /* LevelTwo
-"jumpRight", "jumpRight",
-"runRight", "runLeft",
-"runRight", "climb", "jumpLeft";
+"runRight", "push", "jumpRight", "jumpLeft",
+"runLeft", "jumpLeft", "jumpLeft",
+"runLeft", "climb", "jumpRight",
+"jumpRight", "jumpRight", "jumpRight", "runRight"
 */
 
 /* LevelThree
-'runRight', 'climb', 'runRight', 'open',
-'runRight', 'open', 'runRight', 'open',
-'runRight', 'open', 'runRight', 'open',
-'runRight', 'open', 'runRight', 'runLeft',
-'jumpLeft', 'runLeft', 'jumpLeft', 'runLeft',
-'runRight', 'push', 'jumpRight', 'runRight',
-'push', 'jumpRight', 'runRight', 'open',
-'runRight', 'runLeft', 'runRight', 'runLeft',
-'runRight', 'runLeft', 'open', 'runLeft',
-'jumpLeft', 'jumpLeft', 'jumpLeft', 'runLeft',
-'jumpLeft', 'runLeft', 'jumpLeft', 'runLeft',
-'runLeft', 'runRight', 'jumpRight', 'runRight',
-'jumpRight', 'jumpRight', 'runRight', 'jumpRight',
-'jumpRight', 'jumpRight', 'runRight'
+"runRight", "climb", "runRight", "open",
+"runRight", "open", "runRight", "open",
+"runRight", "open", "runRight", "open",
+"runRight", "open", "runRight", "runLeft",
+"jumpLeft", "runLeft", "jumpLeft", "runLeft",
+"runRight", "push", "jumpRight", "runRight",
+"push", "jumpRight", "runRight", "open",
+"runRight", "runLeft", "runRight", "runLeft",
+"runRight", "runLeft", "open", "runLeft",
+"jumpLeft", "jumpLeft", "jumpLeft", "runLeft",
+"jumpLeft", "runLeft", "jumpLeft", "runLeft",
+"runRight", "jumpRight", "jumpRight", "jumpRight", "runRight", "jumpRight", "jumpRight", "runRight"
 */
 
-export let getAttempts = async () => {
-	let response = await fetch("https://assets.breatheco.de/apis/kill-the-bug/api/pending_attempts");
+export let getAttempts = async (mapId) => {
+	let response = await fetch("https://assets.breatheco.de/apis/kill-the-bug/api/pending_attempts/" + mapId);
 	let json = await response.json();
 	let data = await json.data;
 	return data.pending_attempts;
 };
 
-export function addAttempt(name, character) {
+export let getAllLevels = async () => {
+	let response = await fetch("http://assets.breatheco.de/apis/kill-the-bug/api/get_levels");
+	let json = await response.json();
+	let data = await json.data;
+	return data;
+};
 
-	fetch("https://assets.breatheco.de/apis/kill-the-bug/api/add_attempt", {
+export let addAttempt = async (name, character, mapId) => {
+	let response = await fetch("https://assets.breatheco.de/apis/kill-the-bug/api/add_attempt", {
 		method: "post",
 		headers: new Headers(),
 		body: JSON.stringify(
 			{
 				"username": name,
 				"character": character,
+				"level": mapId,
 				"commands": [],
 			}
 		),
 	});
-}
+	let json = await response.json();
+	return json;
+};
 
 export function deleteAttempt(id) {
 	fetch("https://assets.breatheco.de/apis/kill-the-bug/api/delete_attempt", {

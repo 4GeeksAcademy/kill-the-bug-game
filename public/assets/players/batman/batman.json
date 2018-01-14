@@ -1,0 +1,108 @@
+{"frames": {
+
+"dead/0001.png":
+{
+	"frame": {"x":847,"y":0,"w":343,"h":460},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":343,"h":460},
+	"sourceSize": {"w":343,"h":460}
+},
+"dead/0002.png":
+{
+	"frame": {"x":0,"y":0,"w":504,"h":295},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":504,"h":295},
+	"sourceSize": {"w":504,"h":295}
+},
+"happy/0001.png":
+{
+	"frame": {"x":504,"y":0,"w":343,"h":459},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":343,"h":459},
+	"sourceSize": {"w":343,"h":459}
+},
+"idle/0001.png":
+{
+	"frame": {"x":0,"y":476,"w":318,"h":476},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":318,"h":476},
+	"sourceSize": {"w":318,"h":476}
+},
+"jump/0001.png":
+{
+	"frame": {"x":701,"y":476,"w":384,"h":480},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":384,"h":480},
+	"sourceSize": {"w":384,"h":480}
+},
+"jump/0002.png":
+{
+	"frame": {"x":1085,"y":476,"w":359,"h":481},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":359,"h":481},
+	"sourceSize": {"w":359,"h":481}
+},
+"open/0001.png":
+{
+	"frame": {"x":1190,"y":0,"w":317,"h":476},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":317,"h":476},
+	"sourceSize": {"w":317,"h":476}
+},
+"push/0001.png":
+{
+	"frame": {"x":0,"y":957,"w":377,"h":489},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":377,"h":489},
+	"sourceSize": {"w":377,"h":489}
+},
+"push/0002.png":
+{
+	"frame": {"x":753,"y":957,"w":380,"h":490},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":380,"h":490},
+	"sourceSize": {"w":380,"h":490}
+},
+"walk/0001.png":
+{
+	"frame": {"x":318,"y":476,"w":383,"h":477},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":383,"h":477},
+	"sourceSize": {"w":383,"h":477}
+},
+"walk/0002.png":
+{
+	"frame": {"x":1133,"y":957,"w":380,"h":491},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":380,"h":491},
+	"sourceSize": {"w":380,"h":491}
+},
+"walk/0003.png":
+{
+	"frame": {"x":377,"y":957,"w":376,"h":490},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":376,"h":490},
+	"sourceSize": {"w":376,"h":490}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "batman.png",
+	"format": "RGBA8888",
+	"size": {"w":1513,"h":1448},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6e8f7db2a632e02fb88c5acc2e5ed550:4b162f088e04e1edae576df19895fee8:601275a7543e9032df88bb68779ca5e2$"
+}
+}

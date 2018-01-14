@@ -1,6 +1,6 @@
 import { game } from "./Game";
 import { gameOver } from "./GameOver";
-import { showActionBoard, disableButtons, enableButtons } from "./scripts";
+import { showActionBoard, disableButtons, enableButtons, boardIsHidden } from "./scripts";
 import { character, moves, playerId } from "./PlayerSelect";
 import { deleteAttempt } from "../lib/Api";
 import swal from "sweetalert";
@@ -42,7 +42,7 @@ export const LevelOne = {
 		HUD = document.querySelector(".HUD");
 		HUD.style.opacity = 1;
 		HUD.innerHTML = `
-		<a class="show-map" href="assets/maps/cave_map.png" data-lightbox="cave_map" data-title="Cave #1">
+		<a class="show-map" href="/img/levels/1.png" data-lightbox="cave_map" data-title="Cave #1">
 			<i class="fa fa-map" aria-hidden="true"></i>
 			Show Map
 		</a>
@@ -89,7 +89,7 @@ export const LevelOne = {
 			() => {
 				player.y += 1;
 				onLader = false;
-				player.scale.setTo(0, -0.6);
+				player.scale.setTo(0, -0.125);
 				player.body.velocity.x = -horizontal_speed;
 				player.xDest = player.xDest - 15;
 				game.physics.arcade.gravity.y = 500;
@@ -105,7 +105,6 @@ export const LevelOne = {
 			65,
 			() => {
 				levelCompleted = true;
-				player.frame = 7;
 			},
 			game,
 			endGameLayer
@@ -114,14 +113,15 @@ export const LevelOne = {
 
 		// PLAYER
 		//----------------------------------------------------------
-		player = game.add.sprite(70 * 2 - 70 / 2, 177, character);
-		player.frame = 23;
-		player.animations.add("walk", [9, 10], 8, true);
-		player.animations.add("jump", [1], 4);
-		player.animations.add("dead", [4], 4);
-		player.animations.add("slide", [19], 4);
-		player.animations.add("climb", [5, 6], 3, true);
-		player.animations.add("open", [12], 3);
+		player = game.add.sprite(70 * 2 - 70 / 2, 177.2, character);
+		player.animations.add("walk", Phaser.Animation.generateFrameNames("walk/", 1, 3, ".png", 4), 8, true, false);
+		player.animations.add("jump", Phaser.Animation.generateFrameNames("jump/", 1, 2, ".png", 4), 4, true, false);
+		player.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
+		player.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 1, ".png", 4), 10, false, false);
+		player.animations.add("open", Phaser.Animation.generateFrameNames("open/", 1, 1, ".png", 4), 10, false, false);
+		// player.animations.add("climb", Phaser.Animation.generateFrameNames("climb/", 1, 3, ".png", 4), 3, true, false);
+		player.animations.add("push", Phaser.Animation.generateFrameNames("push/", 1, 2, ".png", 4), 6, true, false);
+		player.animations.add("happy", Phaser.Animation.generateFrameNames("happy/", 1, 1, ".png", 4), 6, false, false);
 		game.add.existing(player);
 		lastPosY = Math.floor(player.y / 10);
 		//----------------------------------------------------------
@@ -139,7 +139,7 @@ export const LevelOne = {
 
 		// Player scales and center anchor
 		//----------------------------------------------------------
-		player.scale.setTo(0.6);
+		player.scale.setTo(0.125);
 		player.anchor.setTo(0.5);
 		//----------------------------------------------------------
 
@@ -214,7 +214,7 @@ export const LevelOne = {
 		});
 		// ----------------------------------------------------------------
 
-		document.querySelector(".command-queue__header button").addEventListener("click", clearActionsList);
+		document.querySelector("#clear").addEventListener("click", clearActionsList);
 
 		levelCompleted = false;
 		playerAlive = true;
@@ -252,6 +252,7 @@ export const LevelOne = {
 		// If level completed, don't move
 		//----------------------------------------------------------
 		if (levelCompleted) {
+			player.animations.play("happy");
 			player.body.velocity.setTo(0);
 		}
 		//----------------------------------------------------------
@@ -280,11 +281,16 @@ export const LevelOne = {
 		//----------------------------------------------------------
 		if (playerAlive || !levelCompleted) {
 			if (player.body.velocity.x == 0 && player.body.blocked.down && !playerIsOpening) {
-				// Idle if x velocity is 0 and on floor
-				player.frame = 23;
+				if (levelCompleted) {
+					// Happy if x velocity is 0, on floor and level completed
+					player.animations.play("happy");
+				} else {
+					// Idle if x velocity is 0 and on floor
+					player.animations.play("idle");
+				}
 			} else if (player.body.velocity.x == 0 && player.body.blocked.down && playerIsOpening) {
 				// While opening doors
-				player.frame = 12;
+				player.animations.play("open");
 			} else if (player.body.velocity.x != 0 && player.body.blocked.down) {
 				// Run if x velocity is NOT 0 and on floor
 				player.animations.play("walk");
@@ -316,8 +322,9 @@ export const LevelOne = {
 	},
 	render: () => {
 		// Uncomment to show DEBUG MODE on Player
-		// game.debug.spriteInfo(player, 32, 32);
-		// game.debug.bodyInfo(player, 32, 120);
+		// game.debug.spriteInfo(player, 32, 120);
+		// game.debug.bodyInfo(player, 32, 220);
+		// game.debug.spriteBounds(player);
 	},
 };
 
@@ -341,7 +348,7 @@ function movePlayer() {
 		player.x = Math.floor(player.xDest);
 	} else if (currentPosX < destinationX) {
 		playerIsMoving = true;
-		player.scale.setTo(0.6);
+		player.scale.setTo(0.125);
 		player.body.velocity.x = horizontal_speed;
 		/*
 			Check if right side is blocked
@@ -358,7 +365,7 @@ function movePlayer() {
 	} else if (currentPosX > destinationX) {
 		playerIsMoving = true;
 		player.body.velocity.x = -horizontal_speed;
-		player.scale.setTo(-0.6, 0.6);
+		player.scale.setTo(-0.125, 0.125);
 		/*
 			Check if left side is blocked
 			If so, return to last position
@@ -382,11 +389,11 @@ function movePlayer() {
 // Movements
 //----------------------------------------------------------
 function endLevel() {
-	Promise.resolve(deleteAttempt(playerId)).then(() => {
-		clearActionsList();
-		enableButtons();
-		gameOver();
-	});
+	// Promise.resolve(deleteAttempt(playerId)).then(() => {
+	clearActionsList();
+	enableButtons();
+	gameOver();
+	// });
 }
 
 function runRight() {
@@ -424,7 +431,7 @@ function climb() {
 		player.animations.play("climb");
 		game.physics.arcade.gravity.y = 0;
 		player.yDest = player.y - 70 * 1;
-		player.body.velocity.y = vertical_speed * 0.2;
+		player.body.velocity.y = vertical_speed * 0.4;
 	}
 }
 
@@ -465,14 +472,16 @@ function play() {
 	if (actionsArray.length != 0) {
 		let htmlQueue = document.querySelector(".queue");
 		if (!playerIsMoving) {
-			currentAction <= htmlQueue.children.length ? currentAction++ : 0;
-			var previousAction = currentAction - 1 < 0 ? 0 : currentAction - 1;
-			htmlQueue.children[currentAction].classList.contains("glow") ? null : htmlQueue.children[currentAction].classList.add("glow");
-			console.log("========================");
-			console.log(actionsArray[0]);
+			if (!boardIsHidden) {
+				currentAction <= htmlQueue.children.length ? currentAction++ : 0;
+				var previousAction = currentAction - 1 < 0 ? 0 : currentAction - 1;
+				htmlQueue.children[currentAction].classList.contains("glow") ? null : htmlQueue.children[currentAction].classList.add("glow");
+			}
 			eval(actionsArray[0] + "()");
 			actionsArray.shift();
-			currentAction - 1 >= 0 ? htmlQueue.children[previousAction].classList.remove("glow") : null;
+			if (!boardIsHidden) {
+				currentAction - 1 >= 0 ? htmlQueue.children[previousAction].classList.remove("glow") : null;
+			}
 		}
 		setTimeout(() => {
 			clearInterval(playEndCheck);
@@ -486,7 +495,7 @@ function play() {
 //----------------------------------------------------------
 function clearActionsList() {
 	const actionList = document.querySelector(".command-queue ol");
-	// actionList.innerHTML = "";
-	// actionsArray = [];
+	actionList.innerHTML = "";
+	actionsArray = [];
 }
 //----------------------------------------------------------

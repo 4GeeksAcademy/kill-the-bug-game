@@ -1,5 +1,7 @@
 import { game } from "./Game";
 
+export let boardIsHidden = true;
+
 export function gofull() {
 	if (game.scale.isFullScreen) {
 		game.scale.stopFullScreen();
@@ -22,6 +24,7 @@ export function disableButtons() {
 }
 
 export function hideActionBoard() {
+	boardIsHidden = true;
 	document.querySelector(".action-board").style.visibility = "hidden";
 	document.querySelector(".action-board").style.display = "none";
 	document.querySelector(".action-selection").style.visibility = "hidden";
@@ -31,6 +34,7 @@ export function hideActionBoard() {
 }
 
 export function showActionBoard() {
+	boardIsHidden = false;
 	document.querySelector(".action-board").style.visibility = "visible";
 	document.querySelector(".action-board").style.display = "flex";
 	document.querySelector(".action-selection").style.visibility = "visible";

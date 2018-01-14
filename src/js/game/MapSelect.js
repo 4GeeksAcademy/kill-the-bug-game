@@ -1,7 +1,8 @@
 import { game } from "./Game";
-import { config } from "./Preloader";
+import { getAllLevels } from "../lib/Api";
 
 export let chosenMap = "";
+export let mapId = "";
 
 export const MapSelect = {
 	create: () => {
@@ -11,31 +12,40 @@ export const MapSelect = {
 		document.querySelector(".map-select").style.display = "block";
 
 		let mapListDOM = document.querySelector(".map-select__list");
-		mapListDOM.innerHTML = "";
+		mapListDOM.innerHTML = `
+		<li class="player-select__list__item item not_found">
+			<h3 class="loading">Loading...</h3>
+		</li>`;
 
-		for (const key in config.levels) {
-			if (config.levels.hasOwnProperty(key)) {
-				const mapName = config.levels[key].name;
-				const fileName = config.levels[key].map;
-				const fileFormat = config.levels[key].thumbnailFormat;
+		Promise
+			.resolve(getAllLevels())
+			.then((levelData) => {
+				mapListDOM.innerHTML = "";
+				levelData.forEach(level => {
+					const difficulty = level.difficulty;
+					const mapName = level.title;
+					const thumb = level.thumb;
+					const id = level.slug;
 
-				mapListDOM.innerHTML += `
-					<figure>
-						<img src="assets/maps/${fileName}.${fileFormat}">
-						<figcaption>${mapName}</figcaption>
-						<button data-map="${key}">Play</button>
-					</figure>
-				`;
-			}
-		}
+					mapListDOM.innerHTML += `
+						<figure>
+							<img src="${thumb}">
+							<figcaption>${mapName} - ${difficulty}</figcaption>
+							<button data-id="${id}" data-map="${mapName}">Play</button>
+						</figure>
+					`;
+				});
 
-		document.querySelectorAll(".map-select__list button").forEach(item => {
-			item.addEventListener("click", function () {
-				chosenMap = this.dataset.map;
-				document.querySelector(".map-select").style.display = "none";
-				selectPlayer();
+
+				document.querySelectorAll(".map-select__list button").forEach(item => {
+					item.addEventListener("click", function () {
+						mapId = this.dataset.id;
+						chosenMap = this.dataset.map;
+						document.querySelector(".map-select").style.display = "none";
+						selectPlayer();
+					});
+				});
 			});
-		});
 	},
 };
 
