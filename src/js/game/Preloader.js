@@ -1,6 +1,5 @@
 import { game } from "./Game";
 
-export let config = "";
 let text;
 
 export const Preloader = {
