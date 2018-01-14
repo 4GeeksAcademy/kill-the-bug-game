@@ -1,7 +1,6 @@
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
 	entry: "./src/js/game/Game.js",
@@ -72,17 +71,6 @@ module.exports = {
 					},
 				}
 			],
-		}),
-		new UglifyJsPlugin({
-			uglifyOptions: {
-				sourceMap: true,
-				ie8: false,
-				ecma: 8,
-				output: {
-					comments: false,
-					beautify: false,
-				},
-			},
 		})
 	],
 	devServer: {
