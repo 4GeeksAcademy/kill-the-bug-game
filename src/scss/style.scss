@@ -394,6 +394,13 @@ button {
         content: "\f084";
       }
     }
+
+    &--kill {
+      background-color: rgba(254, 7, 7, 0.596);
+      &::before {
+        content: "\f255";
+      }
+    }
   }
 }
 

@@ -14,7 +14,6 @@ import swal from "sweetalert";
 let currentAction = -1,
 	HUD = "",
 	worldLayer = "",
-	endGameLayer = "",
 	laderLayer = "",
 	onLader = "",
 	heightDiff = "",
@@ -32,6 +31,9 @@ let lastPosY = "";
 let button;
 let playerIsOpening = false,
 	canOpen = false;
+let canKill = false,
+	playerIsKilling = false,
+	bugIsDead = false;
 
 let actionsArray = [];
 
@@ -60,15 +62,13 @@ export const LevelOne = {
 		let map = game.add.tilemap("level_1");
 		map.addTilesetImage("spritesheet", "tiles"); // (name in JSON, name in preloader)
 		worldLayer = map.createLayer("World Map Layer");
-		endGameLayer = map.createLayer("Exit Layer");
 		laderLayer = map.createLayer("Lader Layer");
 
 		map.setCollision(
-			[102, 104, 126, 101, 149, 18, 153, 133, 105, 152, 81, 129, 145],
+			[102, 104, 126, 101, 149, 18, 153, 133, 105, 152, 81, 129, 145, 56, 68, 137, 98],
 			true,
 			"World Map Layer"
 		);
-		map.setCollision(65, false, "Exit Layer");
 		map.setCollision([20, 32], false, "Lader Layer");
 		worldLayer.resizeWorld();
 		//----------------------------------------------------------
@@ -90,7 +90,7 @@ export const LevelOne = {
 			() => {
 				player.y += 1;
 				onLader = false;
-				player.scale.setTo(0, -0.45);
+				player.scale.setTo(0, -0.39);
 				player.body.velocity.x = -horizontal_speed;
 				player.xDest = player.xDest - 15;
 				game.physics.arcade.gravity.y = 500;
@@ -100,26 +100,15 @@ export const LevelOne = {
 		);
 		//----------------------------------------------------------
 
-		// Check collision for end game
-		//----------------------------------------------------------
-		map.setTileIndexCallback(
-			65,
-			() => {
-				levelCompleted = true;
-			},
-			game,
-			endGameLayer
-		);
-		//----------------------------------------------------------
-
 		// PLAYER
 		//----------------------------------------------------------
-		player = game.add.sprite(70 * 2 - 70 / 2, 157.2, character);
+		player = game.add.sprite(70 * 2 - 70 / 2, 177.44, character);
 		player.animations.add("walk", Phaser.Animation.generateFrameNames("walk/", 1, 3, ".png", 4), 8, true, false);
 		player.animations.add("jump", Phaser.Animation.generateFrameNames("jump/", 1, 2, ".png", 4), 4, true, false);
 		player.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("open", Phaser.Animation.generateFrameNames("open/", 1, 1, ".png", 4), 10, false, false);
+		player.animations.add("kill", Phaser.Animation.generateFrameNames("open/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("climb", Phaser.Animation.generateFrameNames("climb/", 1, 2, ".png", 4), 3, true, false);
 		player.animations.add("push", Phaser.Animation.generateFrameNames("push/", 1, 2, ".png", 4), 6, true, false);
 		player.animations.add("happy", Phaser.Animation.generateFrameNames("happy/", 1, 1, ".png", 4), 6, false, false);
@@ -129,10 +118,11 @@ export const LevelOne = {
 
 		// ENEMY - BUG
 		//----------------------------------------------------------
-		bug = game.add.sprite(70 * 9 - 70 / 2, 177.2, "bug");
-		// bug.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
-		bug.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 1, ".png", 4), 10, false, false);
-		bug.scale.setTo(0.45);
+		bug = game.add.sprite(70 * 9 - 70 / 2, 110.5, "bug");
+		bug.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
+		bug.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 2, ".png", 4), 3, true, false);
+		bug.animations.add("laugh", Phaser.Animation.generateFrameNames("laugh/", 1, 2, ".png", 4), 5, true, false);
+		bug.scale.setTo(0.39);
 		bug.anchor.setTo(0.5);
 		game.add.existing(bug);
 		//----------------------------------------------------------
@@ -150,7 +140,7 @@ export const LevelOne = {
 
 		// Player scales and center anchor
 		//----------------------------------------------------------
-		player.scale.setTo(0.45);
+		player.scale.setTo(0.39);
 		player.anchor.setTo(0.5);
 		//----------------------------------------------------------
 
@@ -158,7 +148,9 @@ export const LevelOne = {
 		//----------------------------------------------------------
 		game.physics.arcade.enable([player, lock, bug]);
 		lock.body.immovable = true;
+		bug.body.immovable = true;
 		game.physics.arcade.gravity.y = 500;
+		bug.body.gravity = 0;
 		player.body.collideWorldBounds = true;
 		bug.body.collideWorldBounds = true;
 		//----------------------------------------------------------
@@ -208,7 +200,7 @@ export const LevelOne = {
 			const actionData = button.dataset.action;
 
 			button.addEventListener("click", function () {
-				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb", "open", "push"].includes(actionData) && playerAlive) {
+				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb", "open", "push", "kill"].includes(actionData) && playerAlive) {
 					actionsArray.push(actionData);
 					actionList.innerHTML += `<li class="command-queue__item command-queue__item--${actionData}"></li>`;
 				} else {
@@ -230,18 +222,33 @@ export const LevelOne = {
 
 		levelCompleted = false;
 		playerAlive = true;
+		bugIsDead = false;
 	},
 	update: () => {
+		let distaceBetweenPlayerBug = Phaser.Math.distance(player.x, player.y, bug.x, bug.y).toFixed(2);
+		if (!bugIsDead) {
+			if (distaceBetweenPlayerBug < 250 || !playerAlive) {
+				bug.animations.play("laugh");
+			} else {
+				bug.animations.play("idle");
+			}
+		} else {
+			bug.animations.play("dead");
+		}
 		// COLLISION
 		//----------------------------------------------------------
 		game.physics.arcade.collide(lock, worldLayer);
-		game.physics.arcade.collide(bug, worldLayer);
-		game.physics.arcade.collide(player, bug);
 		game.physics.arcade.collide(player, worldLayer);
-		game.physics.arcade.collide(player, endGameLayer);
+		// Check collision with Lock
 		game.physics.arcade.collide(player, lock, () => {
 			player.xDest = player.x;
 			canOpen = true;
+			player.body.velocity.x = 0;
+		});
+		// Check collision with Bug
+		game.physics.arcade.overlap(player, bug, () => {
+			player.xDest = player.x;
+			canKill = true;
 			player.body.velocity.x = 0;
 		});
 		//----------------------------------------------------------
@@ -258,6 +265,7 @@ export const LevelOne = {
 		//----------------------------------------------------------
 		if (!playerAlive) {
 			player.animations.play("dead");
+			player.y += 6;
 			clearInterval(playEndCheck);
 			endLevel();
 		}
@@ -295,10 +303,13 @@ export const LevelOne = {
     */
 		//----------------------------------------------------------
 		if (playerAlive || !levelCompleted) {
-			if (player.body.velocity.x == 0 && player.body.blocked.down && !playerIsOpening) {
+			if (player.body.velocity.x == 0 && player.body.blocked.down && !playerIsOpening && !playerIsKilling) {
 				if (levelCompleted) {
 					// Happy if x velocity is 0, on floor and level completed
 					player.animations.play("happy");
+				} else if (!playerAlive) {
+					// Happy if x velocity is 0, on floor and level completed
+					player.animations.play("dead");
 				} else {
 					// Idle if x velocity is 0 and on floor
 					player.animations.play("idle");
@@ -306,6 +317,9 @@ export const LevelOne = {
 			} else if (player.body.velocity.x == 0 && player.body.blocked.down && playerIsOpening) {
 				// While opening doors
 				player.animations.play("open");
+			} else if (player.body.velocity.x == 0 && player.body.blocked.down && playerIsKilling) {
+				// While killing
+				player.animations.play("kill");
 			} else if (player.body.velocity.x != 0 && player.body.blocked.down) {
 				// Run if x velocity is NOT 0 and on floor
 				player.animations.play("walk");
@@ -325,7 +339,7 @@ export const LevelOne = {
 
 			// Constatly check for movement
 			//----------------------------------------------------------
-			if (!playerIsOpening) {
+			if (!playerIsOpening || !playerIsKilling) {
 				movePlayer();
 			} else {
 				if (player.body.velocity.x == 0 && player.body.velocity.y == 0) {
@@ -363,7 +377,7 @@ function movePlayer() {
 		player.x = Math.floor(player.xDest);
 	} else if (currentPosX < destinationX) {
 		playerIsMoving = true;
-		player.scale.setTo(0.45);
+		player.scale.setTo(0.39);
 		player.body.velocity.x = horizontal_speed;
 		/*
 			Check if right side is blocked
@@ -380,7 +394,7 @@ function movePlayer() {
 	} else if (currentPosX > destinationX) {
 		playerIsMoving = true;
 		player.body.velocity.x = -horizontal_speed;
-		player.scale.setTo(-0.45, 0.45);
+		player.scale.setTo(-0.39, 0.39);
 		/*
 			Check if left side is blocked
 			If so, return to last position
@@ -456,9 +470,27 @@ function open() {
 		player.animations.play("open");
 		setTimeout(() => {
 			lock.kill();
+			bug.scale.setTo(-0.39, 0.39);
 			canOpen = false;
 			playerIsMoving = true;
 			playerIsOpening = false;
+		}, 300);
+	}
+}
+
+function kill() {
+	if (canKill) {
+		playerIsKilling = true;
+		player.animations.play("kill");
+		setTimeout(() => {
+			bugIsDead = true;
+			canKill = false;
+			playerIsMoving = true;
+			playerIsKilling = false;
+			setTimeout(() => {
+				levelCompleted = true;
+				player.x += 5;
+			}, 300);
 		}, 300);
 	}
 }
@@ -476,6 +508,8 @@ function play() {
 	playEndCheck = setInterval(() => {
 		if (!playerIsMoving && !levelCompleted && actionsArray.length == 0) {
 			playerAlive = false;
+			player.animations.play("dead");
+			player.y += 6;
 			clearInterval(playEndCheck);
 			clearActionsList();
 		} else if (!playerIsMoving && levelCompleted) {

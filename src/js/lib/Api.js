@@ -1,14 +1,14 @@
 /* LevelOne
-"jumpRight", "jumpRight",
-"runRight", "runLeft", "runRight",
-"open", "runRight", "climb", "jumpLeft"
+"jumpRight", "runRight", "runLeft",
+"runRight", "open", "runRight",
+"climb", "runLeft", "kill"
 */
 
 /* LevelTwo
 "runRight", "push", "jumpRight", "jumpLeft",
 "runLeft", "jumpLeft", "jumpLeft",
 "runLeft", "climb", "jumpRight",
-"jumpRight", "jumpRight", "jumpRight", "runRight"
+"jumpRight", "jumpRight", "jumpRight", "runRight", "kill"
 */
 
 /* LevelThree
@@ -23,7 +23,8 @@
 "runRight", "runLeft", "open", "runLeft",
 "jumpLeft", "jumpLeft", "jumpLeft", "runLeft",
 "jumpLeft", "runLeft", "jumpLeft", "runLeft",
-"runRight", "jumpRight", "jumpRight", "jumpRight", "runRight", "jumpRight", "jumpRight", "runRight"
+"runRight", "jumpRight", "jumpRight", "jumpRight",
+"runRight", "jumpRight", "jumpRight", "runRight", "kill"
 */
 
 export let getAttempts = async (mapId) => {

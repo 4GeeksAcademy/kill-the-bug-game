@@ -65,37 +65,37 @@ export const PlayerSelect = {
 					});
 				} else {
 					playerListDOM.innerHTML = `
-				<li class="player-select__list__item item not_found">
-					<h2 class="loading">No players found</h2>
-				</li > `;
+					<li class="player-select__list__item item not_found">
+						<h2 class="loading">No players found</h2>
+					</li > `;
 				}
 			})
 			.catch((error) => swal({
 				text: `${error}`,
 				icon: "error",
 			}));
-
-		document.querySelector("button[type=\"submit\"]").addEventListener("click", (e) => {
-			e.preventDefault();
-			let username = document.querySelector(".player-register__username").value;
-			let avatar = document.querySelector("input[type=\"radio\"]:checked").value;
-			if (username.length > 4) {
-				Promise
-					.resolve(addAttempt(username, avatar, mapId))
-					.then(() => {
-						game.state.start("PlayerSelect");
-						location.replace("./#");
-					});
-			} else {
-				swal({
-					text: "Username should have 5 characters or more",
-					icon: "error",
-				});
-			}
-
-		});
 	},
 };
+
+document.querySelector("button[type=\"submit\"]").addEventListener("click", (e) => {
+	e.preventDefault();
+	let username = document.querySelector(".player-register__username").value;
+	let avatar = document.querySelector("input[type=\"radio\"]:checked").value;
+	if (username.length > 4) {
+		Promise
+			.resolve(addAttempt(username, avatar, mapId))
+			.then(() => {
+				game.state.start("PlayerSelect");
+				location.replace("./#");
+			});
+	} else {
+		swal({
+			text: "Username should have 5 characters or more",
+			icon: "error",
+		});
+	}
+
+});
 
 function startGame() {
 	document.querySelector(".player-select").style.display = "none";

@@ -44,8 +44,9 @@ export const Preloader = {
 		game.load.spritesheet(
 			"objects", "assets/tiles/spritesheet.png",
 			70, 70, 155, 0, 2);
-		// Character
+		// Spritesheets and JSONs
 		game.load.atlasJSONHash("batman", "assets/players/batman/batman_sprite.png", "assets/players/batman/batman.json");
+		game.load.atlasJSONHash("bug", "assets/enemy/bug/bug_sprite.png", "assets/enemy/bug/bug.json");
 		game.load.spritesheet(
 			"einstein", "assets/players/einstein_spritesheet.png",
 			80, 110);

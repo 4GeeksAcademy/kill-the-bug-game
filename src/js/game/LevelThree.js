@@ -14,13 +14,13 @@ import swal from "sweetalert";
 let currentAction = -1,
 	HUD = "",
 	worldLayer = "",
-	endGameLayer = "",
 	laderLayer = "",
 	invisibleLayer = "",
 	fallLayer = "",
 	boxLayer = "",
 	onLader = "",
 	heightDiff = "",
+	bug = "",
 	player = "",
 	playerAlive = "",
 	playerIsMoving = "",
@@ -40,6 +40,9 @@ let playerIsOpening = false,
 	canOpen = false;
 let boxes = "",
 	lockes = "";
+let canKill = false,
+	playerIsKilling = false,
+	bugIsDead = false;
 
 let actionsArray = [];
 
@@ -74,7 +77,6 @@ export const LevelThree = {
 		fallLayer.visible = false;
 		boxLayer = map.createLayer("Box Layer");
 		boxLayer.visible = false;
-		endGameLayer = map.createLayer("Exit Layer");
 		invisibleLayer = map.createLayer("Invisible Layer");
 		invisibleLayer.visible = false;
 		map.setCollision(
@@ -82,7 +84,6 @@ export const LevelThree = {
 			true,
 			"World Map Layer"
 		);
-		map.setCollision(65, false, "Exit Layer");
 		map.setCollision(61, true, "Fall Layer");
 		map.setCollision([20, 32], false, "Lader Layer");
 		map.setCollision(145, true, "Box Layer");
@@ -107,26 +108,14 @@ export const LevelThree = {
 			() => {
 				player.y += 1;
 				onLader = false;
-				player.scale.setTo(0.45);
+				player.scale.setTo(0.39);
 				player.body.velocity.x = horizontal_speed;
-				player.xDest = player.xDest + 15;
+				player.xDest = player.xDest + 10;
 				game.physics.arcade.gravity.y = gravity;
 			},
 			game,
 			laderLayer
 		);
-
-		// Check collision for end game
-		//----------------------------------------------------------
-		map.setTileIndexCallback(
-			65,
-			() => {
-				levelCompleted = true;
-			},
-			game,
-			endGameLayer
-		);
-		//----------------------------------------------------------
 
 		// Check collision box-wall
 		//----------------------------------------------------------
@@ -149,13 +138,25 @@ export const LevelThree = {
 		player.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("open", Phaser.Animation.generateFrameNames("open/", 1, 1, ".png", 4), 10, false, false);
+		player.animations.add("kill", Phaser.Animation.generateFrameNames("open/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("climb", Phaser.Animation.generateFrameNames("climb/", 1, 2, ".png", 4), 3, true, false);
 		player.animations.add("push", Phaser.Animation.generateFrameNames("push/", 1, 2, ".png", 4), 6, true, false);
 		player.animations.add("happy", Phaser.Animation.generateFrameNames("happy/", 1, 1, ".png", 4), 6, false, false);
 		game.add.existing(player);
 		lastPosY = Math.floor(player.y / 10);
-		player.scale.setTo(0.45);
+		player.scale.setTo(0.39);
 		player.anchor.setTo(0.5);
+		//----------------------------------------------------------
+
+		// ENEMY - BUG
+		//----------------------------------------------------------
+		bug = game.add.sprite(70 * 23 - 70 / 2, 1297, "bug");
+		bug.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
+		bug.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 2, ".png", 4), 3, true, false);
+		bug.animations.add("laugh", Phaser.Animation.generateFrameNames("laugh/", 1, 2, ".png", 4), 5, true, false);
+		bug.scale.setTo(0.39);
+		bug.anchor.setTo(0.5);
+		game.add.existing(bug);
 		//----------------------------------------------------------
 
 		// Sprite Groups
@@ -184,14 +185,16 @@ export const LevelThree = {
 
 		// Gravity and Physics
 		//----------------------------------------------------------
-		game.physics.arcade.enable([player, boxes, lockes]);
+		game.physics.arcade.enable([player, boxes, lockes, bug]);
 		lockes.setAll("body.immovable", true);
 		boxes.setAll("body.immovable", true);
 		boxes.setAll("body.collideWorldBounds", true);
 		boxes.setAll("body.gravity.y", 1000);
+		bug.body.immovable = true;
 		boxes.forEach(b => b.anchor.setTo(0.5));
 		lockes.forEach(l => l.anchor.setTo(0.5));
 		game.physics.arcade.gravity.y = gravity;
+		bug.body.gravity = 0;
 		player.body.collideWorldBounds = true;
 		//----------------------------------------------------------
 
@@ -240,7 +243,7 @@ export const LevelThree = {
 			const actionData = button.dataset.action;
 
 			button.addEventListener("click", function () {
-				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb", "open", "push"].includes(actionData) && playerAlive) {
+				if (["runRight", "runLeft", "jumpRight", "jumpLeft", "climb", "open", "push", "kill"].includes(actionData) && playerAlive) {
 					actionsArray.push(actionData);
 					actionList.innerHTML += `<li class="command-queue__item command-queue__item--${actionData}"></li>`;
 				} else {
@@ -262,24 +265,41 @@ export const LevelThree = {
 
 		levelCompleted = false;
 		playerAlive = true;
+		bugIsDead = false;
 	},
 	update: () => {
+		let distaceBetweenPlayerBug = Phaser.Math.distance(player.x, player.y, bug.x, bug.y).toFixed(2);
+		if (!bugIsDead) {
+			if (distaceBetweenPlayerBug < 350 || !playerAlive) {
+				bug.animations.play("laugh");
+			} else {
+				bug.animations.play("idle");
+			}
+		} else {
+			bug.animations.play("dead");
+		}
 		// COLLISION
 		//----------------------------------------------------------
 		game.physics.arcade.collide(boxes, invisibleLayer);
 		game.physics.arcade.collide(lockes, worldLayer);
 		game.physics.arcade.collide(player, worldLayer);
 		game.physics.arcade.collide(player, boxLayer);
-		game.physics.arcade.collide(player, endGameLayer);
 		// With empty spot while pushing
 		playerPushing ? game.physics.arcade.collide(player, fallLayer, () => {
 			player.xDest = player.x;
 			setTimeout(() => playerPushing = false, 600);
 		}) : null;
+		// With Bug
+		game.physics.arcade.overlap(player, bug, () => {
+			player.xDest = player.x;
+			canKill = true;
+			player.body.velocity.x = 0;
+		});
 		// With pushable boxes
 		game.physics.arcade.collide(player, boxes, (player, boxSprite) => {
 			box = boxSprite;
 			canPush = true;
+			player.xDest = player.x;
 			!playerPushing ? player.body.velocity.x = 0 : null;
 		});
 		// With locks
@@ -303,6 +323,7 @@ export const LevelThree = {
 		//----------------------------------------------------------
 		if (!playerAlive) {
 			player.animations.play("dead");
+			player.y += 6;
 			clearInterval(playEndCheck);
 			endLevel();
 		}
@@ -339,10 +360,13 @@ export const LevelThree = {
 		*/
 		//----------------------------------------------------------
 		if (playerAlive || !levelCompleted) {
-			if (player.body.velocity.x == 0 && player.body.blocked.down && !playerIsOpening) {
+			if (player.body.velocity.x == 0 && player.body.blocked.down && !playerIsOpening && !playerIsKilling) {
 				if (levelCompleted) {
 					// Happy if x velocity is 0, on floor and level completed
 					player.animations.play("happy");
+				} else if (!playerAlive) {
+					// Happy if x velocity is 0, on floor and level completed
+					player.animations.play("dead");
 				} else {
 					// Idle if x velocity is 0 and on floor
 					player.animations.play("idle");
@@ -350,6 +374,9 @@ export const LevelThree = {
 			} else if (player.body.velocity.x == 0 && player.body.blocked.down && playerIsOpening) {
 				// While opening doors
 				player.animations.play("open");
+			} else if (player.body.velocity.x == 0 && player.body.blocked.down && playerIsKilling) {
+				// While killing
+				player.animations.play("kill");
 			} else if (player.body.velocity.x != 0 && player.body.blocked.down) {
 				// Run if x velocity is NOT 0 and on floor
 				if (playerPushing) {
@@ -370,12 +397,8 @@ export const LevelThree = {
 				player.animations.play("jump");
 			}
 			// Constatly check for movement
-			if (!playerPushing) {
+			if (!playerPushing && !playerIsKilling) {
 				movePlayer();
-			} else {
-				if (player.body.velocity.x == 0 && player.body.velocity.y == 0) {
-					playerIsMoving = false;
-				}
 			}
 		}
 		//----------------------------------------------------------
@@ -413,7 +436,7 @@ function movePlayer() {
 		player.x = Math.floor(player.xDest);
 	} else if (currentPosX < destinationX) {
 		playerIsMoving = true;
-		player.scale.setTo(0.45);
+		player.scale.setTo(0.39);
 		player.body.velocity.x = horizontal_speed;
 		/*
 			Check if right side is blocked by tile
@@ -435,7 +458,7 @@ function movePlayer() {
 	} else if (currentPosX > destinationX) {
 		playerIsMoving = true;
 		player.body.velocity.x = -horizontal_speed;
-		player.scale.setTo(-0.45, 0.45);
+		player.scale.setTo(-0.39, 0.39);
 		/*
 			Check if left side is blocked by tile
 			If so, return to last position
@@ -465,7 +488,6 @@ function movePlayer() {
 //----------------------------------------------------------
 function endLevel() {
 	// Promise.resolve(deleteAttempt(playerId)).then(() => {
-	console.log("end!!!");
 	clearActionsList();
 	enableButtons();
 	gameOver();
@@ -540,6 +562,23 @@ function open() {
 		}, 300);
 	}
 }
+
+function kill() {
+	if (canKill) {
+		playerIsKilling = true;
+		player.animations.play("kill");
+		setTimeout(() => {
+			bugIsDead = true;
+			canKill = false;
+			playerIsMoving = true;
+			playerIsKilling = false;
+			setTimeout(() => {
+				levelCompleted = true;
+				player.x -= 5;
+			}, 300);
+		}, 300);
+	}
+}
 //----------------------------------------------------------
 
 // Play commands
@@ -554,6 +593,8 @@ function play() {
 	playEndCheck = setInterval(() => {
 		if (!playerIsMoving && !levelCompleted && actionsArray.length == 0) {
 			playerAlive = false;
+			player.animations.play("dead");
+			player.y += 6;
 			clearInterval(playEndCheck);
 			clearActionsList();
 		} else if (!playerIsMoving && levelCompleted) {
