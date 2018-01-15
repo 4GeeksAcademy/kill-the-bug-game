@@ -18,6 +18,7 @@ let currentAction = -1,
 	laderLayer = "",
 	onLader = "",
 	heightDiff = "",
+	bug = "",
 	player = "",
 	playerAlive = "",
 	playerIsMoving = "",
@@ -89,7 +90,7 @@ export const LevelOne = {
 			() => {
 				player.y += 1;
 				onLader = false;
-				player.scale.setTo(0, -0.125);
+				player.scale.setTo(0, -0.45);
 				player.body.velocity.x = -horizontal_speed;
 				player.xDest = player.xDest - 15;
 				game.physics.arcade.gravity.y = 500;
@@ -113,17 +114,27 @@ export const LevelOne = {
 
 		// PLAYER
 		//----------------------------------------------------------
-		player = game.add.sprite(70 * 2 - 70 / 2, 177.2, character);
+		player = game.add.sprite(70 * 2 - 70 / 2, 157.2, character);
 		player.animations.add("walk", Phaser.Animation.generateFrameNames("walk/", 1, 3, ".png", 4), 8, true, false);
 		player.animations.add("jump", Phaser.Animation.generateFrameNames("jump/", 1, 2, ".png", 4), 4, true, false);
 		player.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("open", Phaser.Animation.generateFrameNames("open/", 1, 1, ".png", 4), 10, false, false);
-		// player.animations.add("climb", Phaser.Animation.generateFrameNames("climb/", 1, 3, ".png", 4), 3, true, false);
+		player.animations.add("climb", Phaser.Animation.generateFrameNames("climb/", 1, 2, ".png", 4), 3, true, false);
 		player.animations.add("push", Phaser.Animation.generateFrameNames("push/", 1, 2, ".png", 4), 6, true, false);
 		player.animations.add("happy", Phaser.Animation.generateFrameNames("happy/", 1, 1, ".png", 4), 6, false, false);
 		game.add.existing(player);
 		lastPosY = Math.floor(player.y / 10);
+		//----------------------------------------------------------
+
+		// ENEMY - BUG
+		//----------------------------------------------------------
+		bug = game.add.sprite(70 * 9 - 70 / 2, 177.2, "bug");
+		// bug.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
+		bug.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 1, ".png", 4), 10, false, false);
+		bug.scale.setTo(0.45);
+		bug.anchor.setTo(0.5);
+		game.add.existing(bug);
 		//----------------------------------------------------------
 
 		// Box
@@ -139,16 +150,17 @@ export const LevelOne = {
 
 		// Player scales and center anchor
 		//----------------------------------------------------------
-		player.scale.setTo(0.125);
+		player.scale.setTo(0.45);
 		player.anchor.setTo(0.5);
 		//----------------------------------------------------------
 
 		// Gravity and Physics
 		//----------------------------------------------------------
-		game.physics.arcade.enable([player, lock]);
+		game.physics.arcade.enable([player, lock, bug]);
 		lock.body.immovable = true;
 		game.physics.arcade.gravity.y = 500;
 		player.body.collideWorldBounds = true;
+		bug.body.collideWorldBounds = true;
 		//----------------------------------------------------------
 
 		// Camera
@@ -223,6 +235,8 @@ export const LevelOne = {
 		// COLLISION
 		//----------------------------------------------------------
 		game.physics.arcade.collide(lock, worldLayer);
+		game.physics.arcade.collide(bug, worldLayer);
+		game.physics.arcade.collide(player, bug);
 		game.physics.arcade.collide(player, worldLayer);
 		game.physics.arcade.collide(player, endGameLayer);
 		game.physics.arcade.collide(player, lock, () => {
@@ -253,6 +267,7 @@ export const LevelOne = {
 		//----------------------------------------------------------
 		if (levelCompleted) {
 			player.animations.play("happy");
+			player.y += 6;
 			player.body.velocity.setTo(0);
 		}
 		//----------------------------------------------------------
@@ -348,7 +363,7 @@ function movePlayer() {
 		player.x = Math.floor(player.xDest);
 	} else if (currentPosX < destinationX) {
 		playerIsMoving = true;
-		player.scale.setTo(0.125);
+		player.scale.setTo(0.45);
 		player.body.velocity.x = horizontal_speed;
 		/*
 			Check if right side is blocked
@@ -365,7 +380,7 @@ function movePlayer() {
 	} else if (currentPosX > destinationX) {
 		playerIsMoving = true;
 		player.body.velocity.x = -horizontal_speed;
-		player.scale.setTo(-0.125, 0.125);
+		player.scale.setTo(-0.45, 0.45);
 		/*
 			Check if left side is blocked
 			If so, return to last position

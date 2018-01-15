@@ -98,7 +98,7 @@ export const LevelTwo = {
 			() => {
 				player.y += 1;
 				onLader = false;
-				player.scale.setTo(0.125);
+				player.scale.setTo(0.39);
 				player.body.velocity.x = horizontal_speed;
 				player.xDest = player.xDest + 15;
 				game.physics.arcade.gravity.y = 500;
@@ -134,13 +134,13 @@ export const LevelTwo = {
 
 		// PLAYER
 		//----------------------------------------------------------
-		player = game.add.sprite(70 / 2, 598.4, character);
+		player = game.add.sprite(70 / 2, 597.4, character);
 		player.animations.add("walk", Phaser.Animation.generateFrameNames("walk/", 1, 3, ".png", 4), 8, true, false);
 		player.animations.add("jump", Phaser.Animation.generateFrameNames("jump/", 1, 2, ".png", 4), 4, true, false);
 		player.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 1, ".png", 4), 10, false, false);
 		player.animations.add("open", Phaser.Animation.generateFrameNames("open/", 1, 1, ".png", 4), 10, false, false);
-		// player.animations.add("climb", Phaser.Animation.generateFrameNames("climb/", 1, 3, ".png", 4), 3, true, false);
+		player.animations.add("climb", Phaser.Animation.generateFrameNames("climb/", 1, 2, ".png", 4), 3, true, false);
 		player.animations.add("push", Phaser.Animation.generateFrameNames("push/", 1, 2, ".png", 4), 6, true, false);
 		player.animations.add("happy", Phaser.Animation.generateFrameNames("happy/", 1, 1, ".png", 4), 6, false, false);
 		game.add.existing(player);
@@ -155,7 +155,7 @@ export const LevelTwo = {
 
 		// Player scales and center anchor
 		//----------------------------------------------------------
-		player.scale.setTo(0.125);
+		player.scale.setTo(0.39);
 		player.anchor.setTo(0.5);
 		//----------------------------------------------------------
 
@@ -271,6 +271,7 @@ export const LevelTwo = {
 		//----------------------------------------------------------
 		if (levelCompleted) {
 			player.animations.play("happy");
+			player.y += 6;
 			player.body.velocity.setTo(0);
 		}
 		//----------------------------------------------------------
@@ -366,7 +367,7 @@ function movePlayer() {
 		player.x = Math.floor(player.xDest);
 	} else if (currentPosX < destinationX) {
 		playerIsMoving = true;
-		player.scale.setTo(0.125);
+		player.scale.setTo(0.39);
 		player.body.velocity.x = horizontal_speed;
 		/*
 			Check if right side is blocked by tile
@@ -388,7 +389,7 @@ function movePlayer() {
 	} else if (currentPosX > destinationX) {
 		playerIsMoving = true;
 		player.body.velocity.x = -horizontal_speed;
-		player.scale.setTo(-0.125, 0.125);
+		player.scale.setTo(-0.39, 0.39);
 		/*
 			Check if left side is blocked by tile
 			If so, return to last position
