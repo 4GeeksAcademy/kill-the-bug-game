@@ -466,6 +466,17 @@ footer {
   }
 }
 
+.help-container {
+  padding: 0;
+  width: 840px;
+  height: 700px;
+  margin: 20px auto 0 auto;
+  .instructions {
+    width: 840px;
+    height: 700px;
+  }
+}
+
 form {
   display: flex;
   flex-direction: column;

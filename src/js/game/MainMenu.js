@@ -5,28 +5,16 @@ export const MainMenu = {
 	create: () => {
 		game.world.width = 840;
 		game.world.height = 700;
+		location.replace("./#");
 		hideActionBoard();
 
-		game.stage.backgroundColor = "#2980b9";
-		let geeksLogo = game.add.image(
-			game.camera.width / 4,
-			game.camera.height - 100,
-			"4geeks_logo"
-		);
-		geeksLogo.scale.setTo(0.5);
-		geeksLogo.anchor.set(0.5);
-		geeksLogo.fixedToCamera = true;
-		let mantenLogo = game.add.image(
-			game.camera.width / 4 + game.camera.width / 2,
-			game.camera.height - 100,
-			"manten_logo"
-		);
-		mantenLogo.scale.setTo(0.5);
-		mantenLogo.anchor.set(0.5);
-		mantenLogo.fixedToCamera = true;
+		let background = game.add.image(0, 0, "cover");
+		background.width = 840;
+		background.height = 700;
+
 		let button = game.add.button(
 			game.camera.width / 2,
-			game.camera.height / 2,
+			game.camera.height / 2 + 245,
 			"start_button", selectMap, this,
 			0, 1, 1
 		);
@@ -45,5 +33,5 @@ export const MainMenu = {
 
 
 function selectMap() {
-	game.state.start("MapSelect", Phaser.Plugin.StateTransition.Out.SlideRight);
+	game.state.start("MapSelect");
 }

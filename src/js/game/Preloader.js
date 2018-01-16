@@ -13,8 +13,7 @@ export const Preloader = {
 		game.load.setPreloadSprite(game.preloadBar);
 
 		// Not game related images
-		game.load.image("4geeks_logo", "assets/img/4geeks_logo.png");
-		game.load.image("manten_logo", "assets/img/manten_logo.png");
+		game.load.image("cover", "assets/img/game_cover.jpg");
 
 		// GAME ASSETS
 		// UI Sprites
