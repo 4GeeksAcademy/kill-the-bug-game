@@ -42,3 +42,12 @@ export function showActionBoard() {
 	document.querySelector(".command-queue").style.visibility = "visible";
 	document.querySelector(".command-queue").style.display = "flex";
 }
+
+export function checkIfAvatarAvailable(character) {
+	switch (character) {
+	case "batman":
+		return character;
+	default:
+		return "batman";
+	}
+}

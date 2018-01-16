@@ -55,14 +55,28 @@ export const LevelThree = {
 		HUD = document.querySelector(".HUD");
 		HUD.style.opacity = 1;
 		HUD.innerHTML = `
-		<a class="show-map" href="/img/levels/3.png" data-lightbox="cave_map_3" data-title="Map 3">
+		<a class="show-map" href="img/levels/3.png" data-lightbox="cave_map_3" data-title="Map 3">
 			<i class="fa fa-map" aria-hidden="true"></i>
 			Show Map
 		</a>
-		<a class="show-help" href="#help">
-			<i class="fa fa-question" aria-hidden="true"></i>
-			Help
-		</a>`;
+		<div>
+			<a class="show-help" href="#help">
+				<i class="fa fa-question" aria-hidden="true"></i>
+			</a>
+			<a class="exit red">
+				<i class="fa fa-sign-out" aria-hidden="true"></i>
+			</a>
+		</div>`;
+
+		document.querySelector(".exit").addEventListener("click", function () {
+			HUD.style.opacity = 0;
+			document.querySelector(".command-queue ol").innerHTML = "";
+			document.querySelectorAll("button").forEach(function (button) {
+				button.removeAttribute("disabled");
+			});
+			game.world.removeAll();
+			game.state.start("PlayerSelect", Phaser.Plugin.StateTransition.Out.SlideRight);
+		});
 		// World
 		//----------------------------------------------------------
 		game.world.width = 1680;

@@ -17,6 +17,13 @@
 </head>
 
 <body>
+	<!-- QR - CSS Modal -->
+	<div class="modal-wrapper" id="qr">
+		<div class="qr-container">
+			<img class="qr-img" src="assets/img/qr_code.png" alt="QR Code">
+			<a class="qr-close" href="#">X</a>
+		</div>
+	</div>
 	<!-- Help - CSS Modal -->
 	<div class="modal-wrapper" id="help">
 		<div class="help-container">
@@ -35,10 +42,6 @@
 					<label>
 						<input type="radio" name="characters" value="batman" checked />
 						<img src="./assets/players/batman.png">
-					</label>
-					<label>
-						<input type="radio" name="characters" value="einstein" />
-						<img src="./assets/players/einstein.png">
 					</label>
 				</div>
 				<button type="submit">Create</button>
@@ -59,7 +62,7 @@
 				<!-- Map Select -->
 				<div class="map-select">
 					<div class="map-select__header">
-						<h1>Map Select</h1>
+						<h1>Select Map</h1>
 					</div>
 					<ul class="map-select__list">
 						<!-- Maps go here -->
@@ -68,19 +71,23 @@
 				<!-- Player Select -->
 				<div class="player-select">
 					<div class="player-select__header">
-						<h1>Player Select</h1>
-						<div>
+						<h1>Select Player</h1>
+						<div class="btn-area">
+							<!-- Maps -->
 							<a href="#" class="popup-link return-maps">
-								<i class="fa fa-map" aria-hidden="true"></i>
-								Maps
+								<i class="fa fa-chevron-left" aria-hidden="true"></i>
 							</a>
+							<!-- Refresh -->
 							<a href="#" class="popup-link reload-player">
 								<i class="fa fa-refresh" aria-hidden="true"></i>
-								Reload List
 							</a>
+							<!-- New Player -->
 							<a href="#popup" class="popup-link">
 								<i class="fa fa-user-plus" aria-hidden="true"></i>
-								New Player
+							</a>
+							<!-- QR Code -->
+							<a href="#qr" class="popup-link">
+								<i class="fa fa-qrcode" aria-hidden="true"></i>
 							</a>
 						</div>
 					</div>

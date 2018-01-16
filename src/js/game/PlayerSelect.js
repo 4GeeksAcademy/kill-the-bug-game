@@ -1,6 +1,6 @@
 import { game } from "./Game";
 import { mapId, chosenMap } from "./MapSelect";
-import { showActionBoard, hideActionBoard } from "./scripts";
+import { showActionBoard, hideActionBoard, checkIfAvatarAvailable } from "./scripts";
 import { getAttempts, addAttempt } from "../lib/Api";
 import swal from "sweetalert";
 
@@ -39,21 +39,24 @@ export const PlayerSelect = {
 						let player = playersObj[key];
 						let date = new Date(player.created_at);
 						playerListDOM.innerHTML += `
-					<li class="player-select__list__item item" data-character="${player.character}" data-id="${player.id}" data-moves="${player.commands}">
+					<li class="player-select__list__item item" data-character="${checkIfAvatarAvailable(player.character)}" data-id="${player.id}" data-moves="${player.commands}">
 						<span class="item__character" >
-							<img src="assets/players/${player.character}.png">
+							<img src="assets/players/${checkIfAvatarAvailable(player.character)}.png">
 						</span>
 						<span class="item__username">${player.username}</span>
 						<div class="item__play-data play-data">
 							<span class="play-data__timestamp">${date.toDateString()}</span>
 							<span class="play-data__timestamp">${date.toLocaleTimeString()}</span>
 						</div >
+						<span class="item__has-moves">
+						${player.commands.length > 0 ? "<span class='has'>Has " + player.commands.length + " move(s)</span>" : "<span class='none'>No moves</span>"}
+						</span>
 					</li > `;
 					}
 
 					document.querySelectorAll(".player-select__list__item").forEach(item => {
 						item.addEventListener("click", function () {
-							character = this.dataset.character;
+							character = checkIfAvatarAvailable(this.dataset.character);
 							playerId = this.dataset.id;
 							moves = (this.dataset.moves).split(",");
 							if (moves.length == 0 || moves[0] == "undefined") {

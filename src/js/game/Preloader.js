@@ -46,9 +46,6 @@ export const Preloader = {
 		// Spritesheets and JSONs
 		game.load.atlasJSONHash("batman", "assets/players/batman/batman_sprite.png", "assets/players/batman/batman.json");
 		game.load.atlasJSONHash("bug", "assets/enemy/bug/bug_sprite.png", "assets/enemy/bug/bug.json");
-		game.load.spritesheet(
-			"einstein", "assets/players/einstein_spritesheet.png",
-			80, 110);
 
 		// Loading text
 		text = game.add.text(0, 0, "Loading " + game.load.progress, {

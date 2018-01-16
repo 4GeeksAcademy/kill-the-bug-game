@@ -42,18 +42,32 @@ let actionsArray = [];
 ===================================*/
 export const LevelOne = {
 	create: () => {
+		currentAction = -1;
 		HUD = document.querySelector(".HUD");
 		HUD.style.opacity = 1;
 		HUD.innerHTML = `
-		<a class="show-map" href="/img/levels/1.png" data-lightbox="cave_map" data-title="Map 1">
+		<a class="show-map" href="img/levels/1.png" data-lightbox="cave_map_1" data-title="Map 1">
 			<i class="fa fa-map" aria-hidden="true"></i>
 			Show Map
 		</a>
-		<a class="show-help" href="#help">
-			<i class="fa fa-question" aria-hidden="true"></i>
-			Help
-		</a>`;
-		currentAction = -1;
+		<div>
+			<a class="show-help" href="#help">
+				<i class="fa fa-question" aria-hidden="true"></i>
+			</a>
+			<a class="exit red">
+				<i class="fa fa-sign-out" aria-hidden="true"></i>
+			</a>
+		</div>`;
+
+		document.querySelector(".exit").addEventListener("click", function () {
+			HUD.style.opacity = 0;
+			document.querySelector(".command-queue ol").innerHTML = "";
+			document.querySelectorAll("button").forEach(function (button) {
+				button.removeAttribute("disabled");
+			});
+			game.world.removeAll();
+			game.state.start("PlayerSelect", Phaser.Plugin.StateTransition.Out.SlideRight);
+		});
 		// World
 		//----------------------------------------------------------
 		game.world.width = 840;
