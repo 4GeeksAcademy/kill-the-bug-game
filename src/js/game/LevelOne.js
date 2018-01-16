@@ -45,7 +45,7 @@ export const LevelOne = {
 		HUD = document.querySelector(".HUD");
 		HUD.style.opacity = 1;
 		HUD.innerHTML = `
-		<a class="show-map" href="/img/levels/1.png" data-lightbox="cave_map" data-title="Cave #1">
+		<a class="show-map" href="/img/levels/1.png" data-lightbox="cave_map" data-title="Map 1">
 			<i class="fa fa-map" aria-hidden="true"></i>
 			Show Map
 		</a>
@@ -170,7 +170,7 @@ export const LevelOne = {
 				0, 1, 1
 			);
 			button.anchor.set(0.5);
-			let text = game.add.text(0, 0, "START", {
+			let text = game.add.text(0, 0, "RUN", {
 				font: "24px Space Mono",
 				fill: "#FFFFFF",
 				align: "center",

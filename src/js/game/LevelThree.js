@@ -55,7 +55,7 @@ export const LevelThree = {
 		HUD = document.querySelector(".HUD");
 		HUD.style.opacity = 1;
 		HUD.innerHTML = `
-		<a class="show-map" href="assets/maps/cave_map_3.png" data-lightbox="cave_map_3" data-title="Cave #3">
+		<a class="show-map" href="/img/levels/3.png" data-lightbox="cave_map_3" data-title="Map 3">
 			<i class="fa fa-map" aria-hidden="true"></i>
 			Show Map
 		</a>
@@ -214,7 +214,7 @@ export const LevelThree = {
 			);
 			button.anchor.set(0.5);
 			button.fixedToCamera = true;
-			let text = game.add.text(0, 0, "START", {
+			let text = game.add.text(0, 0, "RUN", {
 				font: "24px Space Mono",
 				fill: "#FFFFFF",
 				align: "center",
