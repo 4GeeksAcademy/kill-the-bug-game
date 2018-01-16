@@ -443,13 +443,15 @@ footer {
 .popup-container,
 .help-container {
   position: relative;
-  margin:7% auto;
-  padding:30px 50px;
+  margin: 20px auto;
+  padding: 30px 50px;
   background-color: rgb(236,240,241);
-  color:#333;
+  color: #333;
   border-radius: 3px;
-  width:50%;
-  height: 380px;
+  width: 840px;
+  height: 700px;
+  transition: all 1s;
+  border-radius: 5px;
 
   .popup-close,
   .help-close {
@@ -463,17 +465,23 @@ footer {
     line-height: 1;
     color:rgb(236,240,241);
     border-radius: 50%;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+      color: #333;
+      background-color: rgb(236,240,241);
+    }
   }
 }
 
 .help-container {
   padding: 0;
-  width: 840px;
-  height: 700px;
-  margin: 20px auto 0 auto;
+  height: 905px;
+
   .instructions {
     width: 840px;
-    height: 700px;
+    height: 905px;
+    border-radius: 5px;
   }
 }
 
@@ -498,6 +506,12 @@ form {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    flex-wrap: wrap;
+    text-align: center;
+
+    label {
+      flex-basis: 246px;
+    }
 
     label > input {
       visibility: hidden;
