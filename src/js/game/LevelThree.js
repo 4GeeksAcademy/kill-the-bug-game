@@ -501,11 +501,11 @@ function movePlayer() {
 // Movements
 //----------------------------------------------------------
 function endLevel() {
-	// Promise.resolve(deleteAttempt(playerId)).then(() => {
-	clearActionsList();
-	enableButtons();
-	gameOver();
-	// });
+	Promise.resolve(deleteAttempt(playerId)).then(() => {
+		clearActionsList();
+		enableButtons();
+		gameOver();
+	});
 }
 
 function runRight() {

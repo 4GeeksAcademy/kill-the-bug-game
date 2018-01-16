@@ -1,6 +1,6 @@
 import { game } from "./Game";
 import { gameOver } from "./GameOver";
-import { showActionBoard, disableButtons, enableButtons, boardIsHidden, gofull } from "./scripts";
+import { showActionBoard, disableButtons, enableButtons, boardIsHidden } from "./scripts";
 import { character, moves, playerId } from "./PlayerSelect";
 import { deleteAttempt } from "../lib/Api";
 import swal from "sweetalert";
@@ -456,11 +456,11 @@ function movePlayer() {
 // Movements
 //----------------------------------------------------------
 function endLevel() {
-	// Promise.resolve(deleteAttempt(playerId)).then(() => {
-	clearActionsList();
-	enableButtons();
-	gameOver();
-	// });
+	Promise.resolve(deleteAttempt(playerId)).then(() => {
+		clearActionsList();
+		enableButtons();
+		gameOver();
+	});
 }
 
 function runRight() {
