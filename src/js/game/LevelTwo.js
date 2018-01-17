@@ -59,6 +59,9 @@ export const LevelTwo = {
 			<a class="exit red">
 				<i class="fa fa-sign-out" aria-hidden="true"></i>
 			</a>
+			<a href="#qr" class="popup-link">
+				<i class="fa fa-qrcode" aria-hidden="true"></i>
+			</a>
 		</div>`;
 
 		document.querySelector(".exit").addEventListener("click", function () {

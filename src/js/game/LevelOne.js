@@ -57,6 +57,9 @@ export const LevelOne = {
 			<a class="exit red">
 				<i class="fa fa-sign-out" aria-hidden="true"></i>
 			</a>
+			<a href="#qr" class="popup-link">
+				<i class="fa fa-qrcode" aria-hidden="true"></i>
+			</a>
 		</div>`;
 
 		document.querySelector(".exit").addEventListener("click", function () {
@@ -132,7 +135,7 @@ export const LevelOne = {
 
 		// ENEMY - BUG
 		//----------------------------------------------------------
-		bug = game.add.sprite(70 * 9 - 70 / 2, 110.5, "bug");
+		bug = game.add.sprite(70 * 10 - 70 / 2, 110.5, "bug");
 		bug.animations.add("dead", Phaser.Animation.generateFrameNames("dead/", 1, 1, ".png", 4), 10, false, false);
 		bug.animations.add("idle", Phaser.Animation.generateFrameNames("idle/", 1, 2, ".png", 4), 3, true, false);
 		bug.animations.add("laugh", Phaser.Animation.generateFrameNames("laugh/", 1, 2, ".png", 4), 5, true, false);

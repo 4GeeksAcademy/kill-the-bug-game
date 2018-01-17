@@ -49,7 +49,7 @@ export const PlayerSelect = {
 							<span class="play-data__timestamp">${date.toLocaleTimeString()}</span>
 						</div >
 						<span class="item__has-moves">
-						${player.commands.length > 0 ? "<span class='has'>Has " + player.commands.length + " move(s)</span>" : "<span class='none'>No moves</span>"}
+						${player.commands.length > 0 ? "<span class='has'>Has " + player.commands.length + " command(s)</span>" : "<span class='none'>No commands</span>"}
 						</span>
 					</li > `;
 					}

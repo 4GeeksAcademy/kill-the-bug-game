@@ -1,8 +1,20 @@
 import { game } from "./Game";
 import { hideActionBoard } from "./scripts";
 
+let HUD = "";
+
 export const MainMenu = {
 	create: () => {
+		HUD = document.querySelector(".HUD");
+		HUD.style.opacity = 1;
+		HUD.innerHTML = `
+		<span></span>
+		<div class="hud-main-menu">
+			<a href="#qr" class="popup-link">
+				<i class="fa fa-qrcode" aria-hidden="true"></i>
+			</a>
+		</div>`;
+
 		game.world.width = 840;
 		game.world.height = 700;
 		location.replace("./#");
@@ -33,5 +45,6 @@ export const MainMenu = {
 
 
 function selectMap() {
+	HUD.style.opacity = 0;
 	game.state.start("MapSelect");
 }
