@@ -84,7 +84,7 @@ document.querySelector("button[type=\"submit\"]").addEventListener("click", (e) 
 	e.preventDefault();
 	let username = document.querySelector(".player-register__username").value;
 	let avatar = document.querySelector("input[type=\"radio\"]:checked").value;
-	if (username.length > 4) {
+	if (username.length > 5) {
 		Promise
 			.resolve(addAttempt(username, avatar, mapId))
 			.then(() => {

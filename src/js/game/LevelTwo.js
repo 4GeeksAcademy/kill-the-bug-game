@@ -278,6 +278,7 @@ export const LevelTwo = {
 		game.physics.arcade.collide(box, invisibleLayer);
 		game.physics.arcade.overlap(player, box, () => {
 			canPush = true;
+			character == "vader" ? player.x -= 0.5 : null;
 			!playerPushing ? player.body.velocity.x = 0 : null;
 		});
 		// Check collision with Bug

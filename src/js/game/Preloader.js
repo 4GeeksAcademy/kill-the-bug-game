@@ -45,6 +45,7 @@ export const Preloader = {
 			70, 70, 155, 0, 2);
 		// Spritesheets and JSONs
 		game.load.atlasJSONHash("batman", "assets/players/batman/batman_sprite.png", "assets/players/batman/batman.json");
+		game.load.atlasJSONHash("vader", "assets/players/vader/vader_sprite.png", "assets/players/vader/vader.json");
 		game.load.atlasJSONHash("bug", "assets/enemy/bug/bug_sprite.png", "assets/enemy/bug/bug.json");
 
 		// Loading text

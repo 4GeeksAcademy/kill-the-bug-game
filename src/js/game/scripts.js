@@ -46,6 +46,7 @@ export function showActionBoard() {
 export function checkIfAvatarAvailable(character) {
 	switch (character) {
 	case "batman":
+	case "vader":
 		return character;
 	default:
 		return "batman";
