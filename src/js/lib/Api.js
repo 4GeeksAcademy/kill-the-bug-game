@@ -35,7 +35,7 @@ export let getAttempts = async (mapId) => {
 };
 
 export let getAllLevels = async () => {
-	let response = await fetch("http://assets.breatheco.de/apis/kill-the-bug/api/get_levels");
+	let response = await fetch("https://assets.breatheco.de/apis/kill-the-bug/api/get_levels");
 	let json = await response.json();
 	let data = await json.data;
 	return data;
