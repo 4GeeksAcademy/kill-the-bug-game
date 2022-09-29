@@ -2,9 +2,9 @@
 require("lightbox2/dist/css/lightbox.css");
 require("lightbox2/dist/js/lightbox-plus-jquery");
 // Importing Game Styles
-require("../../scss/style.scss");
+require("../../css/style.css");
 // Importing Phaser Plugin
-require("phaser-state-transition/dist/phaser-state-transition.min");
+require("phaser-state-transition");
 // Importing Api Data
 require("../lib/Api");
 

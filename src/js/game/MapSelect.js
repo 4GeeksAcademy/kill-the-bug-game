@@ -1,6 +1,6 @@
 import { game } from "./Game";
 import { getAllLevels } from "../lib/Api";
-
+import "phaser-state-transition";
 export let chosenMap = "";
 export let mapId = "";
 
