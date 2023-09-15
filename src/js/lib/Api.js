@@ -28,21 +28,21 @@
 */
 
 export let getAttempts = async (mapId) => {
-	let response = await fetch("https://assets.breatheco.de/apis/kill-the-bug/api/pending_attempts/" + mapId);
+	let response = await fetch("https://playground.4geeks.com/apis/kill-the-bug/pending_attempts/" + mapId);
 	let json = await response.json();
 	let data = await json.data;
 	return data.pending_attempts;
 };
 
 export let getAllLevels = async () => {
-	let response = await fetch("https://assets.breatheco.de/apis/kill-the-bug/api/get_levels");
+	let response = await fetch("https://playground.4geeks.com/apis/kill-the-bug/get_levels");
 	let json = await response.json();
 	let data = await json.data;
 	return data;
 };
 
 export let addAttempt = async (name, character, mapId) => {
-	let response = await fetch("https://assets.breatheco.de/apis/kill-the-bug/api/add_attempt", {
+	let response = await fetch("https://playground.4geeks.com/apis/kill-the-bug/add_attempt", {
 		method: "post",
 		headers: new Headers(),
 		body: JSON.stringify(
@@ -59,7 +59,7 @@ export let addAttempt = async (name, character, mapId) => {
 };
 
 export function deleteAttempt(id) {
-	fetch("https://assets.breatheco.de/apis/kill-the-bug/api/delete_attempt", {
+	fetch("https://playground.4geeks.com/apis/kill-the-bug/delete_attempt", {
 		method: "post",
 		headers: new Headers(),
 		body: JSON.stringify(
